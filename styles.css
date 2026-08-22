@@ -1,0 +1,260 @@
+/* ============================================================
+   高三地理教学资源库 - 样式
+   ============================================================ */
+
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --bg: #f0f4f8;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text-sub: #64748b;
+  --border: #e2e8f0;
+  --shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+  --radius: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ==================== 密码门 ==================== */
+.gate-screen {
+  position: fixed; inset: 0;
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+}
+.gate-card {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  padding: 48px 56px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  max-width: 400px; width: 90%;
+}
+.gate-logo { font-size: 56px; margin-bottom: 12px; }
+.gate-card h1 { font-size: 22px; margin-bottom: 6px; color: var(--text); }
+.gate-sub { color: var(--text-sub); font-size: 14px; margin-bottom: 28px; }
+.gate-input-wrap { display: flex; gap: 10px; }
+.gate-input-wrap input {
+  flex: 1; padding: 12px 16px; border: 2px solid var(--border);
+  border-radius: 8px; font-size: 15px; outline: none; transition: border-color .2s;
+}
+.gate-input-wrap input:focus { border-color: var(--primary); }
+.gate-input-wrap button {
+  padding: 12px 24px; background: var(--primary); color: #fff;
+  border: none; border-radius: 8px; font-size: 15px; cursor: pointer;
+  transition: background .2s;
+}
+.gate-input-wrap button:hover { background: var(--primary-dark); }
+.gate-error { color: #dc2626; font-size: 13px; margin-top: 12px; }
+.gate-hint { color: var(--text-sub); font-size: 12px; margin-top: 24px; }
+
+/* ==================== 顶栏 ==================== */
+.topbar {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 20px;
+  height: 56px; display: flex; align-items: center; gap: 24px;
+}
+.topbar-brand { font-weight: 700; font-size: 17px; white-space: nowrap; }
+.topbar-nav { display: flex; gap: 4px; flex: 1; }
+.nav-btn {
+  padding: 8px 16px; border: none; background: none; border-radius: 8px;
+  font-size: 14px; cursor: pointer; color: var(--text-sub); transition: all .2s;
+}
+.nav-btn:hover { background: var(--bg); color: var(--text); }
+.nav-btn.active { background: var(--primary); color: #fff; }
+.lock-btn {
+  border: none; background: none; font-size: 18px; cursor: pointer;
+  padding: 6px 10px; border-radius: 6px;
+}
+.lock-btn:hover { background: var(--bg); }
+
+/* ==================== 面板通用 ==================== */
+.tab-panel { display: none; max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
+.tab-panel.active { display: block; }
+.panel-header { margin-bottom: 18px; }
+.panel-header h2 { font-size: 20px; margin-bottom: 4px; }
+.panel-desc { color: var(--text-sub); font-size: 13px; }
+
+/* ==================== 搜索栏 ==================== */
+.search-bar {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px;
+}
+.search-input {
+  flex: 1; min-width: 200px; padding: 10px 14px;
+  border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none;
+  transition: border-color .2s;
+}
+.search-input:focus { border-color: var(--primary); }
+.filter-select {
+  padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+  font-size: 14px; background: #fff; cursor: pointer; outline: none;
+}
+
+/* ==================== 试题卡片 ==================== */
+.resource-list { display: flex; flex-direction: column; gap: 12px; }
+.exam-card {
+  background: var(--card); border-radius: var(--radius); padding: 18px 20px;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s;
+}
+.exam-card:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(30,41,59,.12); }
+.exam-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+.exam-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.badge {
+  font-size: 12px; padding: 2px 8px; border-radius: 4px; font-weight: 500;
+}
+.badge-year { background: #dbeafe; color: #1d4ed8; }
+.badge-type { background: #dcfce7; color: #15803d; }
+.badge-topic { background: #fef3c7; color: #b45309; }
+.badge-cat { background: #f3e8ff; color: #7e22ce; }
+.tag { font-size: 12px; color: var(--text-sub); }
+.exam-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.flag { font-size: 12px; color: var(--text-sub); }
+.flag-answer { color: #15803d; }
+.flag-analysis { color: #b45309; }
+.btn-primary {
+  padding: 9px 18px; background: var(--primary); color: #fff; border: none;
+  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background .2s;
+  white-space: nowrap;
+}
+.btn-primary:hover { background: var(--primary-dark); }
+
+/* ==================== 模板卡片 ==================== */
+.version-toggle-wrap {
+  display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 18px;
+}
+.version-toggle {
+  display: flex; background: #fff; border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.ver-btn {
+  padding: 10px 22px; border: none; background: none; font-size: 14px;
+  cursor: pointer; color: var(--text-sub); transition: all .2s;
+}
+.ver-btn.active { background: var(--primary); color: #fff; }
+.tpl-card {
+  background: var(--card); border-radius: var(--radius); padding: 20px 24px;
+  box-shadow: var(--shadow); margin-bottom: 14px;
+}
+.tpl-header {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
+}
+.tpl-title { font-weight: 600; font-size: 16px; }
+.tpl-meta { display: flex; gap: 6px; }
+.tpl-content {
+  background: #f8fafc; border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px; font-size: 14px; line-height: 1.9;
+  white-space: pre-wrap; font-family: inherit; color: var(--text);
+}
+.tpl-content.dictation { color: var(--text-sub); }
+.toggle-answer {
+  margin-top: 10px; padding: 7px 14px; border: 1px solid var(--border);
+  background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;
+  color: var(--text-sub); transition: all .2s;
+}
+.toggle-answer:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ==================== 外链卡片 ==================== */
+.link-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+}
+.link-card {
+  background: var(--card); border-radius: var(--radius); padding: 20px;
+  box-shadow: var(--shadow); text-decoration: none; color: var(--text);
+  position: relative; transition: transform .15s, box-shadow .15s;
+  display: block;
+}
+.link-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30,41,59,.14); }
+.link-status { position: absolute; top: 16px; right: 16px; font-size: 12px; }
+.link-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; padding-right: 28px; }
+.link-desc { color: var(--text-sub); font-size: 13px; line-height: 1.6; margin-bottom: 14px; }
+.link-foot { display: flex; justify-content: space-between; align-items: center; }
+.link-open { font-size: 13px; color: var(--primary); font-weight: 500; }
+
+/* ==================== 空状态 ==================== */
+.empty-state {
+  text-align: center; padding: 60px 20px; color: var(--text-sub);
+  background: var(--card); border-radius: var(--radius); font-size: 15px;
+}
+
+/* ==================== 试卷查看器 + 水印 ==================== */
+.exam-viewer {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(15, 23, 42, 0.85);
+  display: flex; align-items: center; justify-content: center;
+}
+.viewer-toolbar {
+  position: absolute; top: 0; left: 0; right: 0; height: 52px;
+  background: #fff; display: flex; align-items: center; gap: 16px;
+  padding: 0 20px; box-shadow: var(--shadow);
+}
+.viewer-close {
+  padding: 7px 16px; border: none; background: #fee2e2; color: #dc2626;
+  border-radius: 6px; cursor: pointer; font-size: 14px;
+}
+.viewer-close:hover { background: #fecaca; }
+.viewer-title { font-weight: 600; font-size: 15px; }
+.viewer-body {
+  margin-top: 52px; width: 90%; max-width: 900px; height: calc(100% - 100px);
+  background: #fff; border-radius: 12px; position: relative;
+  overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+.viewer-content { width: 100%; height: 100%; overflow-y: auto; padding: 40px; z-index: 2; }
+
+/* 水印层:平铺全屏文字 */
+.viewer-watermark {
+  position: absolute; inset: 0; z-index: 10;
+  pointer-events: none; display: none;
+  overflow: hidden;
+}
+.viewer-watermark::before {
+  content: attr(data-text);
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 600; color: rgba(37, 99, 235, 0.07);
+  transform: rotate(-30deg);
+  white-space: nowrap;
+}
+/* 多行平铺(用重复背景实现密集水印) */
+.viewer-watermark::after {
+  content: "";
+  position: absolute; inset: -50%;
+  background-image: repeating-linear-gradient(
+    -30deg,
+    transparent 0px, transparent 90px,
+    rgba(37, 99, 235, 0.045) 90px, rgba(37, 99, 235, 0.045) 92px
+  );
+}
+
+/* ==================== 页脚 ==================== */
+.footer {
+  text-align: center; padding: 30px 20px; color: var(--text-sub); font-size: 13px;
+  border-top: 1px solid var(--border); margin-top: 40px; background: #fff;
+}
+.footer-small { font-size: 11px; margin-top: 6px; opacity: .7; }
+
+/* ==================== 响应式 ==================== */
+@media (max-width: 640px) {
+  .topbar-inner { flex-wrap: wrap; height: auto; padding: 10px 16px; }
+  .topbar-brand { width: 100%; text-align: center; margin-bottom: 6px; }
+  .topbar-nav { width: 100%; justify-content: center; }
+  .exam-card { flex-direction: column; align-items: flex-start; }
+  .search-bar { flex-direction: column; }
+  .filter-select { width: 100%; }
+}
