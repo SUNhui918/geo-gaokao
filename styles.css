@@ -1,5 +1,6 @@
 /* ============================================================
-   高三地理教学资源库 - 样式
+   高三地理试题库 - 样式
+   横山桥高中地理教研组
    ============================================================ */
 
 :root {
@@ -133,59 +134,80 @@ body {
 }
 .btn-primary:hover { background: var(--primary-dark); }
 
-/* ==================== 模板卡片 ==================== */
-.version-toggle-wrap {
-  display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 18px;
-}
-.version-toggle {
-  display: flex; background: #fff; border-radius: 10px; overflow: hidden;
-  border: 1px solid var(--border);
-}
-.ver-btn {
-  padding: 10px 22px; border: none; background: none; font-size: 14px;
-  cursor: pointer; color: var(--text-sub); transition: all .2s;
-}
-.ver-btn.active { background: var(--primary); color: #fff; }
-.tpl-card {
-  background: var(--card); border-radius: var(--radius); padding: 20px 24px;
+/* ==================== 专题检索 ==================== */
+.badge-province { background: #ffedd5; color: #c2410c; }
+
+.topic-group {
+  background: var(--card); border-radius: var(--radius); padding: 18px 22px;
   box-shadow: var(--shadow); margin-bottom: 14px;
 }
-.tpl-header {
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
+.topic-group-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
 }
-.tpl-title { font-weight: 600; font-size: 16px; }
-.tpl-meta { display: flex; gap: 6px; }
-.tpl-content {
-  background: #f8fafc; border: 1px solid var(--border); border-radius: 8px;
-  padding: 16px 20px; font-size: 14px; line-height: 1.9;
-  white-space: pre-wrap; font-family: inherit; color: var(--text);
+.topic-group-header h3 { font-size: 16px; }
+.group-hit {
+  font-size: 12px; padding: 2px 10px; border-radius: 10px;
+  background: #dbeafe; color: #1d4ed8; font-weight: 500;
 }
-.tpl-content.dictation { color: var(--text-sub); }
-.toggle-answer {
-  margin-top: 10px; padding: 7px 14px; border: 1px solid var(--border);
-  background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;
+.group-hit.zero { background: #f1f5f9; color: #94a3b8; }
+.topic-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.topic-chip {
+  padding: 8px 16px; border: 1px solid var(--border); background: #f8fafc;
+  border-radius: 20px; font-size: 13px; cursor: pointer; color: var(--text);
+  display: inline-flex; align-items: center; gap: 6px; transition: all .15s;
+}
+.topic-chip:hover { border-color: var(--primary); color: var(--primary); background: #eff6ff; }
+.topic-chip.empty { opacity: .5; cursor: not-allowed; }
+.chip-count {
+  font-size: 11px; background: #dbeafe; color: #1d4ed8;
+  border-radius: 8px; padding: 0 7px; line-height: 17px; min-width: 17px; text-align: center;
+}
+.topic-chip.empty .chip-count { background: #f1f5f9; color: #94a3b8; }
+
+.topic-breadcrumb {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 16px; flex-wrap: wrap;
+}
+.topic-current { font-size: 15px; font-weight: 600; }
+.btn-ghost {
+  padding: 7px 14px; border: 1px solid var(--border); background: #fff;
+  border-radius: 6px; font-size: 13px; cursor: pointer;
   color: var(--text-sub); transition: all .2s;
 }
-.toggle-answer:hover { border-color: var(--primary); color: var(--primary); }
+.btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
 
-/* ==================== 外链卡片 ==================== */
-.link-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 14px;
+.search-result-bar {
+  background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af;
+  border-radius: 8px; padding: 10px 16px; font-size: 13px; margin-bottom: 12px;
 }
-.link-card {
-  background: var(--card); border-radius: var(--radius); padding: 20px;
-  box-shadow: var(--shadow); text-decoration: none; color: var(--text);
-  position: relative; transition: transform .15s, box-shadow .15s;
-  display: block;
+
+/* ==================== 题目卡片 ==================== */
+.question-card {
+  background: var(--card); border-radius: var(--radius); padding: 16px 20px;
+  display: flex; align-items: center; gap: 16px;
+  box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s;
 }
-.link-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30,41,59,.14); }
-.link-status { position: absolute; top: 16px; right: 16px; font-size: 12px; }
-.link-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; padding-right: 28px; }
-.link-desc { color: var(--text-sub); font-size: 13px; line-height: 1.6; margin-bottom: 14px; }
-.link-foot { display: flex; justify-content: space-between; align-items: center; }
-.link-open { font-size: 13px; color: var(--primary); font-weight: 500; }
+.question-card:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(30,41,59,.12); }
+.q-left { flex-shrink: 0; }
+.q-number {
+  font-size: 13px; font-weight: 600; color: #1d4ed8;
+  background: #dbeafe; border-radius: 6px; padding: 6px 10px; white-space: nowrap;
+}
+.q-main { flex: 1; min-width: 0; }
+.q-desc { font-size: 14px; line-height: 1.6; margin-bottom: 8px; }
+.q-source { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.q-paper { font-size: 12px; color: var(--text-sub); }
+.q-paper-label { font-size: 11px; color: #94a3b8; }
+.q-actions { flex-shrink: 0; }
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+
+/* ==================== 查看器占位(未上传 / Word) ==================== */
+.viewer-placeholder {
+  text-align: center; padding: 60px 30px; color: var(--text-sub);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.vp-icon { font-size: 48px; margin-bottom: 6px; }
+.vp-hint { font-size: 12px; color: #94a3b8; margin-top: 8px; }
+.vp-btns { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
 
 /* ==================== 空状态 ==================== */
 .empty-state {
