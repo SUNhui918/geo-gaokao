@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高三地理教学资源库 · 横山桥高中地理教研组</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ==================== 密码门 ==================== -->
+  <div id="gate-screen" class="gate-screen">
+    <div class="gate-card">
+      <div class="gate-logo">🌍</div>
+      <h1>高三地理教学资源库</h1>
+      <p class="gate-sub">横山桥高中地理教研组</p>
+      <div class="gate-input-wrap">
+        <input type="password" id="gate-password" placeholder="请输入访问密码" autocomplete="off">
+        <button id="gate-submit">进 入</button>
+      </div>
+      <p id="gate-error" class="gate-error" style="display:none;">密码错误,请重新输入</p>
+      <p class="gate-hint">密码由地理教研组统一发放,如有疑问请联系任课教师</p>
+    </div>
+  </div>
+
+  <!-- ==================== 主站 ==================== -->
+  <div id="main-app" style="display:none;">
+
+    <!-- 顶部导航 -->
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="topbar-brand">🌍 高三地理资源库</div>
+        <nav class="topbar-nav">
+          <button class="nav-btn active" data-tab="exams">📝 试题库</button>
+          <button class="nav-btn" data-tab="templates">📖 答题模板</button>
+          <button class="nav-btn" data-tab="links">🔭 拓展视野</button>
+        </nav>
+        <button id="lock-btn" class="lock-btn" title="锁定">🔒</button>
+      </div>
+    </header>
+
+    <!-- ==================== 试题库 ==================== -->
+    <section id="tab-exams" class="tab-panel active">
+      <div class="panel-header">
+        <h2>📝 试题库</h2>
+        <p class="panel-desc">高考真题 · 模拟试题 · 按年份/卷别/专题筛选</p>
+      </div>
+
+      <!-- 双层检索 -->
+      <div class="search-bar">
+        <input type="text" id="exam-search" class="search-input" placeholder="🔍 搜索标题、标签、专题...">
+        <select id="exam-filter-year" class="filter-select">
+          <option value="">全部年份</option>
+          <option>2025</option>
+          <option>2024</option>
+          <option>2023</option>
+          <option>2022</option>
+        </select>
+        <select id="exam-filter-type" class="filter-select">
+          <option value="">全部卷别</option>
+          <option>江苏卷</option>
+          <option>全国卷</option>
+          <option>模拟题</option>
+        </select>
+        <select id="exam-filter-topic" class="filter-select">
+          <option value="">全部专题</option>
+          <option>自然地理</option>
+          <option>人文地理</option>
+          <option>区域地理</option>
+          <option>综合</option>
+        </select>
+      </div>
+
+      <!-- 试题列表 -->
+      <div id="exam-list" class="resource-list"></div>
+    </section>
+
+    <!-- ==================== 答题模板库 ==================== -->
+    <section id="tab-templates" class="tab-panel">
+      <div class="panel-header">
+        <h2>📖 答题模板库</h2>
+        <p class="panel-desc">高频考点答题模板 · 背诵版 / 默写版一键切换</p>
+      </div>
+
+      <!-- 版本切换 -->
+      <div class="version-toggle-wrap">
+        <div class="version-toggle">
+          <button id="btn-memorize" class="ver-btn active" data-ver="memorize">背诵版</button>
+          <button id="btn-dictation" class="ver-btn" data-ver="dictation">默写版</button>
+        </div>
+        <input type="text" id="tpl-search" class="search-input" placeholder="🔍 搜索模板标题、标签...">
+      </div>
+
+      <!-- 模板列表 -->
+      <div id="template-list" class="resource-list"></div>
+    </section>
+
+    <!-- ==================== 拓展视野库 ==================== -->
+    <section id="tab-links" class="tab-panel">
+      <div class="panel-header">
+        <h2>🔭 拓展视野库</h2>
+        <p class="panel-desc">精选地理学习网站 · 打开即用 · 每月链接巡检</p>
+      </div>
+
+      <div class="search-bar">
+        <input type="text" id="link-search" class="search-input" placeholder="🔍 搜索网站名称、描述...">
+        <select id="link-filter-category" class="filter-select">
+          <option value="">全部分类</option>
+          <option>地理资讯</option>
+          <option>科研机构</option>
+          <option>气象数据</option>
+          <option>地图工具</option>
+          <option>科普视频</option>
+        </select>
+      </div>
+
+      <!-- 外链卡片网格 -->
+      <div id="link-grid" class="link-grid"></div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+      <p>横山桥高中地理教研组 · 高三地理教学资源库</p>
+      <p class="footer-small">仅供本校师生教学使用,请勿外传</p>
+    </footer>
+  </div>
+
+  <!-- 试卷查看层(带水印) -->
+  <div id="exam-viewer" class="exam-viewer" style="display:none;">
+    <div class="viewer-toolbar">
+      <button id="viewer-close" class="viewer-close">✕ 关闭</button>
+      <span id="viewer-title" class="viewer-title"></span>
+    </div>
+    <div id="viewer-body" class="viewer-body">
+      <div id="viewer-watermark" class="viewer-watermark"></div>
+      <div id="viewer-content" class="viewer-content">
+        <p style="text-align:center;color:#888;padding:60px 20px;">
+          📄 此处将嵌入试卷内容<br>
+          <small>(PDF 在线预览 / 试题文本,后续填入真实资料)</small>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
