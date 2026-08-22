@@ -8,23 +8,8 @@
 </head>
 <body>
 
-  <!-- ==================== 密码门 ==================== -->
-  <div id="gate-screen" class="gate-screen">
-    <div class="gate-card">
-      <div class="gate-logo">🌍</div>
-      <h1>高三地理试题库</h1>
-      <p class="gate-sub">横山桥高中地理教研组</p>
-      <div class="gate-input-wrap">
-        <input type="password" id="gate-password" placeholder="请输入访问密码" autocomplete="off">
-        <button id="gate-submit">进 入</button>
-      </div>
-      <p id="gate-error" class="gate-error" style="display:none;">密码错误,请重新输入</p>
-      <p class="gate-hint">密码由地理教研组统一发放,如有疑问请联系任课教师</p>
-    </div>
-  </div>
-
   <!-- ==================== 主站 ==================== -->
-  <div id="main-app" style="display:none;">
+  <div id="main-app">
 
     <!-- 顶部导航 -->
     <header class="topbar">
@@ -34,7 +19,6 @@
           <button class="nav-btn active" data-tab="papers">📄 按试卷检索</button>
           <button class="nav-btn" data-tab="topics">🔖 按专题检索</button>
         </nav>
-        <button id="lock-btn" class="lock-btn" title="锁定">🔒</button>
       </div>
     </header>
 
