@@ -98,7 +98,7 @@ function renderTopicGroups() {
   if (keyword) {
     matchedQuestions = (RESOURCES.questions || []).filter(q => {
       const paper = getPaper(q.paperId);
-      const text = [q.topic, q.desc, q.keywords, q.number, paper ? paper.title : "", paper ? paper.province + paper.year : ""]
+      const text = [q.topic, q.desc, q.keywords, q.number, q.content || "", q.answer || "", paper ? paper.title : "", paper ? paper.province + paper.year : ""]
         .join(" ").toLowerCase();
       return text.includes(keyword);
     });
@@ -149,6 +149,12 @@ function renderQuestionCards(questions) {
     const paper = getPaper(q.paperId);
     const paperTitle = paper ? paper.title : "未知试卷";
     const paperLabel = paper ? `${paper.province} · ${paper.year} · ${paper.paperType}` : "";
+    const figBadge = q.hasFigure
+      ? `<span class="badge badge-fig" title="本题配图未入库,请打开原卷查看">🖼 含图 · 图见原卷</span>` : "";
+    const contentHtml = q.content
+      ? `<div class="q-content">${escapeHtml(q.content).replace(/\n/g, "<br>")}</div>` : "";
+    const answerHtml = q.answer
+      ? `<details class="q-answer"><summary>📝 查看答案</summary><div class="q-answer-body">${escapeHtml(q.answer).replace(/\n/g, "<br>")}</div></details>` : "";
     return `
     <div class="question-card">
       <div class="q-left">
@@ -156,8 +162,11 @@ function renderQuestionCards(questions) {
       </div>
       <div class="q-main">
         <div class="q-desc">${escapeHtml(q.desc)}</div>
+        ${contentHtml}
+        ${answerHtml}
         <div class="q-source">
           <span class="badge badge-topic">${escapeHtml(q.topic)}</span>
+          ${figBadge}
           <span class="q-paper">${escapeHtml(paperTitle)}</span>
           <span class="q-paper-label">${escapeHtml(paperLabel)}</span>
         </div>
