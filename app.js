@@ -26,9 +26,12 @@ function init() {
     provSel.appendChild(opt);
   });
 
-  // 填充年份下拉(从试卷数据里取,倒序)
+  // 填充年份下拉(从2020年起,到试卷数据中的最大年份,倒序)
   const yearSel = document.getElementById("paper-filter-year");
-  const years = [...new Set((RESOURCES.papers || []).map(p => p.year))].sort((a, b) => b - a);
+  const paperYears = (RESOURCES.papers || []).map(p => Number(p.year)).filter(n => !isNaN(n));
+  const maxYear = Math.max(new Date().getFullYear(), ...paperYears);
+  const years = [];
+  for (let y = maxYear; y >= 2020; y--) years.push(String(y));
   years.forEach(y => {
     const opt = document.createElement("option");
     opt.textContent = y;
