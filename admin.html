@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理后台 · 高三地理资源库</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* 管理页专用补充样式 */
+    .admin-layout { max-width: 900px; margin: 0 auto; padding: 24px 20px 60px; }
+    .admin-topbar {
+      background: #0f172a; color: #fff; padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .admin-topbar-inner {
+      max-width: 900px; margin: 0 auto; width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .admin-brand { font-weight: 700; font-size: 16px; }
+    .admin-exit {
+      color: #94a3b8; font-size: 13px; text-decoration: none;
+      border: 1px solid #334155; padding: 6px 14px; border-radius: 6px;
+    }
+    .admin-exit:hover { color: #fff; border-color: #64748b; }
+
+    .settings-panel {
+      background: #fff; border: 1px solid var(--border); border-radius: 10px;
+      padding: 16px 20px; margin-bottom: 20px; display: flex;
+      align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .settings-panel label { font-size: 13px; font-weight: 600; color: var(--text-sub); }
+    .settings-panel input {
+      flex: 1; min-width: 240px; padding: 9px 12px;
+      border: 1px solid var(--border); border-radius: 6px; font-size: 13px;
+    }
+    .admin-form {
+      background: #fff; border: 1px solid var(--border); border-radius: 10px;
+      padding: 20px 24px; margin-bottom: 24px;
+    }
+    .admin-form h3 { font-size: 16px; margin-bottom: 16px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-field { display: flex; flex-direction: column; gap: 5px; }
+    .form-field.full { grid-column: 1 / -1; }
+    .form-field label { font-size: 13px; color: var(--text-sub); font-weight: 500; }
+    .form-field input, .form-field select, .form-field textarea {
+      padding: 9px 12px; border: 1px solid var(--border); border-radius: 6px;
+      font-size: 14px; font-family: inherit; outline: none;
+    }
+    .form-field input:focus, .form-field textarea:focus { border-color: var(--primary); }
+    .form-field textarea { min-height: 120px; resize: vertical; line-height: 1.7; }
+    .form-actions { margin-top: 16px; display: flex; gap: 10px; }
+
+    .manage-item {
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      padding: 14px 16px; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .manage-item .mi-title { flex: 1; font-size: 14px; font-weight: 500; }
+    .manage-item .mi-info { font-size: 12px; color: var(--text-sub); }
+    .mi-btn {
+      padding: 6px 12px; border: 1px solid var(--border); background: #fff;
+      border-radius: 6px; font-size: 12px; cursor: pointer;
+    }
+    .mi-btn.edit:hover { border-color: var(--primary); color: var(--primary); }
+    .mi-btn.del:hover { border-color: #dc2626; color: #dc2626; }
+
+    .save-status {
+      position: fixed; bottom: 24px; right: 24px; z-index: 300;
+      background: #0f172a; color: #fff; padding: 12px 20px;
+      border-radius: 8px; font-size: 13px; display: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,.25);
+    }
+    .save-status.ok { background: #15803d; }
+    .save-status.err { background: #dc2626; }
+
+    .admin-gate {
+      position: fixed; inset: 0; background: #0f172a;
+      display: flex; align-items: center; justify-content: center; z-index: 100;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== 管理员密码门 ==================== -->
+  <div id="admin-gate" class="admin-gate">
+    <div class="gate-card">
+      <div class="gate-logo">🔐</div>
+      <h1>管理后台</h1>
+      <p class="gate-sub">仅限管理员访问</p>
+      <div class="gate-input-wrap">
+        <input type="password" id="admin-password" placeholder="管理员密码" autocomplete="off">
+        <button id="admin-gate-submit">验 证</button>
+      </div>
+      <p id="admin-gate-error" class="gate-error" style="display:none;">密码错误</p>
+    </div>
+  </div>
+
+  <!-- ==================== 管理界面 ==================== -->
+  <div id="admin-main" style="display:none;">
+    <header class="admin-topbar">
+      <div class="admin-topbar-inner">
+        <div class="admin-brand">🔐 高三地理资源库 · 管理后台</div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <a href="index.html" class="admin-exit" target="_blank">查看前台 ↗</a>
+          <button id="admin-lock" class="admin-exit" style="cursor:pointer;">🔒 退出管理</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+
+      <!-- GitHub Token 设置 -->
+      <div class="settings-panel">
+        <label>🔑 GitHub Token:</label>
+        <input type="password" id="github-token" placeholder="ghp_ 开头的 Personal Access Token(存本机,不上传)">
+        <button class="btn-primary" style="padding:8px 16px;font-size:13px;" onclick="saveToken()">保存</button>
+        <span id="token-status" style="font-size:12px;color:var(--text-sub);"></span>
+      </div>
+
+      <!-- ============ 添加/编辑资源 ============ -->
+      <div class="admin-form" id="resource-form">
+        <h3 id="form-title">➕ 添加资源</h3>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>资源类型 *</label>
+            <select id="f-type" onchange="onTypeChange()">
+              <option value="exams">📝 试题</option>
+              <option value="templates">📖 答题模板</option>
+              <option value="links">🔭 拓展链接</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>标题 *</label>
+            <input type="text" id="f-title" placeholder="如:2025年江苏卷地理">
+          </div>
+
+          <!-- 试题字段 -->
+          <div id="fields-exams">
+            <div class="form-grid">
+              <div class="form-field">
+                <label>年份</label>
+                <select id="f-year"><option>2025</option><option>2024</option><option>2023</option><option>2022</option></select>
+              </div>
+              <div class="form-field">
+                <label>卷别</label>
+                <select id="f-examtype"><option>江苏卷</option><option>全国卷</option><option>模拟题</option></select>
+              </div>
+              <div class="form-field">
+                <label>专题</label>
+                <select id="f-topic"><option>综合</option><option>自然地理</option><option>人文地理</option><option>区域地理</option></select>
+              </div>
+              <div class="form-field">
+                <label>标签(逗号分隔)</label>
+                <input type="text" id="f-tags" placeholder="如:气候,河流">
+              </div>
+              <div class="form-field full">
+                <label>试卷链接(PDF 地址或在线页)</label>
+                <input type="text" id="f-link" placeholder="https://...">
+              </div>
+              <div class="form-field">
+                <label>含答案</label>
+                <select id="f-hasanswer"><option value="true">是</option><option value="false">否</option></select>
+              </div>
+              <div class="form-field">
+                <label>含解析</label>
+                <select id="f-hasanalysis"><option value="true">是</option><option value="false">否</option></select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 模板字段 -->
+          <div id="fields-templates" style="display:none;">
+            <div class="form-grid">
+              <div class="form-field">
+                <label>分类</label>
+                <select id="f-category"><option>自然地理</option><option>人文地理</option><option>区域地理</option></select>
+              </div>
+              <div class="form-field">
+                <label>专题</label>
+                <input type="text" id="f-ttopic" placeholder="如:气候、河流、工业">
+              </div>
+              <div class="form-field full">
+                <label>背诵版内容(完整答案)</label>
+                <textarea id="f-memorize" placeholder="第一步:……&#10;第二步:……"></textarea>
+              </div>
+              <div class="form-field full">
+                <label>默写版内容(挖空版,____ 表示空)</label>
+                <textarea id="f-dictation" placeholder="第一步:____&#10;第二步:____"></textarea>
+              </div>
+              <div class="form-field full">
+                <label>标签(逗号分隔)</label>
+                <input type="text" id="f-ttags" placeholder="如:气候,答题技巧">
+              </div>
+            </div>
+          </div>
+
+          <!-- 链接字段 -->
+          <div id="fields-links" style="display:none;">
+            <div class="form-grid">
+              <div class="form-field">
+                <label>分类</label>
+                <select id="f-lcategory"><option>地理资讯</option><option>科研机构</option><option>气象数据</option><option>地图工具</option><option>科普视频</option></select>
+              </div>
+              <div class="form-field">
+                <label>网址 *</label>
+                <input type="text" id="f-url" placeholder="https://...">
+              </div>
+              <div class="form-field full">
+                <label>描述</label>
+                <input type="text" id="f-desc" placeholder="一句话介绍这个网站">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-primary" onclick="saveResource()">💾 保存并发布</button>
+          <button class="toggle-answer" onclick="resetForm()">清空表单</button>
+        </div>
+      </div>
+
+      <!-- ============ 已有资源管理 ============ -->
+      <div class="admin-form">
+        <h3>📋 已有资源(<span id="res-count">0</span> 条)</h3>
+        <div class="form-field" style="margin-bottom:14px;">
+          <select id="manage-type" onchange="renderManageList()">
+            <option value="exams">📝 试题库</option>
+            <option value="templates">📖 答题模板库</option>
+            <option value="links">🔭 拓展视野库</option>
+          </select>
+        </div>
+        <div id="manage-list"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 保存状态提示 -->
+  <div id="save-status" class="save-status"></div>
+
+  <script src="config.js"></script>
+  <script src="data.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
