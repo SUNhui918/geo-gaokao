@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>高三地理教学资源库 · 横山桥高中地理教研组</title>
+  <title>高三地理试题库 · 横山桥高中地理教研组</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
   <div id="gate-screen" class="gate-screen">
     <div class="gate-card">
       <div class="gate-logo">🌍</div>
-      <h1>高三地理教学资源库</h1>
+      <h1>高三地理试题库</h1>
       <p class="gate-sub">横山桥高中地理教研组</p>
       <div class="gate-input-wrap">
         <input type="password" id="gate-password" placeholder="请输入访问密码" autocomplete="off">
@@ -29,98 +29,70 @@
     <!-- 顶部导航 -->
     <header class="topbar">
       <div class="topbar-inner">
-        <div class="topbar-brand">🌍 高三地理资源库</div>
+        <div class="topbar-brand">🌍 高三地理试题库</div>
         <nav class="topbar-nav">
-          <button class="nav-btn active" data-tab="exams">📝 试题库</button>
-          <button class="nav-btn" data-tab="templates">📖 答题模板</button>
-          <button class="nav-btn" data-tab="links">🔭 拓展视野</button>
+          <button class="nav-btn active" data-tab="papers">📄 按试卷检索</button>
+          <button class="nav-btn" data-tab="topics">🔖 按专题检索</button>
         </nav>
         <button id="lock-btn" class="lock-btn" title="锁定">🔒</button>
       </div>
     </header>
 
-    <!-- ==================== 试题库 ==================== -->
-    <section id="tab-exams" class="tab-panel active">
+    <!-- ==================== 试卷检索(省份+年份找整卷) ==================== -->
+    <section id="tab-papers" class="tab-panel active">
       <div class="panel-header">
-        <h2>📝 试题库</h2>
-        <p class="panel-desc">高考真题 · 模拟试题 · 按年份/卷别/专题筛选</p>
+        <h2>📄 按试卷检索</h2>
+        <p class="panel-desc">选省份、年份、类型,找到完整试卷 · <span id="stat-papers">0</span> 套试卷 · <span id="stat-questions">0</span> 道题目已收录</p>
       </div>
 
-      <!-- 双层检索 -->
+      <!-- 筛选区 -->
       <div class="search-bar">
-        <input type="text" id="exam-search" class="search-input" placeholder="🔍 搜索标题、标签、专题...">
-        <select id="exam-filter-year" class="filter-select">
-          <option value="">全部年份</option>
-          <option>2025</option>
-          <option>2024</option>
-          <option>2023</option>
-          <option>2022</option>
+        <input type="text" id="paper-search" class="search-input" placeholder="🔍 搜索试卷标题...">
+        <select id="paper-filter-province" class="filter-select">
+          <option value="">全部省份</option>
         </select>
-        <select id="exam-filter-type" class="filter-select">
-          <option value="">全部卷别</option>
-          <option>江苏卷</option>
-          <option>全国卷</option>
+        <select id="paper-filter-year" class="filter-select">
+          <option value="">全部年份</option>
+        </select>
+        <select id="paper-filter-type" class="filter-select">
+          <option value="">全部类型</option>
+          <option>高考真题</option>
           <option>模拟题</option>
         </select>
-        <select id="exam-filter-topic" class="filter-select">
-          <option value="">全部专题</option>
-          <option>自然地理</option>
-          <option>人文地理</option>
-          <option>区域地理</option>
-          <option>综合</option>
-        </select>
       </div>
 
-      <!-- 试题列表 -->
-      <div id="exam-list" class="resource-list"></div>
+      <!-- 试卷列表 -->
+      <div id="paper-list" class="resource-list"></div>
     </section>
 
-    <!-- ==================== 答题模板库 ==================== -->
-    <section id="tab-templates" class="tab-panel">
+    <!-- ==================== 专题检索(点击专题找单题) ==================== -->
+    <section id="tab-topics" class="tab-panel">
       <div class="panel-header">
-        <h2>📖 答题模板库</h2>
-        <p class="panel-desc">高频考点答题模板 · 背诵版 / 默写版一键切换</p>
+        <h2>🔖 按专题检索</h2>
+        <p class="panel-desc">点击专题,汇集所有试卷中的相关试题,跨卷专练</p>
       </div>
 
-      <!-- 版本切换 -->
-      <div class="version-toggle-wrap">
-        <div class="version-toggle">
-          <button id="btn-memorize" class="ver-btn active" data-ver="memorize">背诵版</button>
-          <button id="btn-dictation" class="ver-btn" data-ver="dictation">默写版</button>
+      <!-- 专题总览模式 -->
+      <div id="topic-overview">
+        <div class="search-bar">
+          <input type="text" id="topic-search" class="search-input" placeholder="🔍 输入关键词,直接全文检索所有题目(如:锋面、阶地、城市化)...">
         </div>
-        <input type="text" id="tpl-search" class="search-input" placeholder="🔍 搜索模板标题、标签...">
+        <div id="topic-groups"></div>
       </div>
 
-      <!-- 模板列表 -->
-      <div id="template-list" class="resource-list"></div>
-    </section>
-
-    <!-- ==================== 拓展视野库 ==================== -->
-    <section id="tab-links" class="tab-panel">
-      <div class="panel-header">
-        <h2>🔭 拓展视野库</h2>
-        <p class="panel-desc">精选地理学习网站 · 打开即用 · 每月链接巡检</p>
+      <!-- 专题题目列表模式 -->
+      <div id="topic-detail" style="display:none;">
+        <div class="topic-breadcrumb">
+          <button id="topic-back" class="btn-ghost">← 返回专题列表</button>
+          <span id="topic-current" class="topic-current"></span>
+        </div>
+        <div id="question-list" class="resource-list"></div>
       </div>
-
-      <div class="search-bar">
-        <input type="text" id="link-search" class="search-input" placeholder="🔍 搜索网站名称、描述...">
-        <select id="link-filter-category" class="filter-select">
-          <option value="">全部分类</option>
-          <option>地理资讯</option>
-          <option>科研机构</option>
-          <option>气象数据</option>
-          <option>地图工具</option>
-          <option>科普视频</option>
-        </select>
-      </div>
-
-      <!-- 外链卡片网格 -->
-      <div id="link-grid" class="link-grid"></div>
     </section>
 
     <!-- 页脚 -->
     <footer class="footer">
-      <p>横山桥高中地理教研组 · 高三地理教学资源库</p>
+      <p>横山桥高中地理教研组 · 高三地理试题库</p>
       <p class="footer-small">仅供本校师生教学使用,请勿外传</p>
     </footer>
   </div>
@@ -130,15 +102,11 @@
     <div class="viewer-toolbar">
       <button id="viewer-close" class="viewer-close">✕ 关闭</button>
       <span id="viewer-title" class="viewer-title"></span>
+      <a id="viewer-newtab" class="viewer-newtab" target="_blank" rel="noopener noreferrer">新窗口打开 ↗</a>
     </div>
     <div id="viewer-body" class="viewer-body">
       <div id="viewer-watermark" class="viewer-watermark"></div>
-      <div id="viewer-content" class="viewer-content">
-        <p style="text-align:center;color:#888;padding:60px 20px;">
-          📄 此处将嵌入试卷内容<br>
-          <small>(PDF 在线预览 / 试题文本,后续填入真实资料)</small>
-        </p>
-      </div>
+      <div id="viewer-content" class="viewer-content"></div>
     </div>
   </div>
 
