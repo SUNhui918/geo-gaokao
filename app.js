@@ -3,45 +3,8 @@
 // 功能:密码门 / 双维检索(按试卷 / 按专题) / 全文检索 / 水印
 // ============================================================
 
-// ==================== 密码门 ====================
-(async function initGate() {
-  const gate = document.getElementById("gate-screen");
-  const mainApp = document.getElementById("main-app");
-  const input = document.getElementById("gate-password");
-  const submit = document.getElementById("gate-submit");
-  const error = document.getElementById("gate-error");
-
-  // 会话级登录态(关闭标签页即失效,安全性更好)
-  if (sessionStorage.getItem("geo_authed") === "1") {
-    gate.style.display = "none";
-    mainApp.style.display = "block";
-    init();
-    return;
-  }
-
-  async function tryEnter() {
-    const hash = await sha256(input.value.trim());
-    if (hash === CONFIG.studentPasswordHash || hash === CONFIG.adminPasswordHash) {
-      sessionStorage.setItem("geo_authed", "1");
-      gate.style.display = "none";
-      mainApp.style.display = "block";
-      init();
-    } else {
-      error.style.display = "block";
-      input.value = "";
-      input.focus();
-    }
-  }
-
-  submit.addEventListener("click", tryEnter);
-  input.addEventListener("keydown", e => { if (e.key === "Enter") tryEnter(); });
-})();
-
-// 锁定按钮
-document.getElementById("lock-btn").addEventListener("click", () => {
-  sessionStorage.removeItem("geo_authed");
-  location.reload();
-});
+// ==================== 入口:直接加载主站 ====================
+init();
 
 // ==================== 标签页切换 ====================
 document.querySelectorAll(".nav-btn").forEach(btn => {
