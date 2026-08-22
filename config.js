@@ -1,5 +1,5 @@
 // ============================================================
-// 高三地理教学资源库 - 配置文件
+// 高三地理试题库 - 配置文件
 // 横山桥高中地理教研组
 // ============================================================
 // 说明:
@@ -11,7 +11,7 @@
 
 const CONFIG = {
   // --- 站点基本信息 ---
-  siteName: "高三地理教学资源库",
+  siteName: "高三地理试题库",
   orgName: "横山桥高中地理教研组",
 
   // --- 水印文字(试卷页面自动叠加) ---
@@ -25,18 +25,19 @@ const CONFIG = {
   // 注意:管理员密码应更复杂,且不要告知学生
   adminPasswordHash: "edc85e5ff22473a16e634d1c91b794749d08fda518e2da9250661a7ee360574a",
 
-  // --- GitHub 仓库配置(管理页提交数据用) ---
+  // --- GitHub 仓库配置(管理页提交数据 / 上传试卷文件用) ---
   github: {
-    owner: "SUNhui918", // GitHub 用户名
-    repo: "geo-gaokao", // 仓库名
-    branch: "main",     // 分支名
-    dataFile: "data.js" // 数据文件路径
+    owner: "SUNhui918",        // GitHub 用户名
+    repo: "geo-gaokao",        // 仓库名
+    branch: "main",            // 分支名
+    dataFile: "data.js",       // 数据文件路径
+    fileDir: "files",          // 试卷文件存放目录
+    pagesBase: "https://sunhui918.github.io/geo-gaokao/" // 上传文件后的访问地址前缀
   },
 
   // --- 功能开关 ---
   features: {
-    watermark: true,   // 试卷页水印
-    linkCheck: true    // 拓展视野库链接巡检标记
+    watermark: true   // 试卷页水印
   }
 };
 
