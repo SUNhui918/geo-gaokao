@@ -3,9 +3,25 @@
 // 功能：双维检索（按试卷 / 按专题）/ 全文检索 / 多图渲染 / 水印
 // ============================================================
 
-const DATA = QUESTION_BANK;
+let DATA = null;
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    DATA = await loadData();
+    init();
+  } catch (e) {
+    console.error("加载数据失败：", e);
+    const stat = document.getElementById("stat-papers");
+    if (stat) stat.textContent = "加载失败";
+  }
+});
+
+async function loadData() {
+  const res = await fetch("data.js?v=" + Date.now());
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  const text = await res.text();
+  return new Function(text + "; return QUESTION_BANK;")();
+}
 
 function init() {
   bindTabs();
