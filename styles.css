@@ -60,6 +60,13 @@ body {
   font-size: 14px; background: #fff; cursor: pointer; outline: none;
 }
 
+/* ==================== 组卷 ==================== */
+.compose-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 18px; }
+.compose-field { display: flex; flex-direction: column; gap: 5px; }
+.compose-field label { font-size: 13px; color: var(--text-sub); font-weight: 500; }
+.compose-topics { min-width: 260px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; background: #fff; }
+.form-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
 /* ==================== 试卷卡片 ==================== */
 .resource-list { display: flex; flex-direction: column; gap: 8px; }
 .exam-card {
