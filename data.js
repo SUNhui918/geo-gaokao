@@ -303,7 +303,7 @@ const QUESTION_BANK = {
       analysis: "人口增长集中于沿海和都市区，体现人口等要素向优势区域空间集聚的规律。"
     },
     {
-      paperId: "p-2026-江苏", number: "22", topic: "世界地理", knowledgePoint: "农业区位",
+      paperId: "p-2026-江苏", number: "22", topic: "产业", knowledgePoint: "农业区位",
       difficulty: "易", desc: "中国企业在非洲农业投资的区位考虑",
       keywords: ["农业区位", "非洲", "农业投资", "生产潜力", "世界地理"],
       sharedMaterial: "近年来，我国的农业投资和技术援助成为非洲农业发展的重要力量。下图为“中国企业在非洲农业投资主要分布区示意图”。",
@@ -314,7 +314,7 @@ const QUESTION_BANK = {
       analysis: "图示地区光热水土资源较充足，土地增产潜力大，是吸引农业投资的主要区位因素。"
     },
     {
-      paperId: "p-2026-江苏", number: "23", topic: "世界地理", knowledgePoint: "农业灌溉",
+      paperId: "p-2026-江苏", number: "23", topic: "产业", knowledgePoint: "农业灌溉",
       difficulty: "中", desc: "需节水灌溉技术保障的投资地区",
       keywords: ["节水灌溉", "农业投资", "非洲", "气候干旱", "世界地理"],
       sharedMaterial: "近年来，我国的农业投资和技术援助成为非洲农业发展的重要力量。下图为“中国企业在非洲农业投资主要分布区示意图”。",
