@@ -1412,7 +1412,7 @@ const QUESTION_BANK = {
       "id": "q-00958381-23",
       "paperId": "p-00958380",
       "number": "24",
-      "topic": "经纬网和地图",
+      "topic": "世界地理",
       "knowledgePoint": "区域气候与洋流",
       "difficulty": "难",
       "desc": "济州岛降水分布及影响因素",
