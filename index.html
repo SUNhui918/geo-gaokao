@@ -16,6 +16,7 @@
           <button class="nav-btn active" data-tab="papers">📄 按试卷检索</button>
           <button class="nav-btn" data-tab="topics">🔖 按专题检索</button>
           <button class="nav-btn" data-tab="compose">🧩 组卷</button>
+          <button class="nav-btn" data-tab="compare">📊 历年对比</button>
         </nav>
         <div class="topbar-org">常州市武进区横山桥高中地理教研组·地理试题库</div>
       </div>
@@ -101,6 +102,26 @@
       <div id="compose-actions" class="form-actions" style="display:none;">
         <button class="btn-primary" id="export-student">📄 导出 Word（学生版）</button>
         <button class="btn-primary" id="export-teacher">📄 导出 Word（教师版·含答案解析）</button>
+      </div>
+    </section>
+
+    <!-- 历年对比 -->
+    <section id="tab-compare" class="tab-panel">
+      <div class="panel-header">
+        <h2>📊 历年题型对比</h2>
+        <p class="panel-desc">对比各年份的题型结构和专题考查分布，辅助复习重点判断</p>
+      </div>
+      <div class="compare-section">
+        <h3>题型结构</h3>
+        <div id="compare-structure"></div>
+      </div>
+      <div class="compare-section">
+        <h3>专题分布对比</h3>
+        <div id="compare-topics"></div>
+      </div>
+      <div class="compare-section">
+        <h3>高频考点 TOP 10</h3>
+        <div id="compare-top"></div>
       </div>
     </section>
 
