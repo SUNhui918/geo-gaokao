@@ -522,11 +522,12 @@ async function smartParse() {
     }
 
     const paper = result.paper || {};
+    const title = document.getElementById("smart-title").value.trim() || paper.title || "";
     const province = document.getElementById("smart-province").value || paper.province || "";
     const year = document.getElementById("smart-year").value.trim() || paper.year || "";
     const type = document.getElementById("smart-type").value || paper.type || "高考真题";
 
-    smartResult = { file, paper: { ...paper, province, year, type }, questions: result.questions };
+    smartResult = { file, paper: { ...paper, title, province, year, type }, questions: result.questions };
     renderSmartPreview(smartResult);
     status.textContent = "已解析出 " + result.questions.length + " 道题，请确认后发布";
   } catch (e) {
@@ -669,9 +670,27 @@ function renderSmartPreview(result) {
         <span class="badge badge-topic">${esc(q.topic || "未分类")}</span>
         ${q.difficulty ? `<span class="badge badge-difficulty badge-difficulty-${esc(q.difficulty)}">${esc(q.difficulty)}</span>` : ""}
         ${q.hasFigure ? '<span class="badge badge-fig">🖼 含图</span>' : ""}
+        <button class="btn-ghost" style="margin-left:auto;padding:4px 10px;" onclick="toggleSmartEdit(${i})">✏️ 编辑</button>
       </div>
       <div class="sq-desc">${esc(q.desc || "")}</div>
       ${q.answer ? `<div class="sq-ans">答案：${esc(q.answer)}</div>` : ""}
+      <div id="smart-edit-${i}" class="smart-edit" style="display:none;margin-top:12px;">
+        <div class="form-grid">
+          <div class="form-field"><label>专题</label><select id="se-topic-${i}">${topicOptionsHtml(q.topic)}</select></div>
+          <div class="form-field"><label>知识点</label><input id="se-knowledge-${i}" value="${esc(q.knowledgePoint || "")}"></div>
+          <div class="form-field"><label>难度</label><select id="se-diff-${i}">${diffOptionsHtml(q.difficulty)}</select></div>
+          <div class="form-field"><label>题组标识</label><input id="se-group-${i}" value="${esc(q.questionGroup || "")}"></div>
+          <div class="form-field full"><label>题目简述</label><textarea id="se-desc-${i}">${esc(q.desc || "")}</textarea></div>
+          <div class="form-field full"><label>完整题干</label><textarea id="se-content-${i}">${esc(q.content || "")}</textarea></div>
+          <div class="form-field full"><label>答案</label><textarea id="se-answer-${i}">${esc(q.answer || "")}</textarea></div>
+          <div class="form-field full"><label>解析</label><textarea id="se-analysis-${i}">${esc(q.analysis || "")}</textarea></div>
+          <div class="form-field"><label>含图</label><select id="se-fig-${i}"><option value="false" ${!q.hasFigure ? "selected" : ""}>无图</option><option value="true" ${q.hasFigure ? "selected" : ""}>含图</option></select></div>
+          <div class="form-field full form-actions">
+            <button class="btn-primary" onclick="saveSmartEdit(${i})">💾 保存此题</button>
+            <button class="btn-ghost" onclick="toggleSmartEdit(${i})">取消</button>
+          </div>
+        </div>
+      </div>
     </div>`
     )
     .join("");
@@ -687,6 +706,44 @@ function renderSmartPreview(result) {
       <button class="btn-ghost" onclick="smartResetPreview()">↺ 重新解析</button>
     </div>`;
   el.style.display = "block";
+}
+
+function topicOptionsHtml(selected) {
+  let html = "";
+  (DATA.topicGroups || []).forEach((g) => {
+    html += `<optgroup label="${esc(g.group)}">`;
+    g.topics.forEach((t) => {
+      html += `<option value="${esc(t)}" ${t === selected ? "selected" : ""}>${esc(t)}</option>`;
+    });
+    html += "</optgroup>";
+  });
+  return html;
+}
+
+function diffOptionsHtml(selected) {
+  return ["易", "中", "难"]
+    .map((d) => `<option value="${d}" ${d === selected ? "selected" : ""}>${d}</option>`)
+    .join("");
+}
+
+function toggleSmartEdit(i) {
+  const el = document.getElementById("smart-edit-" + i);
+  if (el) el.style.display = el.style.display === "none" ? "block" : "none";
+}
+
+function saveSmartEdit(i) {
+  const q = smartResult.questions[i];
+  q.topic = document.getElementById("se-topic-" + i).value;
+  q.knowledgePoint = document.getElementById("se-knowledge-" + i).value.trim();
+  q.difficulty = document.getElementById("se-diff-" + i).value;
+  q.questionGroup = document.getElementById("se-group-" + i).value.trim();
+  q.desc = document.getElementById("se-desc-" + i).value.trim();
+  q.content = document.getElementById("se-content-" + i).value.trim();
+  q.answer = document.getElementById("se-answer-" + i).value.trim();
+  q.analysis = document.getElementById("se-analysis-" + i).value.trim();
+  q.hasFigure = document.getElementById("se-fig-" + i).value === "true";
+  renderSmartPreview(smartResult);
+  showStatus("已保存第 " + q.number + " 题的修改", "ok");
 }
 
 function smartResetPreview() {
