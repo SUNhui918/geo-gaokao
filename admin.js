@@ -498,7 +498,7 @@ function buildAiPrompt(text) {
     '      "sharedMaterial": "共享材料，同组只写一遍，独立题可空",',
     '      "content": "完整题干（含材料、问题、选项）",',
     '      "answer": "答案",',
-    '      "analysis": "解析，没有则空字符串",',
+    '      "analysis": "解析（每题必填，一段简洁的解题思路）",',
     '      "hasFigure": true,',
     '      "figureHint": "配图说明，无图则空字符串"',
     "    }",
@@ -513,7 +513,7 @@ function buildAiPrompt(text) {
     "规则：",
     "1. 共用同一段材料的小题必须归为同一题组：questionGroup 相同、topic 相同，sharedMaterial 只写一遍。",
     "2. 综合题整题录入不拆小题，number 用题号如 24，content 含全部材料和小问，answer 按 (1)(2)(3) 分条。",
-    "3. 答案和解析尽量从试卷原文提取；试卷标注了答案就填进 answer。",
+    "3. 答案与解析：answer 优先从试卷原文提取；analysis 每题必填——试卷里有现成解析就原文提取，没有就根据地理知识自行撰写一段简洁的解题思路（说明为什么选这个答案）。",
     "4. difficulty 只用 易/中/难。",
     "5. keywords 输出中文关键词数组。",
     "6. 只输出 JSON，不要任何多余文字。",
@@ -548,7 +548,7 @@ function renderSmartPreview(result) {
         <span class="q-number">第 ${esc(q.number || i + 1)} 题</span>
         <span class="badge badge-topic">${esc(q.topic || "未分类")}</span>
         ${q.difficulty ? `<span class="badge badge-difficulty badge-difficulty-${esc(q.difficulty)}">${esc(q.difficulty)}</span>` : ""}
-        ${q.hasFigure ? '<span class="badge badge-fig">🖼 含图</span>' : ""}
+        ${q.hasFigure || (q.figures && q.figures.length) ? `<span class="badge badge-fig">🖼 ${q.figures && q.figures.length ? q.figures.length + " 张图" : "含图"}</span>` : ""}
         <button class="btn-ghost" style="margin-left:auto;padding:4px 10px;" onclick="toggleSmartEdit(${i})">✏️ 编辑</button>
       </div>
       <div class="sq-desc">${esc(q.desc || "")}</div>
@@ -563,7 +563,14 @@ function renderSmartPreview(result) {
           <div class="form-field full"><label>完整题干</label><textarea id="se-content-${i}">${esc(q.content || "")}</textarea></div>
           <div class="form-field full"><label>答案</label><textarea id="se-answer-${i}">${esc(q.answer || "")}</textarea></div>
           <div class="form-field full"><label>解析</label><textarea id="se-analysis-${i}">${esc(q.analysis || "")}</textarea></div>
-          <div class="form-field"><label>含图</label><select id="se-fig-${i}"><option value="false" ${!q.hasFigure ? "selected" : ""}>无图</option><option value="true" ${q.hasFigure ? "selected" : ""}>含图</option></select></div>
+          <div class="form-field full">
+            <label>配图（题干图 / 选项图）</label>
+            <div id="se-figures-${i}" class="se-figures">${figuresRowsHtml(i, q.figures)}</div>
+            <div style="margin-top:8px;">
+              <input type="file" id="se-fig-upload-${i}" accept="image/*" multiple style="display:none;" onchange="uploadSmartFigures(${i})">
+              <button type="button" class="btn-ghost" onclick="document.getElementById('se-fig-upload-${i}').click()">📤 上传配图</button>
+            </div>
+          </div>
           <div class="form-field full form-actions">
             <button class="btn-primary" onclick="saveSmartEdit(${i})">💾 保存此题</button>
             <button class="btn-ghost" onclick="toggleSmartEdit(${i})">取消</button>
@@ -620,9 +627,66 @@ function saveSmartEdit(i) {
   q.content = document.getElementById("se-content-" + i).value.trim();
   q.answer = document.getElementById("se-answer-" + i).value.trim();
   q.analysis = document.getElementById("se-analysis-" + i).value.trim();
-  q.hasFigure = document.getElementById("se-fig-" + i).value === "true";
   renderSmartPreview(smartResult);
   showStatus("已保存第 " + q.number + " 题的修改", "ok");
+}
+
+function figuresRowsHtml(i, figs) {
+  return (figs || [])
+    .map(
+      (f, fi) => `
+    <div class="se-fig-row">
+      <img src="${esc(f.url)}" alt="" loading="lazy">
+      <input value="${esc(f.label || "配图")}" oninput="setSmartFigureLabel(${i}, ${fi}, this.value)">
+      <button type="button" class="btn-ghost" onclick="removeSmartFigure(${i}, ${fi})">移除</button>
+    </div>`
+    )
+    .join("");
+}
+
+function renderSmartFigures(i) {
+  const q = smartResult.questions[i];
+  const box = document.getElementById("se-figures-" + i);
+  if (box) box.innerHTML = figuresRowsHtml(i, q.figures);
+}
+
+function setSmartFigureLabel(i, fi, val) {
+  const q = smartResult.questions[i];
+  if (q.figures && q.figures[fi]) {
+    q.figures[fi].label = val.trim() || "配图";
+    q.figures[fi].alt = q.figures[fi].label;
+  }
+}
+
+function removeSmartFigure(i, fi) {
+  const q = smartResult.questions[i];
+  if (q.figures) q.figures.splice(fi, 1);
+  renderSmartFigures(i);
+}
+
+async function uploadSmartFigures(i) {
+  const input = document.getElementById("se-fig-upload-" + i);
+  const files = Array.from(input.files || []);
+  if (!files.length) return;
+  if (!getToken()) {
+    showStatus("请先填写并保存 GitHub Token", "err");
+    return;
+  }
+  const q = smartResult.questions[i];
+  if (!q.figures) q.figures = [];
+  for (const file of files) {
+    try {
+      showStatus("正在上传配图 " + file.name + "...", "");
+      const url = await uploadFile(file, GH.figDir);
+      q.figures.push({ url, label: "配图", alt: "配图" });
+    } catch (e) {
+      showStatus("配图上传失败：" + e.message, "err");
+    }
+  }
+  q.hasFigure = q.figures.length > 0 || !!q.hasFigure;
+  input.value = "";
+  renderSmartFigures(i);
+  showStatus("配图已上传", "ok");
 }
 
 function smartResetPreview() {
@@ -675,8 +739,8 @@ async function smartPublish() {
       keywords: Array.isArray(q.keywords) ? q.keywords : [],
       questionGroup: q.questionGroup || "",
       sharedMaterial: q.sharedMaterial || "",
-      figures: [],
-      hasFigure: !!q.hasFigure,
+      figures: Array.isArray(q.figures) ? q.figures : [],
+      hasFigure: (Array.isArray(q.figures) && q.figures.length > 0) || !!q.hasFigure,
       content: q.content || "",
       answer: q.answer || "",
       analysis: q.analysis || "",
