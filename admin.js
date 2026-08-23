@@ -8,8 +8,15 @@ const TOKEN_KEY = "geo_admin_token";
 const DEEPSEEK_KEY = "geo_deepseek_key";
 let DATA = QUESTION_BANK;
 let smartResult = null;
+let editingQuestion = null;
 
 document.addEventListener("DOMContentLoaded", initAdmin);
+
+function ensureQuestionIds() {
+  (DATA.questions || []).forEach((q, i) => {
+    if (!q.id) q.id = "q-legacy-" + i + "-" + String(Date.now()).slice(-6);
+  });
+}
 
 function initAdmin() {
   const saved = sessionStorage.getItem(TOKEN_KEY);
@@ -26,6 +33,7 @@ function initAdmin() {
 
   fillSmartProvince();
   document.getElementById("smart-year").value = String(new Date().getFullYear());
+  ensureQuestionIds();
   renderManageList();
   bindSmartUpload();
   bindExit();
@@ -94,6 +102,7 @@ async function pullLatestData() {
     if (text.includes("QUESTION_BANK")) {
       const latest = new Function(text + "\n; return QUESTION_BANK;")();
       if (latest && latest.questions) DATA = latest;
+      ensureQuestionIds();
       renderManageList();
     }
   } catch (e) {
@@ -192,6 +201,7 @@ function renderManageList() {
           <div class="mi-title">第 ${esc(q.number)} 题 · ${esc(q.topic)}</div>
           <div class="mi-info">${esc(paperName)} · ${esc((q.desc || "").slice(0, 30))}</div>
         </div>
+        <button class="mi-btn edit" onclick="openQuestionEditor('${esc(q.id)}')">编辑</button>
         <button class="mi-btn del" onclick="deleteQuestion('${esc(q.id)}')">删除</button>
       </div>`;
       })
@@ -201,12 +211,23 @@ function renderManageList() {
 
 // ==================== 上传 ====================
 async function uploadFile(file, dir) {
+  if (file.size > 20 * 1024 * 1024) {
+    throw new Error("文件超过 20MB，请压缩后再上传");
+  }
   showStatus(`正在上传 ${file.name}（${formatSize(file.size)}）...`, "");
-  const safeName = file.name.replace(/[^\w.\-\u4e00-\u9fa5]/g, "_");
-  const path = `/repos/${GH.owner}/${GH.repo}/contents/${dir}/${safeName}`;
+  const name = file.name || "file";
+  const ext = name.includes(".") ? name.split(".").pop().toLowerCase() : "";
+  const safeExt = /^[a-z0-9]{1,5}$/.test(ext) ? "." + ext : "";
+  const uniqueName = "up-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7) + safeExt;
+  const path = `/repos/${GH.owner}/${GH.repo}/contents/${dir}/${uniqueName}`;
   const base64 = await fileToBase64(file);
-  await ghPutFile(path, `上传文件：${safeName}`, base64);
-  return (CONFIG.pagesBase || "").replace(/\/?$/, "/") + dir + "/" + encodeURIComponent(safeName);
+  let sha = null;
+  try {
+    const meta = await ghGet(`${path}?ref=${GH.branch}`);
+    sha = meta.sha;
+  } catch (e) { /* 新文件 */ }
+  await ghPutFile(path, `上传文件：${uniqueName}`, base64, sha);
+  return (CONFIG.pagesBase || "").replace(/\/?$/, "/") + dir + "/" + encodeURIComponent(uniqueName);
 }
 
 function fileToBase64(file) {
@@ -660,6 +681,107 @@ async function smartPublish() {
   } catch (e) {
     status.textContent = "";
     showStatus("发布失败：" + e.message, "err");
+  }
+}
+
+// ==================== 编辑已有题目 ====================
+function openQuestionEditor(id) {
+  const q = DATA.questions.find((x) => x.id === id);
+  if (!q) return;
+  editingQuestion = q;
+  document.getElementById("qe-title").textContent = "编辑题目 · 第 " + q.number + " 题";
+  document.getElementById("qe-number").value = q.number;
+  document.getElementById("qe-topic").innerHTML = topicOptionsHtml(q.topic);
+  document.getElementById("qe-knowledge").value = q.knowledgePoint || "";
+  document.getElementById("qe-diff").value = q.difficulty || "中";
+  document.getElementById("qe-group").value = q.questionGroup || "";
+  document.getElementById("qe-desc").value = q.desc || "";
+  document.getElementById("qe-content").value = q.content || "";
+  document.getElementById("qe-answer").value = q.answer || "";
+  document.getElementById("qe-analysis").value = q.analysis || "";
+  renderQeFigures();
+  document.getElementById("q-editor").style.display = "flex";
+}
+
+function closeQuestionEditor() {
+  editingQuestion = null;
+  document.getElementById("q-editor").style.display = "none";
+}
+
+function renderQeFigures() {
+  const box = document.getElementById("qe-figures");
+  if (!box) return;
+  box.innerHTML = (editingQuestion.figures || [])
+    .map(
+      (f, fi) => `
+    <div class="se-fig-row">
+      <img src="${esc(f.url)}" alt="" loading="lazy">
+      <input value="${esc(f.label || "配图")}" oninput="qeSetFigureLabel(${fi}, this.value)">
+      <button type="button" class="btn-ghost" onclick="qeRemoveFigure(${fi})">移除</button>
+    </div>`
+    )
+    .join("");
+}
+
+function qeSetFigureLabel(fi, val) {
+  if (editingQuestion.figures && editingQuestion.figures[fi]) {
+    editingQuestion.figures[fi].label = val.trim() || "配图";
+    editingQuestion.figures[fi].alt = editingQuestion.figures[fi].label;
+  }
+}
+
+function qeRemoveFigure(fi) {
+  if (editingQuestion.figures) editingQuestion.figures.splice(fi, 1);
+  renderQeFigures();
+}
+
+async function qeUploadFigures() {
+  const input = document.getElementById("qe-fig-upload");
+  const files = Array.from(input.files || []);
+  if (!files.length) return;
+  if (!getToken()) {
+    showStatus("请先填写并保存 GitHub Token", "err");
+    return;
+  }
+  if (!editingQuestion.figures) editingQuestion.figures = [];
+  for (const file of files) {
+    try {
+      showStatus("正在上传配图 " + file.name + "...", "");
+      const url = await uploadFile(file, GH.figDir);
+      editingQuestion.figures.push({ url, label: "配图", alt: "配图" });
+    } catch (e) {
+      showStatus("配图上传失败：" + e.message, "err");
+    }
+  }
+  editingQuestion.hasFigure = editingQuestion.figures.length > 0 || !!editingQuestion.hasFigure;
+  input.value = "";
+  renderQeFigures();
+  showStatus("配图已上传", "ok");
+}
+
+async function saveQuestionEdit() {
+  if (!editingQuestion) return;
+  if (!getToken()) {
+    showStatus("请先填写并保存 GitHub Token", "err");
+    return;
+  }
+  editingQuestion.topic = document.getElementById("qe-topic").value;
+  editingQuestion.knowledgePoint = document.getElementById("qe-knowledge").value.trim();
+  editingQuestion.difficulty = document.getElementById("qe-diff").value;
+  editingQuestion.questionGroup = document.getElementById("qe-group").value.trim();
+  editingQuestion.desc = document.getElementById("qe-desc").value.trim();
+  editingQuestion.content = document.getElementById("qe-content").value.trim();
+  editingQuestion.answer = document.getElementById("qe-answer").value.trim();
+  editingQuestion.analysis = document.getElementById("qe-analysis").value.trim();
+  editingQuestion.hasFigure = (editingQuestion.figures && editingQuestion.figures.length > 0) || !!editingQuestion.hasFigure;
+  try {
+    showStatus("正在保存...", "");
+    await publishData("编辑题目：第 " + editingQuestion.number + " 题（" + editingQuestion.topic + "）");
+    closeQuestionEditor();
+    renderManageList();
+    showStatus("✅ 题目已更新并发布", "ok");
+  } catch (e) {
+    showStatus("保存失败：" + e.message, "err");
   }
 }
 
