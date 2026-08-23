@@ -566,28 +566,82 @@ function exportComposeWord(includeAnswers) {
 
 function composeWordHtml(questions, includeAnswers) {
   const date = new Date().toISOString().slice(0, 10);
-  const items = composeCards(questions);
   const body = [];
   body.push(`<h1 style="text-align:center;font-size:20pt;">${esc(composeTitleText)}</h1>`);
   body.push(`<p style="text-align:center;color:#666;font-size:10.5pt;">组卷时间：${date} · 共 ${questions.length} 题</p>`);
 
-  for (const it of items) {
-    const q = it.q;
-    body.push(`<p style="font-size:12pt;"><b>${it.num}.</b> ${esc(q.desc || "")}</p>`);
-    if (it.showMaterial) body.push(`<p style="font-size:12pt;">${br(esc(q.sharedMaterial))}</p>`);
-    (q.figures || []).forEach((f) => {
-      body.push(`<p style="text-align:center;"><img src="${esc(absUrl(f.url))}" style="max-width:480px;"></p>`);
-      if (f.label) body.push(`<p style="text-align:center;color:#666;font-size:10pt;">${esc(f.label)}</p>`);
-    });
-    if (q.content) body.push(`<p style="font-size:12pt;">${br(esc(q.content))}</p>`);
-    if (includeAnswers) {
-      if (q.answer) body.push(`<p style="font-size:12pt;color:#166534;"><b>【答案】</b>${br(esc(q.answer))}</p>`);
-      if (q.analysis) body.push(`<p style="font-size:12pt;color:#6b21a8;"><b>【解析】</b>${br(esc(q.analysis))}</p>`);
+  // 按专题分组
+  const byTopic = new Map();
+  for (const q of questions) {
+    const t = q.topic || "未分类";
+    if (!byTopic.has(t)) byTopic.set(t, []);
+    byTopic.get(t).push(q);
+  }
+
+  let num = 0;
+  for (const [topic, qs] of byTopic) {
+    body.push(`<h2 style="font-size:14pt;margin-top:16px;color:#1e3a8a;">【${esc(topic)}专题】</h2>`);
+
+    for (const group of groupQuestions(qs)) {
+      const paper = getPaper(group[0].paperId);
+      if (paper) {
+        body.push(`<p style="font-size:10.5pt;color:#555;"><b>题源：</b>${esc(paper.year)}·${esc(paper.province)}·${esc(paper.type)}</p>`);
+      }
+
+      const material = group[0].sharedMaterial;
+      if (material) body.push(`<p style="font-size:12pt;">${br(esc(material))}</p>`);
+
+      dedupeFigures(group).forEach((f) => {
+        body.push(`<p style="text-align:center;"><img src="${esc(absUrl(f.url))}" style="max-width:480px;"></p>`);
+        if (f.label) body.push(`<p style="text-align:center;color:#666;font-size:10pt;">${esc(f.label)}</p>`);
+      });
+
+      for (const q of group) {
+        num++;
+        body.push(`<p style="font-size:12pt;"><b>${num}.</b> ${esc(q.desc || "")}</p>`);
+        if (q.content) body.push(`<p style="font-size:12pt;">${br(esc(q.content))}</p>`);
+        if (includeAnswers) {
+          if (q.answer) body.push(`<p style="font-size:12pt;color:#166534;"><b>【答案】</b>${br(esc(q.answer))}</p>`);
+          if (q.analysis) body.push(`<p style="font-size:12pt;color:#6b21a8;"><b>【解析】</b>${br(esc(q.analysis))}</p>`);
+        }
+        body.push(`<p>&nbsp;</p>`);
+      }
     }
-    body.push(`<p>&nbsp;</p>`);
   }
 
   return `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>${esc(composeTitleText)}</title></head><body>${body.join("")}</body></html>`;
+}
+
+function groupQuestions(questions) {
+  const order = [];
+  const map = new Map();
+  for (const q of questions) {
+    const key = q.questionGroup || (q.sharedMaterial ? "mat:" + q.sharedMaterial : null);
+    if (key && map.has(key)) {
+      map.get(key).push(q);
+    } else if (key) {
+      const g = [q];
+      map.set(key, g);
+      order.push(g);
+    } else {
+      order.push([q]);
+    }
+  }
+  return order;
+}
+
+function dedupeFigures(questions) {
+  const seen = new Set();
+  const figs = [];
+  for (const q of questions) {
+    for (const f of q.figures || []) {
+      const key = (f.url || "") + "|" + (f.label || "");
+      if (seen.has(key)) continue;
+      seen.add(key);
+      figs.push(f);
+    }
+  }
+  return figs;
 }
 
 function downloadWord(content, filename) {
