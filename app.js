@@ -33,6 +33,7 @@ function init() {
   bindSearch();
   bindViewer();
   initCompose();
+  initCompare();
 }
 
 function bindTabs() {
@@ -668,6 +669,77 @@ function absUrl(url) {
   if (!url) return "";
   if (/^https?:\/\//i.test(url) || url.startsWith("//")) return url;
   return (CONFIG.pagesBase || "").replace(/\/?$/, "/") + url.replace(/^\/+/, "");
+}
+
+// ==================== 历年对比 ====================
+function initCompare() {
+  renderCompare();
+}
+
+function questionType(q) {
+  const c = q.content || "";
+  if (/回答下列问题|阅读材料|（[1-9]）|\([1-9]\)/.test(c)) return "综合题";
+  return "选择题";
+}
+
+function renderCompare() {
+  const papers = (DATA.papers || []).filter((p) => p.year).sort((a, b) => Number(a.year) - Number(b.year));
+  const years = papers.map((p) => p.year);
+  if (!years.length) {
+    document.getElementById("compare-structure").innerHTML = '<div class="empty-state">暂无试卷数据</div>';
+    document.getElementById("compare-topics").innerHTML = "";
+    document.getElementById("compare-top").innerHTML = "";
+    return;
+  }
+
+  const paperQs = (year) => {
+    const paper = papers.find((p) => p.year === year);
+    return paper ? DATA.questions.filter((q) => q.paperId === paper.id) : [];
+  };
+
+  // 题型结构
+  const header = `<tr><th>题型</th>${years.map((y) => `<th>${esc(y)}</th>`).join("")}</tr>`;
+  const structRows = [];
+  for (const type of ["选择题", "综合题"]) {
+    const cells = years.map((y) => `<td>${paperQs(y).filter((q) => questionType(q) === type).length}</td>`).join("");
+    structRows.push(`<tr><td>${type}</td>${cells}</tr>`);
+  }
+  const totalCells = years.map((y) => `<td><b>${paperQs(y).length}</b></td>`).join("");
+  structRows.push(`<tr><td><b>合计</b></td>${totalCells}</tr>`);
+  document.getElementById("compare-structure").innerHTML = `<table class="compare-table">${header}${structRows.join("")}</table>`;
+
+  // 专题分布
+  const topicHeader = `<tr><th>专题</th>${years.map((y) => `<th>${esc(y)}</th>`).join("")}<th>合计</th></tr>`;
+  const topicRows = [];
+  for (const g of DATA.topicGroups || []) {
+    topicRows.push(`<tr class="compare-group-row"><td colspan="${years.length + 2}">${esc(g.group)}</td></tr>`);
+    for (const t of g.topics) {
+      let total = 0;
+      const cells = years.map((y) => {
+        const c = paperQs(y).filter((q) => q.topic === t).length;
+        total += c;
+        return `<td>${c || ""}</td>`;
+      }).join("");
+      topicRows.push(`<tr><td>${esc(t)}</td>${cells}<td>${total || ""}</td></tr>`);
+    }
+  }
+  document.getElementById("compare-topics").innerHTML = `<table class="compare-table">${topicHeader}${topicRows.join("")}</table>`;
+
+  // 高频考点
+  const counts = new Map();
+  (DATA.questions || []).forEach((q) => counts.set(q.topic, (counts.get(q.topic) || 0) + 1));
+  const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const max = sorted.length ? sorted[0][1] : 1;
+  document.getElementById("compare-top").innerHTML = sorted
+    .map(
+      ([topic, count]) => `
+      <div class="top-row">
+        <span class="top-name">${esc(topic)}</span>
+        <div class="top-bar"><div class="top-bar-fill" style="width:${Math.round((count / max) * 100)}%"></div></div>
+        <span class="top-count">${count} 题</span>
+      </div>`
+    )
+    .join("");
 }
 
 // ==================== 工具函数 ====================
