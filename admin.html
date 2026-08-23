@@ -130,29 +130,6 @@
       <div class="form-actions"><button class="btn-primary" onclick="savePaper()">💾 保存并发布</button><button class="btn-ghost" onclick="resetPaperForm()">清空</button></div>
     </div>
 
-    <!-- 题目表单 -->
-    <div class="admin-form">
-      <h3 id="question-form-title">🔖 添加题目</h3>
-      <div class="form-grid">
-        <div class="form-field"><label>所属试卷 *</label><select id="q-paperid"></select></div>
-        <div class="form-field"><label>题号 *</label><input type="text" id="q-number" placeholder="如 1~3、24"></div>
-        <div class="form-field"><label>专题 *</label><select id="q-topic"></select></div>
-        <div class="form-field"><label>知识点</label><input type="text" id="q-knowledgepoint" placeholder="如 聚落选址"></div>
-        <div class="form-field"><label>难度</label><select id="q-difficulty"><option>易</option><option selected>中</option><option>难</option></select></div>
-        <div class="form-field"><label>题组标识（同组小题填相同值）</label><input type="text" id="q-group" placeholder="如 qg-加达村"></div>
-        <div class="form-field full"><label>题目简述 *</label><textarea id="q-desc" placeholder="一句话说明这道题考什么"></textarea></div>
-        <div class="form-field full"><label>关键词（逗号分隔）</label><input type="text" id="q-keywords" placeholder="如 冷锋,天气图,过境"></div>
-        <div class="form-field full"><label>共享材料（题组小题共用，单题可留空）</label><textarea id="q-material" placeholder="题组共享的材料文字"></textarea></div>
-        <div class="form-field full"><label>配图（每行一张：相对路径 或 URL，可用 | 分隔加图注）</label><textarea id="q-figures" placeholder="files/figs/q4-6-astronaut.jpg|地球背光面照片&#10;files/figs/q4-options.jpg|选项图 A-D"></textarea>
-          <span class="form-hint">示例：files/figs/xxx.jpg|题干图。图注不填则只显示图片。</span>
-        </div>
-        <div class="form-field full"><label>完整题干（材料 + 问题 + 选项）</label><textarea id="q-content"></textarea></div>
-        <div class="form-field full"><label>答案</label><textarea id="q-answer"></textarea></div>
-        <div class="form-field full"><label>解析</label><textarea id="q-analysis"></textarea></div>
-      </div>
-      <div class="form-actions"><button class="btn-primary" onclick="saveQuestion()">💾 保存并发布</button><button class="btn-ghost" onclick="resetQuestionForm()">清空</button></div>
-    </div>
-
     <!-- 已有资源 -->
     <div class="admin-form">
       <h3>📋 已有资源管理</h3>
