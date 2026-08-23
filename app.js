@@ -105,7 +105,7 @@ function renderPapers() {
           <span class="badge badge-year">${esc(p.year)}</span>
           <span class="badge badge-type">${esc(p.type)}</span>
           ${p.hasAnswer ? '<span class="flag flag-answer">✓ 含答案</span>' : ""}
-          ${p.hasAnalysis ? '<span class="flag flag-analysis">✓ 含解析</span>' : ""}
+          ${p.hasAnalysis ? '<span class="flag flag-analysis">✓ 含解析（DeepSeek生成）</span>' : ""}
         </div>
       </div>
       <div class="exam-actions">
