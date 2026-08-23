@@ -48,6 +48,10 @@
     .se-fig-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
     .se-fig-row img { height: 52px; width: auto; border: 1px solid var(--border); border-radius: 6px; object-fit: contain; background: #f8fafc; }
     .se-fig-row input { flex: 1; min-width: 0; }
+    .q-editor-modal { position: fixed; inset: 0; background: rgba(15,23,42,.62); display: flex; align-items: center; justify-content: center; z-index: 500; padding: 20px; }
+    .q-editor-card { background: #fff; border-radius: 12px; width: min(760px, 94vw); max-height: 92vh; overflow: auto; padding: 20px 24px; }
+    .q-editor-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .q-editor-head h3 { font-size: 16px; }
     @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -117,6 +121,39 @@
         </select>
       </div>
       <div id="manage-list"></div>
+    </div>
+  </div>
+
+  <!-- 编辑已有题目 -->
+  <div id="q-editor" class="q-editor-modal" style="display:none;">
+    <div class="q-editor-card">
+      <div class="q-editor-head">
+        <h3 id="qe-title">编辑题目</h3>
+        <button class="admin-exit" onclick="closeQuestionEditor()">✕ 关闭</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-field"><label>题号</label><input id="qe-number" disabled></div>
+        <div class="form-field"><label>专题</label><select id="qe-topic"></select></div>
+        <div class="form-field"><label>知识点</label><input id="qe-knowledge" placeholder="如 聚落选址"></div>
+        <div class="form-field"><label>难度</label><select id="qe-diff"><option>易</option><option>中</option><option>难</option></select></div>
+        <div class="form-field full"><label>题组标识（同组小题填相同值）</label><input id="qe-group"></div>
+        <div class="form-field full"><label>题目简述</label><textarea id="qe-desc"></textarea></div>
+        <div class="form-field full"><label>完整题干</label><textarea id="qe-content"></textarea></div>
+        <div class="form-field full"><label>答案</label><textarea id="qe-answer"></textarea></div>
+        <div class="form-field full"><label>解析</label><textarea id="qe-analysis"></textarea></div>
+        <div class="form-field full">
+          <label>配图（题干图 / 选项图）</label>
+          <div id="qe-figures"></div>
+          <div style="margin-top:8px;">
+            <input type="file" id="qe-fig-upload" accept="image/*" multiple style="display:none;" onchange="qeUploadFigures()">
+            <button type="button" class="btn-ghost" onclick="document.getElementById('qe-fig-upload').click()">📤 上传配图</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" onclick="saveQuestionEdit()">💾 保存并发布</button>
+        <button class="btn-ghost" onclick="closeQuestionEditor()">取消</button>
+      </div>
     </div>
   </div>
 
