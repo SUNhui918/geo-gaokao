@@ -144,38 +144,107 @@ function renderTopicGroups() {
 }
 
 // ==================== 渲染:题目卡片(专题模式 / 检索模式共用) ====================
+// 同 questionGroup 的题合并为一张卡片,共享材料只显示一次
 function renderQuestionCards(questions) {
-  return questions.map(q => {
-    const paper = getPaper(q.paperId);
-    const paperTitle = paper ? paper.title : "未知试卷";
-    const paperLabel = paper ? `${paper.province} · ${paper.year} · ${paper.paperType}` : "";
-    const figBadge = q.hasFigure
-      ? `<span class="badge badge-fig" title="本题配图未入库,请打开原卷查看">🖼 含图 · 图见原卷</span>` : "";
-    const contentHtml = q.content
-      ? `<div class="q-content">${escapeHtml(q.content).replace(/\n/g, "<br>")}</div>` : "";
-    const answerHtml = q.answer
-      ? `<details class="q-answer"><summary>📝 查看答案</summary><div class="q-answer-body">${escapeHtml(q.answer).replace(/\n/g, "<br>")}</div></details>` : "";
-    return `
+  const items = [];
+  const groupMap = new Map();
+  questions.forEach(q => {
+    if (q.questionGroup && groupMap.has(q.questionGroup)) {
+      groupMap.get(q.questionGroup).qs.push(q);
+    } else if (q.questionGroup) {
+      const g = { group: true, key: q.questionGroup, qs: [q] };
+      groupMap.set(q.questionGroup, g);
+      items.push(g);
+    } else {
+      items.push({ single: true, q });
+    }
+  });
+  return items.map(it => it.single ? renderOneCard(it.q, false)
+    : renderGroupCard(it.qs)).join("");
+}
+
+// 图:题卡内直接显示(figureUrl),无图则提示见原卷
+function figureHtml(q) {
+  if (q.figureUrl) {
+    return `<div class="q-figure"><img src="${escapeAttr(q.figureUrl)}" alt="题目配图" loading="lazy"></div>`;
+  }
+  return q.hasFigure ? `<span class="badge badge-fig" title="配图请打开原卷查看">🖼 含图 · 见原卷</span>` : "";
+}
+
+// 单题卡片(isInGroup: 是否处于题组内,用于隐藏组内冗余信息)
+function renderOneCard(q, isInGroup) {
+  const paper = getPaper(q.paperId);
+  const paperTitle = paper ? paper.title : "未知试卷";
+  const paperLabel = paper ? `${paper.province} · ${paper.year} · ${paper.paperType}` : "";
+  const fig = isInGroup ? "" : figureHtml(q);
+  const contentHtml = q.content
+    ? `<div class="q-content">${escapeHtml(q.content).replace(/\n/g, "<br>")}</div>` : "";
+  const answerHtml = q.answer
+    ? `<details class="q-answer"><summary>📝 查看答案</summary><div class="q-answer-body">${escapeHtml(q.answer).replace(/\n/g, "<br>")}</div></details>` : "";
+  return `
     <div class="question-card">
       <div class="q-left">
         <div class="q-number">第 ${escapeHtml(q.number)} 题</div>
       </div>
       <div class="q-main">
         <div class="q-desc">${escapeHtml(q.desc)}</div>
+        ${fig}
         ${contentHtml}
         ${answerHtml}
         <div class="q-source">
           <span class="badge badge-topic">${escapeHtml(q.topic)}</span>
-          ${figBadge}
           <span class="q-paper">${escapeHtml(paperTitle)}</span>
           <span class="q-paper-label">${escapeHtml(paperLabel)}</span>
+        </div>
+      </div>
+      <div class="q-actions">
+        ${paper && paper.url && !isInGroup ? `<button class="btn-primary btn-sm" onclick="openExamViewer('${paper.id}')">查看试卷</button>` : ""}
+      </div>
+    </div>
+  `;
+}
+
+// 题组卡片:共享材料 + 配图显示一次,组内各题干和答案依次排列
+function renderGroupCard(qs) {
+  const first = qs[0];
+  const paper = getPaper(first.paperId);
+  const numbers = qs.map(q => q.number);
+  const numLabel = numbers.length > 1
+    ? `${numbers[0]}~${numbers[numbers.length - 1]}` : numbers[0];
+  const materialHtml = first.sharedMaterial
+    ? `<div class="q-material"><span class="q-material-tag">共享材料</span>${escapeHtml(first.sharedMaterial).replace(/\n/g, "<br>")}</div>` : "";
+  const figHtml = figureHtml(first);
+
+  const subs = qs.map((q, i) => `
+      <div class="q-sub">
+        <div class="q-sub-head"><span class="q-sub-num">第 ${escapeHtml(q.number)} 题</span><span class="q-sub-desc">${escapeHtml(q.desc)}</span></div>
+        ${q.content ? `<div class="q-content">${escapeHtml(q.content).replace(/\n/g, "<br>")}</div>` : ""}
+        ${q.answer ? `<details class="q-answer"><summary>📝 查看答案</summary><div class="q-answer-body">${escapeHtml(q.answer).replace(/\n/g, "<br>")}</div></details>` : ""}
+      </div>
+  `).join("");
+
+  const topics = [...new Set(qs.map(q => q.topic))].map(t => `<span class="badge badge-topic">${escapeHtml(t)}</span>`).join("");
+
+  return `
+    <div class="question-card q-group-card">
+      <div class="q-left">
+        <div class="q-number">第 ${escapeHtml(numLabel)} 题</div>
+        <div class="q-group-size">${qs.length} 小题</div>
+      </div>
+      <div class="q-main">
+        ${materialHtml}
+        ${figHtml}
+        ${subs}
+        <div class="q-source">
+          ${topics}
+          <span class="q-paper">${escapeHtml(paper ? paper.title : "")}</span>
         </div>
       </div>
       <div class="q-actions">
         ${paper && paper.url ? `<button class="btn-primary btn-sm" onclick="openExamViewer('${paper.id}')">查看试卷</button>` : ""}
       </div>
     </div>
-  `}).join("");
+  `;
 }
 
 // ==================== 进入某个专题(题目列表模式) ====================
@@ -239,21 +308,9 @@ function openExamViewer(paperId) {
         <p class="vp-hint">管理员可在管理后台上传 PDF / Word 文件或填写在线链接</p>
       </div>`;
   } else if (/\.(docx?|wps)$/i.test(url)) {
-    // Word 文档:浏览器无法直接预览,提供下载 + 在线预览两条路
+    // Word 文档:浏览器无法直接预览,直接用微软 Office Online 在线预览(不提供下载)
     const officeViewer = "https://view.officeapps.live.com/op/embed.aspx?src=" + encodeURIComponent(url);
-    content.innerHTML = `
-      <div class="viewer-placeholder">
-        <div class="vp-icon">📝</div>
-        <p><b>Word 文档</b></p>
-        <p>Word 文件无法在页面内直接显示,请选择:</p>
-        <div class="vp-btns">
-          <a class="btn-primary" style="text-decoration:none;display:inline-block;" href="${escapeAttr(url)}" download>⬇ 下载 Word 文件</a>
-          <a class="btn-primary" style="text-decoration:none;display:inline-block;" href="${escapeAttr(officeViewer)}" target="_blank" rel="noopener noreferrer">👁 在线预览(微软)</a>
-        </div>
-        <p class="vp-hint">在线预览由微软 Office Online 提供,需文件地址可公开访问</p>
-      </div>`;
-    newtab.href = url;
-    newtab.style.display = "inline";
+    content.innerHTML = `<iframe src="${escapeAttr(officeViewer)}" style="width:100%;height:100%;border:none;" loading="lazy"></iframe>`;
   } else {
     // PDF 或网页:iframe 内嵌
     content.innerHTML = `<iframe src="${escapeAttr(url)}" style="width:100%;height:100%;border:none;" loading="lazy"></iframe>`;
