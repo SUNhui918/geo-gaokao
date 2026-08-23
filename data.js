@@ -1,7 +1,5 @@
 // ============================================================
-// 高三地理试题库 - 数据文件（由管理后台自动生成）
-// ============================================================
-// 数据结构见 data.js 顶部注释；题目配图用 figures 数组，可挂多张图。
+// 高三地理试题库 - 数据文件
 // ============================================================
 const QUESTION_BANK = {
   "meta": {
@@ -54,8 +52,7 @@ const QUESTION_BANK = {
         "水",
         "地表形态的塑造",
         "整体性和差异性",
-        "土壤",
-        "植被"
+        "植被和土壤"
       ]
     },
     {
@@ -82,7 +79,7 @@ const QUESTION_BANK = {
   "papers": [
     {
       "id": "p-2026-江苏",
-      "title": "2026年江苏省高考地理真题（姚永清版·官答全）",
+      "title": "2026年江苏卷·高考地理真题",
       "province": "江苏",
       "year": "2026",
       "type": "高考真题",
@@ -99,7 +96,7 @@ const QUESTION_BANK = {
       "type": "高考真题",
       "url": "https://sunhui918.github.io/geo-gaokao/files/2025%E5%B9%B4%E6%B1%9F%E8%8B%8F%E9%AB%98%E8%80%83%E7%9C%9F%E9%A2%98.docx",
       "hasAnswer": true,
-      "hasAnalysis": false,
+      "hasAnalysis": true,
       "dateAdded": "2026-08-24"
     }
   ],
@@ -985,7 +982,7 @@ const QUESTION_BANK = {
       "id": "q-00958381-6",
       "paperId": "p-00958380",
       "number": "7",
-      "topic": "植被",
+      "topic": "植被和土壤",
       "knowledgePoint": "土壤盐分积累",
       "difficulty": "中",
       "desc": "荒漠土壤中可溶性盐积聚的过程",
@@ -1014,7 +1011,7 @@ const QUESTION_BANK = {
       "id": "q-00958381-7",
       "paperId": "p-00958380",
       "number": "8",
-      "topic": "植被",
+      "topic": "植被和土壤",
       "knowledgePoint": "植物适应环境的方式",
       "difficulty": "中",
       "desc": "根系较小的肉质植物适应荒漠的方式",
@@ -1037,7 +1034,7 @@ const QUESTION_BANK = {
       "id": "q-00958381-8",
       "paperId": "p-00958380",
       "number": "9",
-      "topic": "植被",
+      "topic": "植被和土壤",
       "knowledgePoint": "区域植被差异",
       "difficulty": "中",
       "desc": "塔里木盆地荒漠植物与阿拉伯半岛相比更耐寒",
