@@ -7,7 +7,6 @@ const GH = CONFIG.github;
 const TOKEN_KEY = "geo_admin_token";
 const DEEPSEEK_KEY = "geo_deepseek_key";
 let DATA = QUESTION_BANK;
-let editingPaperId = null;
 let smartResult = null;
 
 document.addEventListener("DOMContentLoaded", initAdmin);
@@ -25,12 +24,9 @@ function initAdmin() {
     document.getElementById("deepseek-status").textContent = "已保存（当前会话）";
   }
 
-  fillAdminProvince();
   fillSmartProvince();
-  document.getElementById("p-year").value = String(new Date().getFullYear());
   document.getElementById("smart-year").value = String(new Date().getFullYear());
   renderManageList();
-  bindUpload();
   bindSmartUpload();
   bindExit();
 
@@ -41,15 +37,6 @@ function bindExit() {
   document.getElementById("admin-lock").addEventListener("click", () => {
     sessionStorage.removeItem(TOKEN_KEY);
     location.reload();
-  });
-}
-
-function fillAdminProvince() {
-  const sel = document.getElementById("p-province");
-  (DATA.provinces || []).forEach((p) => {
-    const opt = document.createElement("option");
-    opt.textContent = p;
-    sel.appendChild(opt);
   });
 }
 
@@ -108,8 +95,6 @@ async function pullLatestData() {
       const latest = new Function(text + "\n; return QUESTION_BANK;")();
       if (latest && latest.questions) DATA = latest;
       renderManageList();
-      document.getElementById("p-province").innerHTML = "";
-      fillAdminProvince();
     }
   } catch (e) {
     console.warn("拉取线上数据失败，使用本地数据：", e.message);
@@ -139,68 +124,7 @@ function base64Utf8(str) {
   return btoa(unescape(encodeURIComponent(str)));
 }
 
-// ==================== 试卷 ====================
-async function savePaper() {
-  const title = document.getElementById("p-title").value.trim();
-  const province = document.getElementById("p-province").value;
-  const year = document.getElementById("p-year").value.trim();
-  const type = document.getElementById("p-type").value;
-  if (!title || !province || !year) return showStatus("请填写标题、省份、年份", "err");
-  if (!getToken()) return showStatus("请先填写并保存 GitHub Token", "err");
-
-  try {
-    showStatus("正在保存...", "");
-    let url = document.getElementById("p-url").value.trim();
-    const fileInput = document.getElementById("p-file");
-    if (fileInput.files.length > 0) {
-      if (fileInput.files[0].size > 25 * 1024 * 1024) return showStatus("文件超过 25MB", "err");
-      url = await uploadFile(fileInput.files[0], GH.fileDir);
-    }
-
-    const paper = {
-      id: editingPaperId || "p-" + String(Date.now()).slice(-8),
-      title, province, year, type, url,
-      hasAnswer: document.getElementById("p-hasanswer").value === "true",
-      hasAnalysis: document.getElementById("p-hasanalysis").value === "true",
-      dateAdded: today()
-    };
-    const idx = DATA.papers.findIndex((p) => p.id === paper.id);
-    if (idx >= 0) DATA.papers[idx] = paper;
-    else DATA.papers.push(paper);
-
-    await publishData(`${editingPaperId ? "更新" : "添加"}试卷：${title}`);
-    resetPaperForm();
-    renderManageList();
-    showStatus("✅ 试卷已发布，前台稍后生效", "ok");
-  } catch (e) {
-    showStatus("保存失败：" + e.message, "err");
-  }
-}
-
-function resetPaperForm() {
-  editingPaperId = null;
-  document.getElementById("paper-form-title").textContent = "📄 添加试卷";
-  ["p-title", "p-year", "p-url"].forEach((id) => (document.getElementById(id).value = ""));
-  document.getElementById("p-year").value = String(new Date().getFullYear());
-  document.getElementById("p-file").value = "";
-  document.getElementById("p-file-info").textContent = "支持 .pdf / .doc / .docx，拖拽到此处也可上传";
-}
-
-function editPaper(id) {
-  const p = DATA.papers.find((x) => x.id === id);
-  if (!p) return;
-  editingPaperId = id;
-  document.getElementById("paper-form-title").textContent = "📄 编辑试卷";
-  document.getElementById("p-title").value = p.title;
-  document.getElementById("p-province").value = p.province;
-  document.getElementById("p-year").value = p.year;
-  document.getElementById("p-type").value = p.type;
-  document.getElementById("p-hasanswer").value = String(!!p.hasAnswer);
-  document.getElementById("p-hasanalysis").value = String(!!p.hasAnalysis);
-  document.getElementById("p-url").value = p.url || "";
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
+// ==================== 试卷删除 ====================
 async function deletePaper(id) {
   const p = DATA.papers.find((x) => x.id === id);
   if (!p) return;
@@ -252,7 +176,6 @@ function renderManageList() {
           <div class="mi-title">${esc(p.title)}</div>
           <div class="mi-info">${esc(p.province)} · ${esc(p.year)} · ${esc(p.type)} · ${p.url ? "已上传文件" : "未上传文件"}</div>
         </div>
-        <button class="mi-btn edit" onclick="editPaper('${esc(p.id)}')">编辑</button>
         <button class="mi-btn del" onclick="deletePaper('${esc(p.id)}')">删除</button>
       </div>`
       )
@@ -277,26 +200,6 @@ function renderManageList() {
 }
 
 // ==================== 上传 ====================
-function bindUpload() {
-  const fileInput = document.getElementById("p-file");
-  fileInput.addEventListener("change", () => {
-    if (fileInput.files.length > 0) {
-      document.getElementById("p-file-info").textContent = "已选择：" + fileInput.files[0].name + "（" + formatSize(fileInput.files[0].size) + "）";
-    }
-  });
-  const box = document.getElementById("paper-upload-box");
-  box.addEventListener("dragover", (e) => { e.preventDefault(); box.classList.add("dragover"); });
-  box.addEventListener("dragleave", () => box.classList.remove("dragover"));
-  box.addEventListener("drop", (e) => {
-    e.preventDefault();
-    box.classList.remove("dragover");
-    if (e.dataTransfer.files.length > 0) {
-      fileInput.files = e.dataTransfer.files;
-      fileInput.dispatchEvent(new Event("change"));
-    }
-  });
-}
-
 async function uploadFile(file, dir) {
   showStatus(`正在上传 ${file.name}（${formatSize(file.size)}）...`, "");
   const safeName = file.name.replace(/[^\w.\-\u4e00-\u9fa5]/g, "_");
