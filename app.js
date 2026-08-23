@@ -1,64 +1,72 @@
 // ============================================================
 // 高三地理试题库 - 主站逻辑
-// 功能:密码门 / 双维检索(按试卷 / 按专题) / 全文检索 / 水印
+// 功能：双维检索（按试卷 / 按专题）/ 全文检索 / 多图渲染 / 水印
 // ============================================================
 
-// ==================== 入口:直接加载主站 ====================
-init();
+const DATA = QUESTION_BANK;
 
-// ==================== 标签页切换 ====================
-document.querySelectorAll(".nav-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
-    btn.classList.add("active");
-    document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
-  });
-});
+document.addEventListener("DOMContentLoaded", init);
 
-// ==================== 初始化 ====================
 function init() {
-  // 填充省份下拉
-  const provSel = document.getElementById("paper-filter-province");
-  (RESOURCES.provinces || []).forEach(p => {
-    const opt = document.createElement("option");
-    opt.textContent = p;
-    provSel.appendChild(opt);
-  });
-
-  // 填充年份下拉(从2020年起,到试卷数据中的最大年份,倒序)
-  const yearSel = document.getElementById("paper-filter-year");
-  const paperYears = (RESOURCES.papers || []).map(p => Number(p.year)).filter(n => !isNaN(n));
-  const maxYear = Math.max(new Date().getFullYear(), ...paperYears);
-  const years = [];
-  for (let y = maxYear; y >= 2020; y--) years.push(String(y));
-  years.forEach(y => {
-    const opt = document.createElement("option");
-    opt.textContent = y;
-    yearSel.appendChild(opt);
-  });
-
-  // 统计
-  document.getElementById("stat-papers").textContent = (RESOURCES.papers || []).length;
-  document.getElementById("stat-questions").textContent = (RESOURCES.questions || []).length;
-
+  bindTabs();
+  fillProvinceFilter();
+  fillYearFilter();
+  renderStats();
   renderPapers();
   renderTopicGroups();
+  bindSearch();
+  bindViewer();
 }
 
-// ==================== 渲染:按试卷检索 ====================
-function renderPapers() {
-  const keyword = document.getElementById("paper-search").value.trim().toLowerCase();
-  const province = document.getElementById("paper-filter-province").value;
-  const year = document.getElementById("paper-filter-year").value;
-  const paperType = document.getElementById("paper-filter-type").value;
+function bindTabs() {
+  document.querySelectorAll(".nav-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".nav-btn").forEach((b) => b.classList.remove("active"));
+      document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+    });
+  });
+}
 
-  const list = (RESOURCES.papers || []).filter(p => {
+function fillProvinceFilter() {
+  const sel = document.getElementById("paper-filter-province");
+  (DATA.provinces || []).forEach((p) => {
+    const opt = document.createElement("option");
+    opt.textContent = p;
+    sel.appendChild(opt);
+  });
+}
+
+function fillYearFilter() {
+  const sel = document.getElementById("paper-filter-year");
+  const years = (DATA.papers || []).map((p) => Number(p.year)).filter((n) => !isNaN(n));
+  const maxYear = Math.max(new Date().getFullYear(), ...years, 2020);
+  for (let y = maxYear; y >= 2020; y--) {
+    const opt = document.createElement("option");
+    opt.textContent = String(y);
+    sel.appendChild(opt);
+  }
+}
+
+function renderStats() {
+  document.getElementById("stat-papers").textContent = (DATA.papers || []).length;
+  document.getElementById("stat-questions").textContent = (DATA.questions || []).length;
+}
+
+// ==================== 按试卷检索 ====================
+function renderPapers() {
+  const keyword = val("paper-search").toLowerCase();
+  const province = val("paper-filter-province");
+  const year = val("paper-filter-year");
+  const type = val("paper-filter-type");
+
+  const list = (DATA.papers || []).filter((p) => {
     if (province && p.province !== province) return false;
     if (year && p.year !== year) return false;
-    if (paperType && p.paperType !== paperType) return false;
+    if (type && p.type !== type) return false;
     if (keyword) {
-      const text = [p.title, p.province, p.year, p.paperType].join(" ").toLowerCase();
+      const text = [p.title, p.province, p.year, p.type].join(" ").toLowerCase();
       if (!text.includes(keyword)) return false;
     }
     return true;
@@ -70,212 +78,255 @@ function renderPapers() {
     return;
   }
 
-  container.innerHTML = list.map(p => `
+  container.innerHTML = list
+    .map(
+      (p) => `
     <div class="exam-card">
       <div class="exam-main">
-        <div class="exam-title">${escapeHtml(p.title)}</div>
+        <div class="exam-title">${esc(p.title)}</div>
         <div class="exam-meta">
-          <span class="badge badge-province">${escapeHtml(p.province)}</span>
-          <span class="badge badge-year">${escapeHtml(p.year)}</span>
-          <span class="badge badge-type">${escapeHtml(p.paperType)}</span>
+          <span class="badge badge-province">${esc(p.province)}</span>
+          <span class="badge badge-year">${esc(p.year)}</span>
+          <span class="badge badge-type">${esc(p.type)}</span>
           ${p.hasAnswer ? '<span class="flag flag-answer">✓ 含答案</span>' : ""}
           ${p.hasAnalysis ? '<span class="flag flag-analysis">✓ 含解析</span>' : ""}
         </div>
       </div>
       <div class="exam-actions">
-        <button class="btn-primary" onclick="openExamViewer('${p.id}')">查看试卷</button>
+        <button class="btn-primary" data-open-paper="${esc(p.id)}">查看试卷</button>
       </div>
-    </div>
-  `).join("");
+    </div>`
+    )
+    .join("");
+
+  container.querySelectorAll("[data-open-paper]").forEach((btn) => {
+    btn.addEventListener("click", () => openExamViewer(btn.dataset.openPaper));
+  });
 }
 
-// ==================== 渲染:按专题检索(总览) ====================
+// ==================== 按专题检索（总览 + 全文检索） ====================
 function renderTopicGroups() {
-  const keyword = document.getElementById("topic-search").value.trim().toLowerCase();
-
-  // 全文检索模式:有关键词时,先筛出命中的题目
-  let matchedQuestions = null;
+  const keyword = val("topic-search").toLowerCase();
+  let matched = null;
   if (keyword) {
-    matchedQuestions = (RESOURCES.questions || []).filter(q => {
-      const paper = getPaper(q.paperId);
-      const text = [q.topic, q.desc, q.keywords, q.number, q.content || "", q.answer || "", paper ? paper.title : "", paper ? paper.province + paper.year : ""]
-        .join(" ").toLowerCase();
-      return text.includes(keyword);
-    });
+    matched = (DATA.questions || []).filter((q) => questionSearchText(q).includes(keyword));
   }
 
   const container = document.getElementById("topic-groups");
   let html = "";
 
-  TOPIC_GROUPS.forEach(g => {
-    const chips = g.topics.map(t => {
-      const count = (RESOURCES.questions || []).filter(q => q.topic === t).length;
-      return `<button class="topic-chip ${count === 0 ? "empty" : ""}" onclick="enterTopic('${escapeAttr(t)}')">${escapeHtml(t)}<span class="chip-count">${count}</span></button>`;
-    }).join("");
+  (DATA.topicGroups || []).forEach((g) => {
+    const chips = g.topics
+      .map((t) => {
+        const count = (DATA.questions || []).filter((q) => q.topic === t).length;
+        return `<button class="topic-chip ${count === 0 ? "empty" : ""}" data-topic="${esc(t)}">${esc(t)}<span class="chip-count">${count}</span></button>`;
+      })
+      .join("");
 
-    // 全文检索模式:给每组标注命中数
     let groupBadge = "";
-    if (matchedQuestions) {
-      const hit = matchedQuestions.filter(q => g.topics.includes(q.topic)).length;
+    if (matched) {
+      const hit = matched.filter((q) => g.topics.includes(q.topic)).length;
       groupBadge = hit > 0 ? `<span class="group-hit">命中 ${hit} 题</span>` : '<span class="group-hit zero">0</span>';
     }
 
     html += `
       <div class="topic-group">
-        <div class="topic-group-header">
-          <h3>${escapeHtml(g.group)}</h3>${groupBadge}
-        </div>
+        <div class="topic-group-header"><h3>${esc(g.group)}</h3>${groupBadge}</div>
         <div class="topic-chips">${chips}</div>
-      </div>
-    `;
+      </div>`;
   });
 
-  // 全文检索模式:直接展示命中题目列表
-  if (matchedQuestions) {
-    if (matchedQuestions.length === 0) {
-      html += '<div class="empty-state">📭 没有找到与 "' + escapeHtml(keyword) + '" 相关的题目,换个关键词试试(如:锋面、阶地、城市化)</div>';
+  if (matched) {
+    if (matched.length === 0) {
+      html += `<div class="empty-state">📭 没有找到与“${esc(keyword)}”相关的题目，换个关键词试试（如：锋面、阶地、城市化）</div>`;
     } else {
-      html += `<div class="search-result-bar">🔍 关键词 "${escapeHtml(keyword)}" 共命中 <b>${matchedQuestions.length}</b> 道题:</div>`;
-      html += renderQuestionCards(matchedQuestions);
+      html += `<div class="search-result-bar">🔍 关键词“${esc(keyword)}”共命中 <b>${matched.length}</b> 道题：</div>`;
+      html += renderQuestionCards(matched);
     }
   }
 
   container.innerHTML = html;
+  container.querySelectorAll("[data-topic]").forEach((btn) => {
+    btn.addEventListener("click", () => enterTopic(btn.dataset.topic));
+  });
+  bindCardActions(container);
 }
 
-// ==================== 渲染:题目卡片(专题模式 / 检索模式共用) ====================
-// 同 questionGroup 的题合并为一张卡片,共享材料只显示一次
+function questionSearchText(q) {
+  const paper = getPaper(q.paperId);
+  return [
+    q.topic,
+    q.knowledgePoint,
+    q.difficulty,
+    q.desc,
+    (q.keywords || []).join(" "),
+    q.number,
+    q.sharedMaterial,
+    q.content,
+    q.answer,
+    q.analysis,
+    (q.figures || []).map((f) => (f.label || "") + " " + (f.alt || "")).join(" "),
+    paper ? paper.title : "",
+    paper ? paper.province + paper.year + paper.type : ""
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
+// ==================== 题目卡片渲染 ====================
 function renderQuestionCards(questions) {
   const items = [];
   const groupMap = new Map();
-  questions.forEach(q => {
-    if (q.questionGroup && groupMap.has(q.questionGroup)) {
-      groupMap.get(q.questionGroup).qs.push(q);
-    } else if (q.questionGroup) {
-      const g = { group: true, key: q.questionGroup, qs: [q] };
-      groupMap.set(q.questionGroup, g);
+  questions.forEach((q) => {
+    const key = q.questionGroup || (q.sharedMaterial ? "mat:" + q.sharedMaterial : null);
+    if (key && groupMap.has(key)) {
+      groupMap.get(key).qs.push(q);
+    } else if (key) {
+      const g = { key, qs: [q] };
+      groupMap.set(key, g);
       items.push(g);
     } else {
       items.push({ single: true, q });
     }
   });
-  return items.map(it => it.single ? renderOneCard(it.q, false)
-    : renderGroupCard(it.qs)).join("");
+  return items.map((it) => (it.single ? renderOneCard(it.q) : renderGroupCard(it.qs))).join("");
 }
 
-// 图:题卡内直接显示(figureUrl),无图则提示见原卷
-function figureHtml(q) {
-  if (q.figureUrl) {
-    return `<div class="q-figure"><img src="${escapeAttr(q.figureUrl)}" alt="题目配图" loading="lazy"></div>`;
+function figuresHtml(q) {
+  if (q.figures && q.figures.length > 0) {
+    return (
+      '<div class="q-figures">' +
+      q.figures
+        .map(
+          (f) => `
+      <figure class="q-figure">
+        <img src="${esc(f.url)}" alt="${esc(f.alt || f.label || "题目配图")}" loading="lazy">
+        ${f.label ? `<figcaption>${esc(f.label)}</figcaption>` : ""}
+      </figure>`
+        )
+        .join("") +
+      "</div>"
+    );
   }
-  return q.hasFigure ? `<span class="badge badge-fig" title="配图请打开原卷查看">🖼 含图 · 见原卷</span>` : "";
+  return q.hasFigure ? '<span class="badge badge-fig" title="配图请打开原卷查看">🖼 含图 · 见原卷</span>' : "";
 }
 
-// 单题卡片(isInGroup: 是否处于题组内,用于隐藏组内冗余信息)
-function renderOneCard(q, isInGroup) {
+function answerHtml(q) {
+  if (!q.answer) return "";
+  return `<details class="q-answer"><summary>📝 查看答案</summary><div class="q-answer-body">${br(esc(q.answer))}</div></details>`;
+}
+
+function analysisHtml(q) {
+  if (!q.analysis) return "";
+  return `<details class="q-analysis"><summary>💡 查看解析</summary><div class="q-analysis-body">${br(esc(q.analysis))}</div></details>`;
+}
+
+function sourceHtml(q) {
   const paper = getPaper(q.paperId);
   const paperTitle = paper ? paper.title : "未知试卷";
-  const paperLabel = paper ? `${paper.province} · ${paper.year} · ${paper.paperType}` : "";
-  const fig = isInGroup ? "" : figureHtml(q);
-  const contentHtml = q.content
-    ? `<div class="q-content">${escapeHtml(q.content).replace(/\n/g, "<br>")}</div>` : "";
-  const answerHtml = q.answer
-    ? `<details class="q-answer"><summary>📝 查看答案</summary><div class="q-answer-body">${escapeHtml(q.answer).replace(/\n/g, "<br>")}</div></details>` : "";
+  const paperLabel = paper ? `${paper.province} · ${paper.year} · ${paper.type}` : "";
+  const badges = [];
+  if (q.topic) badges.push(`<span class="badge badge-topic">${esc(q.topic)}</span>`);
+  if (q.difficulty) badges.push(`<span class="badge badge-difficulty badge-difficulty-${esc(q.difficulty)}">${esc(q.difficulty)}</span>`);
   return `
-    <div class="question-card">
-      <div class="q-left">
-        <div class="q-number">第 ${escapeHtml(q.number)} 题</div>
-      </div>
-      <div class="q-main">
-        <div class="q-desc">${escapeHtml(q.desc)}</div>
-        ${fig}
-        ${contentHtml}
-        ${answerHtml}
-        <div class="q-source">
-          <span class="badge badge-topic">${escapeHtml(q.topic)}</span>
-          <span class="q-paper">${escapeHtml(paperTitle)}</span>
-          <span class="q-paper-label">${escapeHtml(paperLabel)}</span>
-        </div>
-      </div>
-      <div class="q-actions">
-        ${paper && paper.url && !isInGroup ? `<button class="btn-primary btn-sm" onclick="openExamViewer('${paper.id}')">查看试卷</button>` : ""}
-      </div>
-    </div>
-  `;
+    <div class="q-source">
+      ${badges.join("")}
+      <span class="q-paper">${esc(paperTitle)}</span>
+      <span class="q-paper-label">${esc(paperLabel)}</span>
+    </div>`;
 }
 
-// 题组卡片:共享材料 + 配图显示一次,组内各题干和答案依次排列
+function renderOneCard(q) {
+  const paper = getPaper(q.paperId);
+  return `
+    <div class="question-card">
+      <div class="q-left"><div class="q-number">第 ${esc(q.number)} 题</div></div>
+      <div class="q-main">
+        <div class="q-desc">${esc(q.desc)}</div>
+        ${figuresHtml(q)}
+        ${q.content ? `<div class="q-content">${br(esc(q.content))}</div>` : ""}
+        ${answerHtml(q)}
+        ${analysisHtml(q)}
+        ${sourceHtml(q)}
+      </div>
+      <div class="q-actions">
+        ${paper && paper.url ? `<button class="btn-primary btn-sm" data-open-paper="${esc(paper.id)}">查看试卷</button>` : ""}
+      </div>
+    </div>`;
+}
+
 function renderGroupCard(qs) {
   const first = qs[0];
   const paper = getPaper(first.paperId);
-  const numbers = qs.map(q => q.number);
-  const numLabel = numbers.length > 1
-    ? `${numbers[0]}~${numbers[numbers.length - 1]}` : numbers[0];
+  const nums = qs.map((q) => q.number);
+  const numLabel = nums.length > 1 ? `${nums[0]}~${nums[nums.length - 1]}` : nums[0];
   const materialHtml = first.sharedMaterial
-    ? `<div class="q-material"><span class="q-material-tag">共享材料</span>${escapeHtml(first.sharedMaterial).replace(/\n/g, "<br>")}</div>` : "";
-  const figHtml = figureHtml(first);
+    ? `<div class="q-material"><span class="q-material-tag">共享材料</span>${br(esc(first.sharedMaterial))}</div>`
+    : "";
 
-  const subs = qs.map((q, i) => `
+  const subs = qs
+    .map(
+      (q) => `
       <div class="q-sub">
-        <div class="q-sub-head"><span class="q-sub-num">第 ${escapeHtml(q.number)} 题</span><span class="q-sub-desc">${escapeHtml(q.desc)}</span></div>
-        ${q.content ? `<div class="q-content">${escapeHtml(q.content).replace(/\n/g, "<br>")}</div>` : ""}
-        ${q.answer ? `<details class="q-answer"><summary>📝 查看答案</summary><div class="q-answer-body">${escapeHtml(q.answer).replace(/\n/g, "<br>")}</div></details>` : ""}
-      </div>
-  `).join("");
+        <div class="q-sub-head"><span class="q-sub-num">第 ${esc(q.number)} 题</span><span class="q-sub-desc">${esc(q.desc)}</span></div>
+        ${q.content ? `<div class="q-content">${br(esc(q.content))}</div>` : ""}
+        ${answerHtml(q)}
+        ${analysisHtml(q)}
+      </div>`
+    )
+    .join("");
 
-  const topics = [...new Set(qs.map(q => q.topic))].map(t => `<span class="badge badge-topic">${escapeHtml(t)}</span>`).join("");
+  const topics = [...new Set(qs.map((q) => q.topic))]
+    .map((t) => `<span class="badge badge-topic">${esc(t)}</span>`)
+    .join("");
 
   return `
     <div class="question-card q-group-card">
       <div class="q-left">
-        <div class="q-number">第 ${escapeHtml(numLabel)} 题</div>
+        <div class="q-number">第 ${esc(numLabel)} 题</div>
         <div class="q-group-size">${qs.length} 小题</div>
       </div>
       <div class="q-main">
         ${materialHtml}
-        ${figHtml}
+        ${figuresHtml(first)}
         ${subs}
         <div class="q-source">
           ${topics}
-          <span class="q-paper">${escapeHtml(paper ? paper.title : "")}</span>
+          <span class="q-paper">${esc(paper ? paper.title : "")}</span>
         </div>
       </div>
       <div class="q-actions">
-        ${paper && paper.url ? `<button class="btn-primary btn-sm" onclick="openExamViewer('${paper.id}')">查看试卷</button>` : ""}
+        ${paper && paper.url ? `<button class="btn-primary btn-sm" data-open-paper="${esc(paper.id)}">查看试卷</button>` : ""}
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
-// ==================== 进入某个专题(题目列表模式) ====================
 function enterTopic(topic) {
-  const questions = (RESOURCES.questions || []).filter(q => q.topic === topic);
+  const questions = (DATA.questions || []).filter((q) => q.topic === topic);
   if (questions.length === 0) {
-    showToast("该专题暂无题目,请先在管理后台添加");
+    showToast("该专题暂无题目，请先在数据文件中添加");
     return;
   }
-
   document.getElementById("topic-overview").style.display = "none";
   document.getElementById("topic-detail").style.display = "block";
-  document.getElementById("topic-current").textContent = "🔖 " + topic + "(" + questions.length + " 题)";
+  document.getElementById("topic-current").textContent = `🔖 ${topic}（${questions.length} 题）`;
 
   const list = document.getElementById("question-list");
-  list.innerHTML = questions.length > 0 ? renderQuestionCards(questions)
-    : '<div class="empty-state">📭 该专题暂无题目</div>';
-
-  // 滚到顶部
+  list.innerHTML = renderQuestionCards(questions);
+  bindCardActions(list);
   window.scrollTo({ top: 0 });
 }
 
-// 返回专题列表
-document.getElementById("topic-back").addEventListener("click", () => {
-  document.getElementById("topic-overview").style.display = "block";
-  document.getElementById("topic-detail").style.display = "none";
-});
+function bindCardActions(scope) {
+  scope.querySelectorAll("[data-open-paper]").forEach((btn) => {
+    btn.addEventListener("click", () => openExamViewer(btn.dataset.openPaper));
+  });
+}
 
-// ==================== 试卷查看器(带水印) ====================
+// ==================== 试卷查看器 ====================
 function openExamViewer(paperId) {
-  const paper = (RESOURCES.papers || []).find(p => p.id === paperId);
+  const paper = getPaper(paperId);
   if (!paper) return;
 
   const viewer = document.getElementById("exam-viewer");
@@ -284,37 +335,30 @@ function openExamViewer(paperId) {
   const content = document.getElementById("viewer-content");
 
   title.textContent = paper.title;
-
-  // 生成水印:教研组名 + 日期
-  const now = new Date();
-  const dateStr = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0") + "-" + String(now.getDate()).padStart(2, "0");
-  const wm = document.getElementById("viewer-watermark");
-  if (CONFIG.features.watermark) {
-    wm.style.display = "block";
-    wm.setAttribute("data-text", CONFIG.watermarkText + " " + dateStr);
-  } else {
-    wm.style.display = "none";
-  }
-
-  // 根据文件类型渲染
-  const url = paper.url || "";
   newtab.style.display = "none";
-  if (!url) {
+
+  const absUrl = toAbsolute(paper.url);
+  const dateStr = new Date().toISOString().slice(0, 10);
+  setWatermark(CONFIG.watermarkText + " " + dateStr);
+
+  if (!paper.url) {
     content.innerHTML = `
       <div class="viewer-placeholder">
         <div class="vp-icon">📄</div>
-        <p><b>${escapeHtml(paper.title)}</b></p>
+        <p><b>${esc(paper.title)}</b></p>
         <p>该试卷文件尚未上传</p>
-        <p class="vp-hint">管理员可在管理后台上传 PDF / Word 文件或填写在线链接</p>
       </div>`;
-  } else if (/\.(docx?|wps)$/i.test(url)) {
-    // Word 文档:浏览器无法直接预览,直接用微软 Office Online 在线预览(不提供下载)
-    const officeViewer = "https://view.officeapps.live.com/op/embed.aspx?src=" + encodeURIComponent(url);
-    content.innerHTML = `<iframe src="${escapeAttr(officeViewer)}" style="width:100%;height:100%;border:none;" loading="lazy"></iframe>`;
+  } else if (/\.(docx?|wps)$/i.test(absUrl)) {
+    // Word：用微软 Office 在线预览，同时提供新窗口兜底
+    const office = "https://view.officeapps.live.com/op/embed.aspx?src=" + encodeURIComponent(absUrl);
+    content.innerHTML = `<iframe src="${esc(office)}" class="viewer-iframe" loading="lazy"></iframe>`;
+    if (CONFIG.features.downloadLink) {
+      newtab.href = absUrl;
+      newtab.style.display = "inline";
+    }
   } else {
-    // PDF 或网页:iframe 内嵌
-    content.innerHTML = `<iframe src="${escapeAttr(url)}" style="width:100%;height:100%;border:none;" loading="lazy"></iframe>`;
-    newtab.href = url;
+    content.innerHTML = `<iframe src="${esc(absUrl)}" class="viewer-iframe" loading="lazy"></iframe>`;
+    newtab.href = absUrl;
     newtab.style.display = "inline";
   }
 
@@ -322,44 +366,84 @@ function openExamViewer(paperId) {
   document.body.style.overflow = "hidden";
 }
 
-document.getElementById("viewer-close").addEventListener("click", () => {
-  document.getElementById("exam-viewer").style.display = "none";
+function setWatermark(text) {
+  const wm = document.getElementById("viewer-watermark");
+  if (!CONFIG.features.watermark) {
+    wm.style.display = "none";
+    return;
+  }
+  const safe = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+  const svg =
+    "<svg xmlns='http://www.w3.org/2000/svg' width='240' height='140'>" +
+    "<text x='50%' y='50%' transform='rotate(-28 120 70)' text-anchor='middle' fill='rgba(37,99,235,0.10)' font-size='14' font-family='sans-serif'>" +
+    safe +
+    "</text></svg>";
+  const uri = "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+  wm.style.backgroundImage = `url("${uri}")`;
+  wm.style.backgroundRepeat = "repeat";
+  wm.style.display = "block";
+}
+
+function toAbsolute(url) {
+  if (!url) return "";
+  if (/^https?:\/\//i.test(url) || url.startsWith("//")) return url;
+  return (CONFIG.pagesBase || "").replace(/\/?$/, "/") + url.replace(/^\/+/, "");
+}
+
+// ==================== 事件绑定 ====================
+function bindSearch() {
+  const paperSearch = document.getElementById("paper-search");
+  if (paperSearch) paperSearch.addEventListener("input", renderPapers);
+  ["paper-filter-province", "paper-filter-year", "paper-filter-type"].forEach((id) => {
+    document.getElementById(id).addEventListener("change", renderPapers);
+  });
+  document.getElementById("topic-search").addEventListener("input", renderTopicGroups);
+  document.getElementById("topic-back").addEventListener("click", () => {
+    document.getElementById("topic-overview").style.display = "block";
+    document.getElementById("topic-detail").style.display = "none";
+  });
+}
+
+function bindViewer() {
+  document.getElementById("viewer-close").addEventListener("click", closeViewer);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeViewer();
+  });
+}
+
+function closeViewer() {
+  const viewer = document.getElementById("exam-viewer");
+  if (viewer.style.display === "none") return;
+  viewer.style.display = "none";
   document.getElementById("viewer-content").innerHTML = "";
   document.body.style.overflow = "";
-});
-
-// Esc 关闭查看器
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") {
-    const viewer = document.getElementById("exam-viewer");
-    if (viewer.style.display !== "none" && viewer.style.display !== "") {
-      document.getElementById("viewer-close").click();
-    }
-  }
-});
-
-// ==================== 搜索/筛选事件绑定 ====================
-["paper-search"].forEach(id => {
-  document.getElementById(id).addEventListener("input", renderPapers);
-});
-["paper-filter-province", "paper-filter-year", "paper-filter-type"].forEach(id => {
-  document.getElementById(id).addEventListener("change", renderPapers);
-});
-document.getElementById("topic-search").addEventListener("input", renderTopicGroups);
+}
 
 // ==================== 工具函数 ====================
 function getPaper(id) {
-  return (RESOURCES.papers || []).find(p => p.id === id);
+  return (DATA.papers || []).find((p) => p.id === id);
 }
 
-function escapeHtml(str) {
+function val(id) {
+  return document.getElementById(id).value.trim();
+}
+
+function esc(str) {
   if (str == null) return "";
   return String(str)
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
-function escapeAttr(str) {
-  return escapeHtml(str);
+
+function br(text) {
+  return text.replace(/\n/g, "<br>");
 }
 
 function showToast(msg) {
@@ -367,11 +451,12 @@ function showToast(msg) {
   if (!t) {
     t = document.createElement("div");
     t.id = "__toast";
-    t.style.cssText = "position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 22px;border-radius:8px;font-size:13px;z-index:400;box-shadow:0 8px 24px rgba(0,0,0,.3);";
+    t.style.cssText =
+      "position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 22px;border-radius:8px;font-size:13px;z-index:400;box-shadow:0 8px 24px rgba(0,0,0,.3);";
     document.body.appendChild(t);
   }
   t.textContent = msg;
   t.style.display = "block";
   clearTimeout(t._timer);
-  t._timer = setTimeout(() => { t.style.display = "none"; }, 2200);
+  t._timer = setTimeout(() => (t.style.display = "none"), 2200);
 }
