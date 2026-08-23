@@ -1302,7 +1302,13 @@ const QUESTION_BANK = {
       ],
       "questionGroup": "qg-东南亚农业",
       "sharedMaterial": "东南亚农业种植结构受多种因素影响，不同历史时期发生了多次变化。下表为“东南亚不同历史时期种植的主要农作物”。",
-      "figures": [],
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787503337115-jj6v5.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
       "hasFigure": true,
       "content": "19.16世纪，东南亚农业种植结构的转变，是因为（ ）\nA.土地支配权的变化 B.国家间的互惠贸易 C.本地消费市场扩大 D.劳动生产效率提高",
       "answer": "A",
