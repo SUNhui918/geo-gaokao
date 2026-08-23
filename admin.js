@@ -5,9 +5,11 @@
 
 const GH = CONFIG.github;
 const TOKEN_KEY = "geo_admin_token";
+const DEEPSEEK_KEY = "geo_deepseek_key";
 let DATA = QUESTION_BANK;
 let editingPaperId = null;
 let editingQuestionId = null;
+let smartResult = null;
 
 document.addEventListener("DOMContentLoaded", initAdmin);
 
@@ -18,12 +20,21 @@ function initAdmin() {
     document.getElementById("token-status").textContent = "已保存（当前会话）";
   }
 
+  const dsSaved = sessionStorage.getItem(DEEPSEEK_KEY);
+  if (dsSaved) {
+    document.getElementById("deepseek-key").value = dsSaved;
+    document.getElementById("deepseek-status").textContent = "已保存（当前会话）";
+  }
+
   fillAdminProvince();
   fillAdminTopic();
+  fillSmartProvince();
   document.getElementById("p-year").value = String(new Date().getFullYear());
+  document.getElementById("smart-year").value = String(new Date().getFullYear());
   refreshPaperSelect();
   renderManageList();
   bindUpload();
+  bindSmartUpload();
   bindExit();
 
   if (saved) pullLatestData();
@@ -429,6 +440,325 @@ function formatSize(bytes) {
   if (bytes < 1024) return bytes + " B";
   if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + " KB";
   return (bytes / 1024 / 1024).toFixed(1) + " MB";
+}
+
+// ==================== 智能录入 ====================
+function fillSmartProvince() {
+  const sel = document.getElementById("smart-province");
+  (DATA.provinces || []).forEach((p) => {
+    const opt = document.createElement("option");
+    opt.textContent = p;
+    sel.appendChild(opt);
+  });
+}
+
+function bindSmartUpload() {
+  const fileInput = document.getElementById("smart-file");
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+      document.getElementById("smart-file-info").textContent =
+        "已选择：" + fileInput.files[0].name + "（" + formatSize(fileInput.files[0].size) + "）";
+    }
+  });
+  const box = document.getElementById("smart-upload-box");
+  box.addEventListener("dragover", (e) => { e.preventDefault(); box.classList.add("dragover"); });
+  box.addEventListener("dragleave", () => box.classList.remove("dragover"));
+  box.addEventListener("drop", (e) => {
+    e.preventDefault();
+    box.classList.remove("dragover");
+    if (e.dataTransfer.files.length > 0) {
+      fileInput.files = e.dataTransfer.files;
+      fileInput.dispatchEvent(new Event("change"));
+    }
+  });
+}
+
+function saveDeepSeekKey() {
+  const v = document.getElementById("deepseek-key").value.trim();
+  if (!v) {
+    sessionStorage.removeItem(DEEPSEEK_KEY);
+    document.getElementById("deepseek-status").textContent = "已清除";
+    return;
+  }
+  sessionStorage.setItem(DEEPSEEK_KEY, v);
+  document.getElementById("deepseek-status").textContent = "已保存（当前会话）";
+  showStatus("DeepSeek Key 已保存", "ok");
+}
+
+function getDeepSeekKey() {
+  return sessionStorage.getItem(DEEPSEEK_KEY) || "";
+}
+
+async function smartParse() {
+  const status = document.getElementById("smart-status");
+  document.getElementById("smart-preview").style.display = "none";
+  smartResult = null;
+
+  if (!getDeepSeekKey()) {
+    status.textContent = "缺少 DeepSeek Key";
+    showStatus("请先填写并保存 DeepSeek Key", "err");
+    return;
+  }
+
+  const fileInput = document.getElementById("smart-file");
+  const pasted = document.getElementById("smart-text").value.trim();
+  let text = pasted;
+  const file = fileInput.files.length > 0 ? fileInput.files[0] : null;
+
+  try {
+    status.textContent = "正在提取文字...";
+    if (file) text = await extractText(file);
+    if (!text || text.trim().length < 20) {
+      status.textContent = "没有读到有效文字，请换文件或直接粘贴文字";
+      return;
+    }
+
+    status.textContent = "正在调用 DeepSeek 自动拆题归类...";
+    const raw = await callDeepSeek(text);
+    const result = parseAiJson(raw);
+    if (!result || !result.questions || !result.questions.length) {
+      status.textContent = "解析结果为空，请检查试卷内容或稍后重试";
+      return;
+    }
+
+    const paper = result.paper || {};
+    const province = document.getElementById("smart-province").value || paper.province || "";
+    const year = document.getElementById("smart-year").value.trim() || paper.year || "";
+    const type = document.getElementById("smart-type").value || paper.type || "高考真题";
+
+    smartResult = { file, paper: { ...paper, province, year, type }, questions: result.questions };
+    renderSmartPreview(smartResult);
+    status.textContent = "已解析出 " + result.questions.length + " 道题，请确认后发布";
+  } catch (e) {
+    status.textContent = "解析失败：" + e.message;
+    showStatus("解析失败：" + e.message, "err");
+  }
+}
+
+async function extractText(file) {
+  const name = file.name.toLowerCase();
+  if (name.endsWith(".txt") || name.endsWith(".md")) return await file.text();
+  if (name.endsWith(".pdf")) return await extractPdfText(file);
+  if (name.endsWith(".docx")) return await extractDocxText(file);
+  throw new Error("暂不支持该格式，请用 .txt / .md / .pdf / .docx");
+}
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    if (window.__loadedScripts && window.__loadedScripts[src]) return resolve();
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = () => { (window.__loadedScripts = window.__loadedScripts || {})[src] = true; resolve(); };
+    s.onerror = () => reject(new Error("加载解析库失败：" + src));
+    document.head.appendChild(s);
+  });
+}
+
+async function extractPdfText(file) {
+  await loadScript("https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js");
+  const pdfjsLib = window.pdfjsLib;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+  const data = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data }).promise;
+  let text = "";
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const tc = await page.getTextContent();
+    text += tc.items.map((it) => it.str).join(" ") + "\n";
+  }
+  return text;
+}
+
+async function extractDocxText(file) {
+  await loadScript("https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js");
+  const arrayBuffer = await file.arrayBuffer();
+  const result = await window.mammoth.extractRawText({ arrayBuffer });
+  return result.value;
+}
+
+async function callDeepSeek(text) {
+  const res = await fetch("https://api.deepseek.com/chat/completions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: "Bearer " + getDeepSeekKey() },
+    body: JSON.stringify({
+      model: "deepseek-chat",
+      temperature: 0.2,
+      messages: [
+        { role: "system", content: "你是高三地理试卷结构化整理助手。你只输出 JSON，不输出任何解释、Markdown 代码块或多余文字。" },
+        { role: "user", content: buildAiPrompt(text) }
+      ]
+    })
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error("DeepSeek " + res.status + ": " + err.slice(0, 160));
+  }
+  const data = await res.json();
+  const content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+  if (!content) throw new Error("DeepSeek 返回为空");
+  return content;
+}
+
+function buildAiPrompt(text) {
+  return [
+    "请把下面这份高三地理试卷整理成 JSON（必须是合法 JSON，不要用 ``` 包裹，直接输出 JSON 对象）：",
+    "",
+    "JSON 结构：",
+    "{",
+    '  "paper": { "title": "试卷标题", "province": "江苏", "year": "2026", "type": "高考真题", "hasAnswer": true, "hasAnalysis": false },',
+    '  "questions": [',
+    "    {",
+    '      "number": "1",',
+    '      "topic": "专题名",',
+    '      "knowledgePoint": "知识点",',
+    '      "difficulty": "易|中|难",',
+    '      "desc": "一句话简述",',
+    '      "keywords": ["关键词1","关键词2"],',
+    '      "questionGroup": "同组小题用相同值，如 qg-加达村；独立题用空字符串",',
+    '      "sharedMaterial": "共享材料，同组只写一遍，独立题可空",',
+    '      "content": "完整题干（含材料、问题、选项）",',
+    '      "answer": "答案",',
+    '      "analysis": "解析，没有则空字符串",',
+    '      "hasFigure": true,',
+    '      "figureHint": "配图说明，无图则空字符串"',
+    "    }",
+    "  ]",
+    "}",
+    "",
+    "专题只能从下面选择：",
+    "自然地理：经纬网和地图、地理信息技术、地球运动和天文、大气、水、地表形态的塑造、整体性和差异性、土壤、植被",
+    "人文地理：人口、乡村和城镇、地域文化、产业、交通、环境与发展、国家安全",
+    "区域：江苏地理、中国地理、世界地理",
+    "",
+    "规则：",
+    "1. 共用同一段材料的小题必须归为同一题组：questionGroup 相同、topic 相同，sharedMaterial 只写一遍。",
+    "2. 综合题整题录入不拆小题，number 用题号如 24，content 含全部材料和小问，answer 按 (1)(2)(3) 分条。",
+    "3. 答案和解析尽量从试卷原文提取；试卷标注了答案就填进 answer。",
+    "4. difficulty 只用 易/中/难。",
+    "5. keywords 输出中文关键词数组。",
+    "6. 只输出 JSON，不要任何多余文字。",
+    "",
+    "试卷内容如下：",
+    text
+  ].join("\n");
+}
+
+function parseAiJson(raw) {
+  let s = String(raw).trim();
+  s = s.replace(/^```(?:json)?/i, "").replace(/```\s*$/, "").trim();
+  const start = s.indexOf("{");
+  const end = s.lastIndexOf("}");
+  if (start >= 0 && end > start) s = s.slice(start, end + 1);
+  try {
+    return JSON.parse(s);
+  } catch (e) {
+    throw new Error("AI 返回的不是合法 JSON");
+  }
+}
+
+function renderSmartPreview(result) {
+  const el = document.getElementById("smart-preview");
+  const paper = result.paper || {};
+  const qs = result.questions || [];
+  const qHtml = qs
+    .map(
+      (q, i) => `
+    <div class="smart-q-item">
+      <div class="sq-head">
+        <span class="q-number">第 ${esc(q.number || i + 1)} 题</span>
+        <span class="badge badge-topic">${esc(q.topic || "未分类")}</span>
+        ${q.difficulty ? `<span class="badge badge-difficulty badge-difficulty-${esc(q.difficulty)}">${esc(q.difficulty)}</span>` : ""}
+        ${q.hasFigure ? '<span class="badge badge-fig">🖼 含图</span>' : ""}
+      </div>
+      <div class="sq-desc">${esc(q.desc || "")}</div>
+      ${q.answer ? `<div class="sq-ans">答案：${esc(q.answer)}</div>` : ""}
+    </div>`
+    )
+    .join("");
+
+  el.innerHTML = `
+    <div class="smart-paper-head">
+      <b>${esc(paper.title || "未命名试卷")}</b>
+      <span style="color:var(--text-sub);"> · ${esc(paper.province || "")} · ${esc(paper.year || "")} · ${esc(paper.type || "")} · 共 ${qs.length} 题</span>
+    </div>
+    ${qHtml}
+    <div class="form-actions">
+      <button class="btn-primary" onclick="smartPublish()">✅ 确认并发布</button>
+      <button class="btn-ghost" onclick="smartResetPreview()">↺ 重新解析</button>
+    </div>`;
+  el.style.display = "block";
+}
+
+function smartResetPreview() {
+  smartResult = null;
+  document.getElementById("smart-preview").style.display = "none";
+  document.getElementById("smart-status").textContent = "";
+}
+
+async function smartPublish() {
+  if (!smartResult) return;
+  if (!getToken()) {
+    showStatus("请先填写并保存 GitHub Token", "err");
+    return;
+  }
+  const status = document.getElementById("smart-status");
+  try {
+    status.textContent = "正在发布...";
+    let url = "";
+    const file = smartResult.file;
+    if (file) {
+      const n = file.name.toLowerCase();
+      if (n.endsWith(".pdf") || n.endsWith(".docx")) {
+        url = await uploadFile(file, GH.fileDir);
+      }
+    }
+
+    const paper = smartResult.paper || {};
+    const paperId = "p-" + String(Date.now()).slice(-8);
+    const paperObj = {
+      id: paperId,
+      title: paper.title || "未命名试卷",
+      province: paper.province || "",
+      year: paper.year || String(new Date().getFullYear()),
+      type: paper.type || "高考真题",
+      url,
+      hasAnswer: !!paper.hasAnswer,
+      hasAnalysis: !!paper.hasAnalysis,
+      dateAdded: today()
+    };
+    DATA.papers.push(paperObj);
+
+    const qs = (smartResult.questions || []).map((q, i) => ({
+      id: "q-" + String(Date.now()).slice(-8) + "-" + i,
+      paperId,
+      number: String(q.number || i + 1),
+      topic: q.topic || "",
+      knowledgePoint: q.knowledgePoint || "",
+      difficulty: ["易", "中", "难"].includes(q.difficulty) ? q.difficulty : "中",
+      desc: q.desc || "",
+      keywords: Array.isArray(q.keywords) ? q.keywords : [],
+      questionGroup: q.questionGroup || "",
+      sharedMaterial: q.sharedMaterial || "",
+      figures: [],
+      hasFigure: !!q.hasFigure,
+      content: q.content || "",
+      answer: q.answer || "",
+      analysis: q.analysis || "",
+      figureHint: q.figureHint || "",
+      dateAdded: today()
+    }));
+    DATA.questions.push(...qs);
+
+    await publishData("智能录入：" + paperObj.title);
+    smartResetPreview();
+    refreshPaperSelect();
+    renderManageList();
+    status.textContent = "";
+    showStatus("✅ 已发布：" + qs.length + " 道题", "ok");
+  } catch (e) {
+    status.textContent = "";
+    showStatus("发布失败：" + e.message, "err");
+  }
 }
 
 // ==================== 工具 ====================
