@@ -32,6 +32,7 @@ function init() {
   renderTopicGroups();
   bindSearch();
   bindViewer();
+  initCompose();
 }
 
 function bindTabs() {
@@ -437,6 +438,182 @@ function closeViewer() {
   viewer.style.display = "none";
   document.getElementById("viewer-content").innerHTML = "";
   document.body.style.overflow = "";
+}
+
+// ==================== 组卷 ====================
+let composeSelected = [];
+let composeTitleText = "地理专题练习";
+
+function initCompose() {
+  const sel = document.getElementById("compose-topics");
+  (DATA.topicGroups || []).forEach((g) => {
+    const og = document.createElement("optgroup");
+    og.label = g.group;
+    g.topics.forEach((t) => {
+      const opt = document.createElement("option");
+      opt.value = t;
+      opt.textContent = t;
+      og.appendChild(opt);
+    });
+    sel.appendChild(og);
+  });
+  document.getElementById("compose-btn").addEventListener("click", composePaper);
+  document.getElementById("export-student").addEventListener("click", () => exportComposeWord(false));
+  document.getElementById("export-teacher").addEventListener("click", () => exportComposeWord(true));
+}
+
+function composePaper() {
+  const sel = document.getElementById("compose-topics");
+  const topics = Array.from(sel.selectedOptions).map((o) => o.value);
+  const difficulty = document.getElementById("compose-diff").value;
+  const count = parseInt(document.getElementById("compose-count").value, 10) || 10;
+
+  if (!topics.length) {
+    showToast("请至少选择一个专题");
+    return;
+  }
+
+  const pool = (DATA.questions || []).filter(
+    (q) => topics.includes(q.topic) && (!difficulty || q.difficulty === difficulty)
+  );
+  if (!pool.length) {
+    document.getElementById("compose-result").innerHTML = '<div class="empty-state">📭 没有符合条件的题目，换个专题或难度试试</div>';
+    document.getElementById("compose-actions").style.display = "none";
+    return;
+  }
+
+  const units = [];
+  const seen = new Set();
+  pool.forEach((q) => {
+    const key = q.questionGroup || (q.sharedMaterial ? "mat:" + q.sharedMaterial : null);
+    if (key) {
+      if (seen.has(key)) return;
+      seen.add(key);
+      units.push(pool.filter((x) => (x.questionGroup || (x.sharedMaterial ? "mat:" + x.sharedMaterial : null)) === key));
+    } else {
+      units.push([q]);
+    }
+  });
+  shuffle(units);
+
+  const selected = [];
+  for (const unit of units) {
+    if (selected.length >= count) break;
+    selected.push(...unit);
+  }
+
+  composeSelected = selected;
+  composeTitleText = "地理专题练习（" + topics.join("、") + "）";
+  renderComposeResult(selected);
+  document.getElementById("compose-actions").style.display = "flex";
+}
+
+function composeCards(questions) {
+  const out = [];
+  let num = 0;
+  let lastKey = null;
+  for (const q of questions) {
+    num++;
+    const key = q.questionGroup || (q.sharedMaterial ? "mat:" + q.sharedMaterial : null);
+    const showMaterial = !!q.sharedMaterial && key !== lastKey;
+    lastKey = key;
+    out.push({ q, num, showMaterial });
+  }
+  return out;
+}
+
+function composeOneCard(item) {
+  const q = item.q;
+  const fig = q.figures && q.figures.length
+    ? q.figures.map((f) => `<figure class="q-figure"><img src="${esc(absUrl(f.url))}" alt="${esc(f.label || "配图")}" loading="lazy">${f.label ? `<figcaption>${esc(f.label)}</figcaption>` : ""}</figure>`).join("")
+    : q.hasFigure ? '<span class="badge badge-fig">🖼 含图 · 见原卷</span>' : "";
+  return `
+    <div class="question-card">
+      <div class="q-left"><div class="q-number">第 ${item.num} 题</div></div>
+      <div class="q-main">
+        <div class="q-desc">${esc(q.desc || "")}</div>
+        ${item.showMaterial ? `<div class="q-material"><span class="q-material-tag">共享材料</span>${br(esc(q.sharedMaterial))}</div>` : ""}
+        <div class="q-figures">${fig}</div>
+        ${q.content ? `<div class="q-content">${br(esc(q.content))}</div>` : ""}
+        <div class="q-source">
+          <span class="badge badge-topic">${esc(q.topic)}</span>
+          ${q.difficulty ? `<span class="badge badge-difficulty badge-difficulty-${esc(q.difficulty)}">${esc(q.difficulty)}</span>` : ""}
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderComposeResult(questions) {
+  const el = document.getElementById("compose-result");
+  if (!questions.length) {
+    el.innerHTML = "";
+    return;
+  }
+  const cards = composeCards(questions).map(composeOneCard).join("");
+  el.innerHTML = `<div class="search-result-bar">🧩 已组 <b>${questions.length}</b> 道题</div>` + cards;
+}
+
+function exportComposeWord(includeAnswers) {
+  if (!composeSelected.length) {
+    showToast("请先组题");
+    return;
+  }
+  const content = composeWordHtml(composeSelected, includeAnswers);
+  const suffix = includeAnswers ? "教师版" : "学生版";
+  const date = new Date().toISOString().slice(0, 10);
+  downloadWord(content, `地理专题练习_${date}_${suffix}.doc`);
+}
+
+function composeWordHtml(questions, includeAnswers) {
+  const date = new Date().toISOString().slice(0, 10);
+  const items = composeCards(questions);
+  const body = [];
+  body.push(`<h1 style="text-align:center;font-size:20pt;">${esc(composeTitleText)}</h1>`);
+  body.push(`<p style="text-align:center;color:#666;font-size:10.5pt;">组卷时间：${date} · 共 ${questions.length} 题</p>`);
+
+  for (const it of items) {
+    const q = it.q;
+    body.push(`<p style="font-size:12pt;"><b>${it.num}.</b> ${esc(q.desc || "")}</p>`);
+    if (it.showMaterial) body.push(`<p style="font-size:12pt;">${br(esc(q.sharedMaterial))}</p>`);
+    (q.figures || []).forEach((f) => {
+      body.push(`<p style="text-align:center;"><img src="${esc(absUrl(f.url))}" style="max-width:480px;"></p>`);
+      if (f.label) body.push(`<p style="text-align:center;color:#666;font-size:10pt;">${esc(f.label)}</p>`);
+    });
+    if (q.content) body.push(`<p style="font-size:12pt;">${br(esc(q.content))}</p>`);
+    if (includeAnswers) {
+      if (q.answer) body.push(`<p style="font-size:12pt;color:#166534;"><b>【答案】</b>${br(esc(q.answer))}</p>`);
+      if (q.analysis) body.push(`<p style="font-size:12pt;color:#6b21a8;"><b>【解析】</b>${br(esc(q.analysis))}</p>`);
+    }
+    body.push(`<p>&nbsp;</p>`);
+  }
+
+  return `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>${esc(composeTitleText)}</title></head><body>${body.join("")}</body></html>`;
+}
+
+function downloadWord(content, filename) {
+  const blob = new Blob(["\ufeff" + content], { type: "application/msword" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function absUrl(url) {
+  if (!url) return "";
+  if (/^https?:\/\//i.test(url) || url.startsWith("//")) return url;
+  return (CONFIG.pagesBase || "").replace(/\/?$/, "/") + url.replace(/^\/+/, "");
 }
 
 // ==================== 工具函数 ====================
