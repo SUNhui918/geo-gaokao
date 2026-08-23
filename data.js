@@ -1589,6 +1589,11 @@ const QUESTION_BANK = {
           "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505069829-es73r.png",
           "label": "配图",
           "alt": "配图"
+        },
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787506224903-05hms.png",
+          "label": "配图",
+          "alt": "配图"
         }
       ],
       "hasFigure": true,
