@@ -38,6 +38,13 @@
     .save-status { position: fixed; bottom: 24px; right: 24px; z-index: 300; background: #0f172a; color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 13px; display: none; box-shadow: 0 8px 24px rgba(0,0,0,.25); max-width: 420px; }
     .save-status.ok { background: #15803d; }
     .save-status.err { background: #dc2626; }
+    .smart-preview { margin-top: 16px; }
+    .smart-paper-head { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; }
+    .smart-paper-head b { color: #1e40af; }
+    .smart-q-item { border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; }
+    .smart-q-item .sq-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+    .smart-q-item .sq-ans { font-size: 13px; color: #166534; }
+    .smart-q-item .sq-desc { font-size: 13px; color: var(--text-sub); }
     @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -57,12 +64,43 @@
       本页面的真正权限是你的 GitHub Token。请使用「只读/写入本仓库内容」的细粒度 Token，并只在个人设备上使用；Token 只保存在当前浏览器会话中，关闭浏览器即清除。
     </div>
 
+    <!-- 智能录入 -->
+    <div class="admin-form">
+      <h3>🤖 智能录入试卷（上传含答案的试卷，自动拆题归类）</h3>
+      <div class="form-grid">
+        <div class="form-field full"><label>上传试卷文件（.txt / .md / .pdf / .docx）</label>
+          <div class="upload-box" id="smart-upload-box">
+            <button type="button" class="btn-primary" style="padding:8px 14px;font-size:13px;" onclick="document.getElementById('smart-file').click()">📁 选择文件</button>
+            <span class="upload-info" id="smart-file-info">支持文本、PDF、Word；也可在下方直接粘贴题目文字</span>
+            <input type="file" id="smart-file" accept=".txt,.md,.pdf,.docx" style="display:none;">
+          </div>
+        </div>
+        <div class="form-field"><label>省份</label><select id="smart-province"></select></div>
+        <div class="form-field"><label>年份</label><input type="text" id="smart-year" placeholder="如 2026"></div>
+        <div class="form-field"><label>类型</label><select id="smart-type"><option>高考真题</option><option>模拟题</option></select></div>
+        <div class="form-field full"><label>或直接粘贴题目文字（含答案）</label><textarea id="smart-text" placeholder="把整份试卷的题目和答案粘贴到这里，也能自动解析"></textarea></div>
+        <div class="form-field full form-actions">
+          <button class="btn-primary" onclick="smartParse()">🔍 解析并预览</button>
+          <span id="smart-status" style="font-size:13px;color:var(--text-sub);"></span>
+        </div>
+      </div>
+      <div id="smart-preview" class="smart-preview" style="display:none;"></div>
+    </div>
+
     <!-- GitHub Token -->
     <div class="settings-panel">
       <label>🔑 GitHub Token:</label>
       <input type="password" id="github-token" placeholder="github_pat_ 开头的 Personal Access Token">
       <button class="btn-primary" style="padding:8px 16px;font-size:13px;" onclick="saveToken()">保存</button>
       <span id="token-status" style="font-size:12px;color:var(--text-sub);"></span>
+    </div>
+
+    <!-- DeepSeek Key -->
+    <div class="settings-panel">
+      <label>🧠 DeepSeek Key:</label>
+      <input type="password" id="deepseek-key" placeholder="sk- 开头的 DeepSeek API Key（自动拆题归类用）">
+      <button class="btn-primary" style="padding:8px 16px;font-size:13px;" onclick="saveDeepSeekKey()">保存</button>
+      <span id="deepseek-status" style="font-size:12px;color:var(--text-sub);"></span>
     </div>
 
     <!-- 试卷表单 -->
