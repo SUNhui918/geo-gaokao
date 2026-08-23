@@ -6,234 +6,127 @@
   <title>管理后台 · 高三地理试题库</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* 管理页专用补充样式 */
-    .admin-layout { max-width: 900px; margin: 0 auto; padding: 24px 20px 60px; }
-    .admin-topbar {
-      background: #0f172a; color: #fff; padding: 14px 20px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .admin-topbar-inner {
-      max-width: 900px; margin: 0 auto; width: 100%;
-      display: flex; align-items: center; justify-content: space-between;
-    }
+    .admin-layout { max-width: 960px; margin: 0 auto; padding: 24px 20px 80px; }
+    .admin-topbar { background: #0f172a; color: #fff; padding: 14px 20px; }
+    .admin-topbar-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
     .admin-brand { font-weight: 700; font-size: 16px; }
-    .admin-exit {
-      color: #94a3b8; font-size: 13px; text-decoration: none;
-      border: 1px solid #334155; padding: 6px 14px; border-radius: 6px;
-    }
+    .admin-exit { color: #94a3b8; font-size: 13px; text-decoration: none; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px; cursor: pointer; background: none; }
     .admin-exit:hover { color: #fff; border-color: #64748b; }
-
-    .settings-panel {
-      background: #fff; border: 1px solid var(--border); border-radius: 10px;
-      padding: 16px 20px; margin-bottom: 20px; display: flex;
-      align-items: center; gap: 12px; flex-wrap: wrap;
-    }
+    .notice { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin: 16px 0; line-height: 1.6; }
+    .settings-panel { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
     .settings-panel label { font-size: 13px; font-weight: 600; color: var(--text-sub); }
-    .settings-panel input {
-      flex: 1; min-width: 240px; padding: 9px 12px;
-      border: 1px solid var(--border); border-radius: 6px; font-size: 13px;
-    }
-    .admin-form {
-      background: #fff; border: 1px solid var(--border); border-radius: 10px;
-      padding: 20px 24px; margin-bottom: 24px;
-    }
+    .settings-panel input { flex: 1; min-width: 240px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; }
+    .admin-form { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin-bottom: 24px; }
     .admin-form h3 { font-size: 16px; margin-bottom: 16px; }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .form-field { display: flex; flex-direction: column; gap: 5px; }
     .form-field.full { grid-column: 1 / -1; }
     .form-field label { font-size: 13px; color: var(--text-sub); font-weight: 500; }
-    .form-field input, .form-field select, .form-field textarea {
-      padding: 9px 12px; border: 1px solid var(--border); border-radius: 6px;
-      font-size: 14px; font-family: inherit; outline: none;
-    }
-    .form-field input:focus, .form-field textarea:focus { border-color: var(--primary); }
-    .form-field textarea { min-height: 80px; resize: vertical; line-height: 1.7; }
+    .form-field input, .form-field select, .form-field textarea { padding: 9px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; font-family: inherit; outline: none; }
+    .form-field textarea { min-height: 80px; resize: vertical; line-height: 1.6; }
+    .form-hint { font-size: 11px; color: #94a3b8; }
     .form-actions { margin-top: 16px; display: flex; gap: 10px; }
-
-    /* 文件上传区 */
-    .upload-box {
-      border: 2px dashed var(--border); border-radius: 8px;
-      padding: 14px 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-      background: #f8fafc;
-    }
+    .upload-box { border: 2px dashed var(--border); border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: #f8fafc; }
     .upload-box.dragover { border-color: var(--primary); background: #eff6ff; }
-    .upload-btn {
-      padding: 8px 16px; background: var(--primary); color: #fff; border: none;
-      border-radius: 6px; font-size: 13px; cursor: pointer;
-    }
     .upload-info { font-size: 12px; color: var(--text-sub); flex: 1; min-width: 160px; }
-
-    .manage-item {
-      background: #fff; border: 1px solid var(--border); border-radius: 8px;
-      padding: 14px 16px; margin-bottom: 10px;
-      display: flex; align-items: center; gap: 12px;
-    }
+    .manage-item { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
     .manage-item .mi-title { flex: 1; font-size: 14px; font-weight: 500; }
     .manage-item .mi-info { font-size: 12px; color: var(--text-sub); }
-    .mi-btn {
-      padding: 6px 12px; border: 1px solid var(--border); background: #fff;
-      border-radius: 6px; font-size: 12px; cursor: pointer;
-    }
+    .mi-btn { padding: 6px 12px; border: 1px solid var(--border); background: #fff; border-radius: 6px; font-size: 12px; cursor: pointer; }
     .mi-btn.edit:hover { border-color: var(--primary); color: var(--primary); }
     .mi-btn.del:hover { border-color: #dc2626; color: #dc2626; }
-
-    .save-status {
-      position: fixed; bottom: 24px; right: 24px; z-index: 300;
-      background: #0f172a; color: #fff; padding: 12px 20px;
-      border-radius: 8px; font-size: 13px; display: none;
-      box-shadow: 0 8px 24px rgba(0,0,0,.25);
-      max-width: 420px;
-    }
+    .save-status { position: fixed; bottom: 24px; right: 24px; z-index: 300; background: #0f172a; color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 13px; display: none; box-shadow: 0 8px 24px rgba(0,0,0,.25); max-width: 420px; }
     .save-status.ok { background: #15803d; }
     .save-status.err { background: #dc2626; }
-
-    .admin-gate {
-      position: fixed; inset: 0; background: #0f172a;
-      display: flex; align-items: center; justify-content: center; z-index: 100;
-    }
-    .link-hint { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+    @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-
-  <!-- ==================== 管理员密码门 ==================== -->
-  <div id="admin-gate" class="admin-gate">
-    <div class="gate-card">
-      <div class="gate-logo">🔐</div>
-      <h1>管理后台</h1>
-      <p class="gate-sub">高三地理试题库 · 仅限管理员访问</p>
-      <div class="gate-input-wrap">
-        <input type="password" id="admin-password" placeholder="管理员密码" autocomplete="off">
-        <button id="admin-gate-submit">验 证</button>
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <div class="admin-brand">🔐 高三地理试题库 · 管理后台</div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <a href="index.html" class="admin-exit" target="_blank">查看前台 ↗</a>
+        <button id="admin-lock" class="admin-exit">🔒 退出</button>
       </div>
-      <p id="admin-gate-error" class="gate-error" style="display:none;">密码错误</p>
+    </div>
+  </header>
+
+  <div class="admin-layout">
+    <div class="notice">
+      本页面的真正权限是你的 GitHub Token。请使用「只读/写入本仓库内容」的细粒度 Token，并只在个人设备上使用；Token 只保存在当前浏览器会话中，关闭浏览器即清除。
+    </div>
+
+    <!-- GitHub Token -->
+    <div class="settings-panel">
+      <label>🔑 GitHub Token:</label>
+      <input type="password" id="github-token" placeholder="github_pat_ 开头的 Personal Access Token">
+      <button class="btn-primary" style="padding:8px 16px;font-size:13px;" onclick="saveToken()">保存</button>
+      <span id="token-status" style="font-size:12px;color:var(--text-sub);"></span>
+    </div>
+
+    <!-- 试卷表单 -->
+    <div class="admin-form">
+      <h3 id="paper-form-title">📄 添加试卷</h3>
+      <div class="form-grid">
+        <div class="form-field full"><label>试卷标题 *</label><input type="text" id="p-title" placeholder="如：2025年江苏省普通高中学业水平选择性考试·地理"></div>
+        <div class="form-field"><label>省份 *</label><select id="p-province"></select></div>
+        <div class="form-field"><label>年份 *</label><input type="text" id="p-year" placeholder="如 2025"></div>
+        <div class="form-field"><label>类型 *</label><select id="p-type"><option>高考真题</option><option>模拟题</option></select></div>
+        <div class="form-field"><label>含答案 / 含解析</label>
+          <div style="display:flex;gap:10px;">
+            <select id="p-hasanswer" style="flex:1;"><option value="true">含答案</option><option value="false">无答案</option></select>
+            <select id="p-hasanalysis" style="flex:1;"><option value="true">含解析</option><option value="false">无解析</option></select>
+          </div>
+        </div>
+        <div class="form-field full"><label>试卷文件（PDF / Word，直接上传）</label>
+          <div class="upload-box" id="paper-upload-box">
+            <button type="button" class="btn-primary" style="padding:8px 14px;font-size:13px;" onclick="document.getElementById('p-file').click()">📁 选择文件</button>
+            <span class="upload-info" id="p-file-info">支持 .pdf / .doc / .docx，拖拽到此处也可上传</span>
+            <input type="file" id="p-file" accept=".pdf,.doc,.docx" style="display:none;">
+          </div>
+        </div>
+        <div class="form-field full"><label>试卷在线链接（已有网上地址时填这里）</label><input type="text" id="p-url" placeholder="https://..."></div>
+      </div>
+      <div class="form-actions"><button class="btn-primary" onclick="savePaper()">💾 保存并发布</button><button class="btn-ghost" onclick="resetPaperForm()">清空</button></div>
+    </div>
+
+    <!-- 题目表单 -->
+    <div class="admin-form">
+      <h3 id="question-form-title">🔖 添加题目</h3>
+      <div class="form-grid">
+        <div class="form-field"><label>所属试卷 *</label><select id="q-paperid"></select></div>
+        <div class="form-field"><label>题号 *</label><input type="text" id="q-number" placeholder="如 1~3、24"></div>
+        <div class="form-field"><label>专题 *</label><select id="q-topic"></select></div>
+        <div class="form-field"><label>知识点</label><input type="text" id="q-knowledgepoint" placeholder="如 聚落选址"></div>
+        <div class="form-field"><label>难度</label><select id="q-difficulty"><option>易</option><option selected>中</option><option>难</option></select></div>
+        <div class="form-field"><label>题组标识（同组小题填相同值）</label><input type="text" id="q-group" placeholder="如 qg-加达村"></div>
+        <div class="form-field full"><label>题目简述 *</label><textarea id="q-desc" placeholder="一句话说明这道题考什么"></textarea></div>
+        <div class="form-field full"><label>关键词（逗号分隔）</label><input type="text" id="q-keywords" placeholder="如 冷锋,天气图,过境"></div>
+        <div class="form-field full"><label>共享材料（题组小题共用，单题可留空）</label><textarea id="q-material" placeholder="题组共享的材料文字"></textarea></div>
+        <div class="form-field full"><label>配图（每行一张：相对路径 或 URL，可用 | 分隔加图注）</label><textarea id="q-figures" placeholder="files/figs/q4-6-astronaut.jpg|地球背光面照片&#10;files/figs/q4-options.jpg|选项图 A-D"></textarea>
+          <span class="form-hint">示例：files/figs/xxx.jpg|题干图。图注不填则只显示图片。</span>
+        </div>
+        <div class="form-field full"><label>完整题干（材料 + 问题 + 选项）</label><textarea id="q-content"></textarea></div>
+        <div class="form-field full"><label>答案</label><textarea id="q-answer"></textarea></div>
+        <div class="form-field full"><label>解析</label><textarea id="q-analysis"></textarea></div>
+      </div>
+      <div class="form-actions"><button class="btn-primary" onclick="saveQuestion()">💾 保存并发布</button><button class="btn-ghost" onclick="resetQuestionForm()">清空</button></div>
+    </div>
+
+    <!-- 已有资源 -->
+    <div class="admin-form">
+      <h3>📋 已有资源管理</h3>
+      <div class="form-field" style="margin-bottom:14px;">
+        <select id="manage-type" onchange="renderManageList()">
+          <option value="papers">📄 试卷（<span id="paper-count">0</span> 套）</option>
+          <option value="questions">🔖 题目（<span id="question-count">0</span> 道）</option>
+        </select>
+      </div>
+      <div id="manage-list"></div>
     </div>
   </div>
 
-  <!-- ==================== 管理界面 ==================== -->
-  <div id="admin-main" style="display:none;">
-    <header class="admin-topbar">
-      <div class="admin-topbar-inner">
-        <div class="admin-brand">🔐 高三地理试题库 · 管理后台</div>
-        <div style="display:flex;gap:10px;align-items:center;">
-          <a href="index.html" class="admin-exit" target="_blank">查看前台 ↗</a>
-          <button id="admin-lock" class="admin-exit" style="cursor:pointer;">🔒 退出管理</button>
-        </div>
-      </div>
-    </header>
-
-    <div class="admin-layout">
-
-      <!-- GitHub Token 设置 -->
-      <div class="settings-panel">
-        <label>🔑 GitHub Token:</label>
-        <input type="password" id="github-token" placeholder="ghp_ 开头的 Personal Access Token(存本机,不上传)">
-        <button class="btn-primary" style="padding:8px 16px;font-size:13px;" onclick="saveToken()">保存</button>
-        <span id="token-status" style="font-size:12px;color:var(--text-sub);"></span>
-      </div>
-
-      <!-- ============ 添加/编辑试卷 ============ -->
-      <div class="admin-form" id="paper-form">
-        <h3 id="paper-form-title">📄 添加试卷</h3>
-        <div class="form-grid">
-          <div class="form-field full">
-            <label>试卷标题 *</label>
-            <input type="text" id="p-title" placeholder="如:2025年江苏省普通高中学业水平选择性考试·地理">
-          </div>
-          <div class="form-field">
-            <label>省份 *</label>
-            <select id="p-province"></select>
-          </div>
-          <div class="form-field">
-            <label>年份 *</label>
-            <input type="text" id="p-year" placeholder="如 2025">
-          </div>
-          <div class="form-field">
-            <label>类型 *</label>
-            <select id="p-type">
-              <option>高考真题</option>
-              <option>模拟题</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label>含答案 / 含解析</label>
-            <div style="display:flex;gap:10px;">
-              <select id="p-hasanswer" style="flex:1;">
-                <option value="true">含答案</option><option value="false">无答案</option>
-              </select>
-              <select id="p-hasanalysis" style="flex:1;">
-                <option value="true">含解析</option><option value="false">无解析</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-field full">
-            <label>试卷文件(PDF 或 Word,直接上传到站点)</label>
-            <div class="upload-box" id="paper-upload-box">
-              <button type="button" class="upload-btn" onclick="document.getElementById('p-file').click()">📁 选择文件</button>
-              <span class="upload-info" id="p-file-info">支持 .pdf / .doc / .docx,拖拽到此处也可上传</span>
-              <input type="file" id="p-file" accept=".pdf,.doc,.docx" style="display:none;">
-            </div>
-          </div>
-          <div class="form-field full">
-            <label>试卷在线链接(已有网上地址时填这里,上传文件则不用填)</label>
-            <input type="text" id="p-url" placeholder="https://...(PDF 直链优先,Word 将提供下载+在线预览)">
-            <p class="link-hint">提示:如果同时在管理页上传了文件,将以上传后的文件地址为准</p>
-          </div>
-        </div>
-        <div class="form-actions">
-          <button class="btn-primary" onclick="savePaper()">💾 保存并发布</button>
-          <button class="btn-ghost" onclick="resetPaperForm()">清空表单</button>
-        </div>
-      </div>
-
-      <!-- ============ 添加/编辑题目(专题检索用) ============ -->
-      <div class="admin-form" id="question-form">
-        <h3 id="question-form-title">🔖 添加题目(用于按专题检索)</h3>
-        <p style="font-size:12px;color:#94a3b8;margin:-10px 0 14px;">给试卷中的重要题目标注专题,学生就能按专题跨卷检索。不必录全部题目,只录典型题即可。</p>
-        <div class="form-grid">
-          <div class="form-field">
-            <label>所属试卷 *</label>
-            <select id="q-paperid"></select>
-          </div>
-          <div class="form-field">
-            <label>题号 *</label>
-            <input type="text" id="q-number" placeholder="如 1~3、17(2)">
-          </div>
-          <div class="form-field">
-            <label>专题 *</label>
-            <select id="q-topic"></select>
-          </div>
-          <div class="form-field">
-            <label>关键词(逗号分隔)</label>
-            <input type="text" id="q-keywords" placeholder="如:冷锋,天气图,过境">
-          </div>
-          <div class="form-field full">
-            <label>题目内容简述 *</label>
-            <textarea id="q-desc" placeholder="一句话说明这道题考什么,如:以某河流阶地为背景,考查流水侵蚀地貌与阶地形成过程"></textarea>
-          </div>
-        </div>
-        <div class="form-actions">
-          <button class="btn-primary" onclick="saveQuestion()">💾 保存并发布</button>
-          <button class="btn-ghost" onclick="resetQuestionForm()">清空表单</button>
-        </div>
-      </div>
-
-      <!-- ============ 已有资源管理 ============ -->
-      <div class="admin-form">
-        <h3>📋 已有资源管理</h3>
-        <div class="form-field" style="margin-bottom:14px;">
-          <select id="manage-type" onchange="renderManageList()">
-            <option value="papers">📄 试卷(<span id="paper-count">0</span> 套)</option>
-            <option value="questions">🔖 题目(<span id="question-count">0</span> 道)</option>
-          </select>
-        </div>
-        <div id="manage-list"></div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- 保存状态提示 -->
   <div id="save-status" class="save-status"></div>
 
   <script src="config.js"></script>
