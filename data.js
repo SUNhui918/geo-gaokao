@@ -1,61 +1,32 @@
 // ============================================================
 // 高三地理试题库 - 数据文件
-// 管理页通过 GitHub API 修改此文件,站点自动更新
+// 横山桥高中地理教研组
 // ============================================================
-// 数据结构说明:
-// papers    : 试卷(真题/模拟题),按省份+年份检索整卷
-// questions : 题目(挂在试卷下,标专题),按专题跨卷检索
-//   paperId : 所属试卷的 id
-//   number  : 题号,如 "1~3"、"24"
-//   ★ 录入规则:综合题一律按整题录入,不拆分小题
-//     (content含全部材料和小问,answer按(1)(2)(3)分条)
-//   topic   : 专题(见 TOPIC_GROUPS)
-//   desc    : 题目内容简述(便于不用打开文件就知道考什么)
-//   keywords: 检索关键词(逗号分隔)
-//   content : 完整题干(材料+问题+选项)
-//   answer  : 答案
-//   hasFigure: 是否含图(图见原卷)
-// provinces : 省份下拉选项
+// 数据结构说明：
+// papers     : 试卷（真题/模拟题），按省份 + 年份检索整卷
+// questions  : 题目（挂在试卷下，标专题），按专题跨卷检索
+//   paperId       : 所属试卷的 id
+//   number        : 题号，如 "1~3"、"24"
+//   topic         : 专题（见 topicGroups）
+//   knowledgePoint: 更细的知识点
+//   difficulty    : 难度（易 / 中 / 难）
+//   desc          : 一句话简述考什么
+//   keywords      : 检索关键词（数组）
+//   sharedMaterial: 题组共享材料（同 questionGroup 只显示一次）
+//   figures       : 配图数组，一张题可挂多张图（题干图 + 选项图 + 歌词图等）
+//   content       : 完整题干（材料 + 问题 + 选项）
+//   answer        : 答案
+//   analysis      : 解析
+//   hasFigure     : 是否含图（当 figures 为空但原卷有图时置 true）
 // ============================================================
 
-const TOPIC_GROUPS = [
-  {
-    group: "自然地理",
-    topics: [
-      "经纬网和地图",
-      "地理信息技术",
-      "地球运动和天文",
-      "大气",
-      "水",
-      "地表形态的塑造",
-      "整体性和差异性",
-      "土壤",
-      "植被"
-    ]
+const QUESTION_BANK = {
+  meta: {
+    siteName: "高三地理试题库",
+    orgName: "横山桥高中地理教研组",
+    updated: "2026-08-23"
   },
-  {
-    group: "人文地理",
-    topics: [
-      "人口",
-      "乡村和城镇",
-      "地域文化",
-      "产业",
-      "交通",
-      "环境与发展",
-      "国家安全"
-    ]
-  },
-  {
-    group: "区域",
-    topics: [
-      "江苏地理",
-      "中国地理",
-      "世界地理"
-    ]
-  }
-];
 
-const RESOURCES = {
   provinces: [
     "全国", "江苏", "北京", "上海", "天津", "浙江", "山东", "广东", "湖南",
     "湖北", "海南", "辽宁", "福建", "河北", "重庆", "安徽", "广西", "贵州",
@@ -63,212 +34,334 @@ const RESOURCES = {
     "黑龙江", "内蒙古", "新疆", "黑吉辽蒙", "陕晋宁青"
   ],
 
+  topicGroups: [
+    {
+      group: "自然地理",
+      topics: ["经纬网和地图", "地理信息技术", "地球运动和天文", "大气", "水", "地表形态的塑造", "整体性和差异性", "土壤", "植被"]
+    },
+    {
+      group: "人文地理",
+      topics: ["人口", "乡村和城镇", "地域文化", "产业", "交通", "环境与发展", "国家安全"]
+    },
+    {
+      group: "区域",
+      topics: ["江苏地理", "中国地理", "世界地理"]
+    }
+  ],
+
   papers: [
-    // 已入库试卷(只保留有实际文件和题目的试卷,新试卷由管理页添加)
-    { id: "p-2026-江苏", title: "2026年江苏省高考地理真题(姚永清版·官答全)", province: "江苏", year: "2026", paperType: "高考真题", url: "https://sunhui918.github.io/geo-gaokao/files/2026-%E6%B1%9F%E8%8B%8F%E9%AB%98%E8%80%83%E5%9C%B0%E7%90%86%E7%9C%9F%E9%A2%98-%E5%AE%98%E7%AD%94%E7%89%88.doc", hasAnswer: true, hasAnalysis: true, dateAdded: "2026-08-22" }
+    {
+      id: "p-2026-江苏",
+      title: "2026年江苏省高考地理真题（姚永清版·官答全）",
+      province: "江苏",
+      year: "2026",
+      type: "高考真题",
+      url: "files/2026-江苏高考地理真题-官答版.doc",
+      hasAnswer: true,
+      hasAnalysis: true,
+      dateAdded: "2026-08-22"
+    }
   ],
 
   questions: [
-    // ===== 2026年江苏卷·单选题 =====
-    { paperId: "p-2026-江苏", number: "1", topic: "乡村和城镇", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q1-3-gangda.jpg", questionGroup: "qg-gangda",
-      desc: "加达村(澜沧江上游峡谷)房屋集中选址",
-      keywords: "聚落,聚落选址,澜沧江,峡谷,横断山区",
+    // ===== 2026 江苏卷 · 单选题 =====
+    {
+      paperId: "p-2026-江苏", number: "1", topic: "地域文化", knowledgePoint: "聚落选址",
+      difficulty: "易", desc: "加达村（澜沧江上游峡谷）房屋集中选址",
+      keywords: ["聚落", "聚落选址", "澜沧江", "峡谷", "横断山区"],
       sharedMaterial: "加达村位于澜沧江上游的深切峡谷中，水资源短缺。下图为“加达村聚落景观要素示意图”。",
+      figures: [{ url: "files/figs/q1-3-gangda.jpg", label: "加达村聚落景观要素示意图", alt: "加达村聚落景观要素示意图" }],
+      hasFigure: true,
       content: "该村房屋主要集中在（　）\nA.甲区域　B.乙区域　C.丙区域　D.丁区域",
-      answer: "B" },
-    { paperId: "p-2026-江苏", number: "2", topic: "植被", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q1-3-gangda.jpg",
-      questionGroup: "qg-gangda",
-      desc: "林地对聚落环境最突出的作用",
-      keywords: "植被,林地,生态功能,干热风",
+      answer: "B",
+      analysis: "澜沧江上游深切峡谷，平地稀少，聚落集中于地势相对平缓、便于取水且不易受灾害威胁的区域。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "2", topic: "地域文化", knowledgePoint: "森林的生态功能",
+      difficulty: "易", desc: "林地对聚落环境最突出的作用",
+      keywords: ["植被", "林地", "生态功能", "干热风"],
       sharedMaterial: "加达村位于澜沧江上游的深切峡谷中，水资源短缺。下图为“加达村聚落景观要素示意图”。",
-      content: "\n林地对聚落环境最突出的作用是（　）\nA.减少蒸腾　B.抵御洪水　C.防治荒漠化　D.阻挡干热风",
-      answer: "D" },
-    { paperId: "p-2026-江苏", number: "3", topic: "水", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q1-3-gangda.jpg",
-      questionGroup: "qg-gangda",
-      desc: "合理利用有限水资源的措施(错时灌溉)",
-      keywords: "水资源,灌溉,水资源利用",
+      figures: [{ url: "files/figs/q1-3-gangda.jpg", label: "加达村聚落景观要素示意图", alt: "加达村聚落景观要素示意图" }],
+      hasFigure: true,
+      content: "林地对聚落环境最突出的作用是（　）\nA.减少蒸腾　B.抵御洪水　C.防治荒漠化　D.阻挡干热风",
+      answer: "D",
+      analysis: "该区域位于横断山区干热河谷，林地最主要的作用是防风固沙、阻挡干热风，改善局部小气候。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "3", topic: "地域文化", knowledgePoint: "水资源合理利用",
+      difficulty: "中", desc: "合理利用有限水资源的措施（错时灌溉）",
+      keywords: ["水资源", "灌溉", "水资源利用"],
       sharedMaterial: "加达村位于澜沧江上游的深切峡谷中，水资源短缺。下图为“加达村聚落景观要素示意图”。",
-      content: "\n为合理利用有限水资源，该村宜采取的措施是（　）\nA.提高复种指数　B.拓宽引水渠道　C.实施错时灌溉　D.扩大林地规模",
-      answer: "C" },
-    { paperId: "p-2026-江苏", number: "4", topic: "地球运动和天文", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q4-6-astronaut.jpg",
-      questionGroup: "qg-yuhangyuan",
-      desc: "判断地球自转方向(宇航员背光面照片)",
-      keywords: "地球自转,自转方向,侧视图",
+      figures: [{ url: "files/figs/q1-3-gangda.jpg", label: "加达村聚落景观要素示意图", alt: "加达村聚落景观要素示意图" }],
+      hasFigure: true,
+      content: "为合理利用有限水资源，该村宜采取的措施是（　）\nA.提高复种指数　B.拓宽引水渠道　C.实施错时灌溉　D.扩大林地规模",
+      answer: "C",
+      analysis: "水资源短缺，错时灌溉可削峰填谷，避免集中用水，提高水资源利用效率。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "4", topic: "地球运动和天文", knowledgePoint: "地球自转方向",
+      difficulty: "难", desc: "判断地球自转方向（宇航员背光面照片）",
+      keywords: ["地球自转", "自转方向", "侧视图", "背光面"],
       sharedMaterial: "下图为“宇航员从飞船拍摄的地球背光面照片”，此时直布罗陀海峡（36°N，6°W）所在时区的区时为0时27分。",
-      content: "\n下列图中地球自转方向（箭头标示）正确的是（　）\nA.A　B.B　C.C　D.D",
-      answer: "A" },
-    { paperId: "p-2026-江苏", number: "5", topic: "地球运动和天文", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q4-6-astronaut.jpg",
-      questionGroup: "qg-yuhangyuan",
-      desc: "照片拍摄时的北京时间计算",
-      keywords: "区时,时间计算,北京时间,时差",
+      figures: [
+        { url: "files/figs/q4-6-astronaut.jpg", label: "地球背光面照片", alt: "宇航员拍摄的地球背光面照片" },
+        { url: "files/figs/q4-options.jpg", label: "选项图 A-D", alt: "地球自转方向四个选项图" }
+      ],
+      hasFigure: true,
+      content: "下列图中地球自转方向（箭头标示）正确的是（　）\nA.A　B.B　C.C　D.D",
+      answer: "A",
+      analysis: "背光面为夜半球，结合照片中晨昏线位置和地球自西向东的自转方向判断。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "5", topic: "地球运动和天文", knowledgePoint: "区时计算",
+      difficulty: "中", desc: "照片拍摄时的北京时间计算",
+      keywords: ["区时", "时间计算", "北京时间", "时差"],
       sharedMaterial: "下图为“宇航员从飞船拍摄的地球背光面照片”，此时直布罗陀海峡（36°N，6°W）所在时区的区时为0时27分。",
-      content: "\n照片拍摄时，北京时间为（　）\nA.3时27分　B.8时27分　C.16时27分　D.20时27分",
-      answer: "B" },
-    { paperId: "p-2026-江苏", number: "6", topic: "地球运动和天文", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q4-6-astronaut.jpg",
-      questionGroup: "qg-yuhangyuan",
-      desc: "拍摄时地球、金星、飞船位置关系",
-      keywords: "天体,金星,空间位置,天文观测",
+      figures: [{ url: "files/figs/q4-6-astronaut.jpg", label: "地球背光面照片", alt: "宇航员拍摄的地球背光面照片" }],
+      hasFigure: true,
+      content: "照片拍摄时，北京时间为（　）\nA.3时27分　B.8时27分　C.16时27分　D.20时27分",
+      answer: "B",
+      analysis: "直布罗陀海峡位于6°W，属中时区（0时区），区时0:27；北京时间（东八区）相差8小时，0:27+8=8:27。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "6", topic: "地球运动和天文", knowledgePoint: "天体相对位置",
+      difficulty: "难", desc: "拍摄时地球、金星、飞船位置关系",
+      keywords: ["天体", "金星", "空间位置", "天文观测"],
       sharedMaterial: "下图为“宇航员从飞船拍摄的地球背光面照片”，此时直布罗陀海峡（36°N，6°W）所在时区的区时为0时27分。",
-      content: "\n能正确示意拍摄时地球、金星、飞船位置关系的是（　）\nA.A　B.B　C.C　D.D",
-      answer: "B" },
-    { paperId: "p-2026-江苏", number: "7", topic: "地表形态的塑造", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q7-9-shale.png",
-      questionGroup: "qg-yeqi",
-      desc: "页岩气田区域主要地质地貌特征(断层、差异侵蚀)",
-      keywords: "地质构造,断层,侵蚀,页岩气,地质剖面图",
+      figures: [
+        { url: "files/figs/q4-6-astronaut.jpg", label: "地球背光面照片", alt: "宇航员拍摄的地球背光面照片" },
+        { url: "files/figs/q6-options.jpg", label: "选项图 A-D", alt: "地球、金星、飞船位置关系四个选项图" }
+      ],
+      hasFigure: true,
+      content: "能正确示意拍摄时地球、金星、飞船位置关系的是（　）\nA.A　B.B　C.C　D.D",
+      answer: "B",
+      analysis: "结合拍摄到的地球背光面朝向与金星方位，判断飞船、地球、金星三者的相对位置关系。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "7", topic: "地表形态的塑造", knowledgePoint: "地质构造与地貌",
+      difficulty: "中", desc: "页岩气田区域主要地质地貌特征（断层、差异侵蚀）",
+      keywords: ["地质构造", "断层", "侵蚀", "页岩气", "地质剖面图"],
       sharedMaterial: "下图为“我国某浅层页岩气田地质剖面图”。",
-      content: "\n该区域主要地质地貌特征是（　）\n①断层发育明显　②地层倒转明显　③差异侵蚀明显　④岩浆侵入明显\nA.①②　B.①③　C.②④　D.③④",
-      answer: "B" },
-    { paperId: "p-2026-江苏", number: "8", topic: "地表形态的塑造", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q7-9-shale.png",
-      questionGroup: "qg-yeqi",
-      desc: "褶皱的形成时期(地质年代判读)",
-      keywords: "褶皱,地质年代,三叠纪,志留纪,地层层序",
+      figures: [{ url: "files/figs/q7-9-shale.png", label: "浅层页岩气田地质剖面图", alt: "浅层页岩气田地质剖面图" }],
+      hasFigure: true,
+      content: "该区域主要地质地貌特征是（　）\n①断层发育明显　②地层倒转明显　③差异侵蚀明显　④岩浆侵入明显\nA.①②　B.①③　C.②④　D.③④",
+      answer: "B",
+      analysis: "剖面图中可见明显断层，且不同岩性抗侵蚀能力不同导致差异侵蚀；未见明显地层倒转和岩浆侵入。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "8", topic: "地表形态的塑造", knowledgePoint: "地层与地质年代",
+      difficulty: "难", desc: "褶皱的形成时期（地质年代判读）",
+      keywords: ["褶皱", "地质年代", "三叠纪", "志留纪", "地层层序"],
       sharedMaterial: "下图为“我国某浅层页岩气田地质剖面图”。",
-      content: "\n图中褶皱的形成时期可能是（　）\nA.不早于三叠纪　B.奥陶纪与志留纪之间　C.不晚于志留纪　D.志留纪与二叠纪之间",
-      answer: "A" },
-    { paperId: "p-2026-江苏", number: "9", topic: "地表形态的塑造", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q7-9-shale.png",
-      questionGroup: "qg-yeqi",
-      desc: "3号井比1号井含气量大的原因(构造封闭性)",
-      keywords: "页岩气,构造封闭,储气,地质剖面图",
+      figures: [{ url: "files/figs/q7-9-shale.png", label: "浅层页岩气田地质剖面图", alt: "浅层页岩气田地质剖面图" }],
+      hasFigure: true,
+      content: "图中褶皱的形成时期可能是（　）\nA.不早于三叠纪　B.奥陶纪与志留纪之间　C.不晚于志留纪　D.志留纪与二叠纪之间",
+      answer: "A",
+      analysis: "褶皱卷入的最新地层为三叠纪，说明褶皱形成于该地层之后，即不早于三叠纪。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "9", topic: "地表形态的塑造", knowledgePoint: "地质构造与资源",
+      difficulty: "中", desc: "3号井比1号井含气量大的原因（构造封闭性）",
+      keywords: ["页岩气", "构造封闭", "储气", "地质剖面图"],
       sharedMaterial: "下图为“我国某浅层页岩气田地质剖面图”。",
-      content: "\n3号井比1号井含气量大，主要是由于（　）\nA.断层数量较少　B.岩层厚度较大　C.构造封闭性好　D.地下水压较小",
-      answer: "C" },
-    { paperId: "p-2026-江苏", number: "10", topic: "大气", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q10-12-weather.png",
-      questionGroup: "qg-ouzhou",
-      desc: "天气形势图判读:天气晴朗的城市",
-      keywords: "天气系统,天气图,锋面,高压,晴朗",
+      figures: [{ url: "files/figs/q7-9-shale.png", label: "浅层页岩气田地质剖面图", alt: "浅层页岩气田地质剖面图" }],
+      hasFigure: true,
+      content: "3号井比1号井含气量大，主要是由于（　）\nA.断层数量较少　B.岩层厚度较大　C.构造封闭性好　D.地下水压较小",
+      answer: "C",
+      analysis: "3号井所处的构造部位封闭性好，利于天然气保存和富集，故含气量更大。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "10", topic: "大气", knowledgePoint: "天气系统与天气",
+      difficulty: "中", desc: "天气形势图判读：天气晴朗的城市",
+      keywords: ["天气系统", "天气图", "锋面", "高压", "晴朗"],
       sharedMaterial: "下图为“欧洲部分地区某日14时近地面天气形势图”。",
-      content: "\n此时天气晴朗的城市是（　）\nA.伦敦　B.鹿特丹　C.华沙　D.罗马",
-      answer: "D" },
-    { paperId: "p-2026-江苏", number: "11", topic: "大气", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q10-12-weather.png",
-      questionGroup: "qg-ouzhou",
-      desc: "天气图判读:伦敦的风向",
-      keywords: "风向,气压梯度力,地转偏向力,天气图",
+      figures: [{ url: "files/figs/q10-12-weather.png", label: "欧洲近地面天气形势图", alt: "欧洲部分地区近地面天气形势图" }],
+      hasFigure: true,
+      content: "此时天气晴朗的城市是（　）\nA.伦敦　B.鹿特丹　C.华沙　D.罗马",
+      answer: "D",
+      analysis: "罗马处于高压控制下，盛行下沉气流，天气晴朗；其他城市多位于锋面或低压附近。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "11", topic: "大气", knowledgePoint: "风向判读",
+      difficulty: "中", desc: "天气图判读：伦敦的风向",
+      keywords: ["风向", "气压梯度力", "地转偏向力", "天气图"],
       sharedMaterial: "下图为“欧洲部分地区某日14时近地面天气形势图”。",
-      content: "\n此时伦敦风向为（　）\nA.偏东风　B.偏南风　C.偏西风　D.偏北风",
-      answer: "A" },
-    { paperId: "p-2026-江苏", number: "12", topic: "大气", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q10-12-weather.png",
-      questionGroup: "qg-ouzhou",
-      desc: "甲天气系统过境对柏林天气的影响",
-      keywords: "锋面过境,气温,气压,天气变化",
+      figures: [{ url: "files/figs/q10-12-weather.png", label: "欧洲近地面天气形势图", alt: "欧洲部分地区近地面天气形势图" }],
+      hasFigure: true,
+      content: "此时伦敦风向为（　）\nA.偏东风　B.偏南风　C.偏西风　D.偏北风",
+      answer: "A",
+      analysis: "伦敦位于低压/锋面附近，结合气压梯度力、地转偏向力和摩擦力可判为偏东风。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "12", topic: "大气", knowledgePoint: "锋面过境",
+      difficulty: "中", desc: "甲天气系统过境对柏林天气的影响",
+      keywords: ["锋面过境", "气温", "气压", "天气变化"],
       sharedMaterial: "下图为“欧洲部分地区某日14时近地面天气形势图”。",
-      content: "\n甲天气系统过境，柏林（　）\nA.气温升高，气压升高　B.气温升高，气压下降　C.气温下降，气压升高　D.气温下降，气压下降",
-      answer: "C" },
-    { paperId: "p-2026-江苏", number: "13", topic: "乡村和城镇", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q13-14-rail.jpg",
-      questionGroup: "qg-jiaotong",
-      desc: "根据轨道站点高度深度判断城市(重庆)",
-      keywords: "城市,地形,轨道交通,城市判断,重庆",
+      figures: [{ url: "files/figs/q10-12-weather.png", label: "欧洲近地面天气形势图", alt: "欧洲部分地区近地面天气形势图" }],
+      hasFigure: true,
+      content: "甲天气系统过境，柏林（　）\nA.气温升高，气压升高　B.气温升高，气压下降　C.气温下降，气压升高　D.气温下降，气压下降",
+      answer: "C",
+      analysis: "甲为冷锋，冷锋过境后受冷气团控制，气温下降、气压升高、天气转晴。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "13", topic: "乡村和城镇", knowledgePoint: "城市区位与地形",
+      difficulty: "中", desc: "根据轨道站点高度深度判断城市（重庆）",
+      keywords: ["城市", "地形", "轨道交通", "城市判断", "重庆"],
       sharedMaterial: "城市轨道交通线路一般坡度较小，站点有高架站、地下站等形式，站点距地面的高度或深度受自然、人文等因素影响。如图为“我国两直辖市轨道交通站点高度和深度范围及站点景观示意图”。",
-      content: "\n甲城市是（　）\nA.北京　B.上海　C.天津　D.重庆",
-      answer: "D" },
-    { paperId: "p-2026-江苏", number: "14", topic: "乡村和城镇", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q13-14-rail.jpg",
-      questionGroup: "qg-jiaotong",
-      desc: "乙城市中心区地下站深度偏大的原因(上海)",
-      keywords: "地下空间,地铁,城市中心,空间利用,上海",
+      figures: [{ url: "files/figs/q13-14-rail.jpg", label: "两直辖市轨道交通站点示意图", alt: "两直辖市轨道交通站点高度和深度范围及站点景观示意图" }],
+      hasFigure: true,
+      content: "甲城市是（　）\nA.北京　B.上海　C.天津　D.重庆",
+      answer: "D",
+      analysis: "甲城市站点高差大、高架桥较多，反映山地丘陵地形特征，最符合重庆。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "14", topic: "乡村和城镇", knowledgePoint: "城市交通与地下空间",
+      difficulty: "难", desc: "乙城市中心区地下站深度偏大的原因（上海）",
+      keywords: ["地下空间", "地铁", "城市中心", "空间利用", "上海"],
       sharedMaterial: "城市轨道交通线路一般坡度较小，站点有高架站、地下站等形式，站点距地面的高度或深度受自然、人文等因素影响。如图为“我国两直辖市轨道交通站点高度和深度范围及站点景观示意图”。",
-      content: "\n乙城市新规划线路在城市中心区的地下站一般深度偏大，主要原因是（　）\nA.既有线路密集　B.地下文物众多　C.施工技术先进　D.道路等级较高",
-      answer: "A" },
-    { paperId: "p-2026-江苏", number: "15", topic: "产业", hasFigure: false,
-      questionGroup: "qg-cunban",
-      desc: "村办企业类型判断(劳动密集型)",
-      keywords: "工业区位,劳动密集型,乡村企业,产业类型",
+      figures: [{ url: "files/figs/q13-14-rail.jpg", label: "两直辖市轨道交通站点示意图", alt: "两直辖市轨道交通站点高度和深度范围及站点景观示意图" }],
+      hasFigure: true,
+      content: "乙城市新规划线路在城市中心区的地下站一般深度偏大，主要原因是（　）\nA.既有线路密集　B.地下文物众多　C.施工技术先进　D.道路等级较高",
+      answer: "A",
+      analysis: "中心区既有线路密集、地下空间已大量占用，新线路需更深穿越以避让既有结构。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "15", topic: "乡村和城镇", knowledgePoint: "工业区位",
+      difficulty: "易", desc: "村办企业类型判断（劳动密集型）",
+      keywords: ["工业区位", "劳动密集型", "乡村企业", "产业类型"],
       sharedMaterial: "改革开放以来，我国东部发达地区某村创办了百余家企业，吸引大量外来人口集聚。近年来，随着城乡融合发展的持续推进，工业逐步向城镇产业园区集中，该村土地利用结构进行了调整。下表为“2019—2025年该村基本情况变化表”（2019年：村内就业人口11072人、户籍人口2325人、耕地1900亩、村域面积2.2km²；2025年：村内就业人口7873人、户籍人口2307人、耕地2253亩、村域面积2.2km²）。",
-      content: "\n该村所创办的百余家企业多属于（　）\nA.资源密集型　B.技术密集型　C.劳动密集型　D.资金密集型",
-      answer: "C" },
-    { paperId: "p-2026-江苏", number: "16", topic: "乡村和城镇", hasFigure: false,
-      questionGroup: "qg-cunban",
-      desc: "该村耕地面积增加的主要原因(政策驱动)",
-      keywords: "耕地,土地利用,城乡融合,政策",
+      figures: [],
+      hasFigure: false,
+      content: "该村所创办的百余家企业多属于（　）\nA.资源密集型　B.技术密集型　C.劳动密集型　D.资金密集型",
+      answer: "C",
+      analysis: "村办企业数量多、吸纳大量外来就业人口，以劳动密集型产业为主。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "16", topic: "乡村和城镇", knowledgePoint: "土地利用变化",
+      difficulty: "中", desc: "该村耕地面积增加的主要原因（政策驱动）",
+      keywords: ["耕地", "土地利用", "城乡融合", "政策"],
       sharedMaterial: "改革开放以来，我国东部发达地区某村创办了百余家企业，吸引大量外来人口集聚。近年来，随着城乡融合发展的持续推进，工业逐步向城镇产业园区集中，该村土地利用结构进行了调整。下表为“2019—2025年该村基本情况变化表”（2019年：村内就业人口11072人、户籍人口2325人、耕地1900亩、村域面积2.2km²；2025年：村内就业人口7873人、户籍人口2307人、耕地2253亩、村域面积2.2km²）。",
-      content: "\n近年来，该村耕地面积增加的主要原因是（　）\nA.市场调节　B.美化环境　C.政策驱动　D.人口减少",
-      answer: "C" },
-    { paperId: "p-2026-江苏", number: "17", topic: "乡村和城镇", hasFigure: false,
-      questionGroup: "qg-cunban",
-      desc: "城乡融合中该村与城镇趋同的主要方面",
-      keywords: "城乡融合,城乡差距,生活质量,乡村振兴",
+      figures: [],
+      hasFigure: false,
+      content: "近年来，该村耕地面积增加的主要原因是（　）\nA.市场调节　B.美化环境　C.政策驱动　D.人口减少",
+      answer: "C",
+      analysis: "工业向园区集中后，村内建设用地复垦为耕地，主要受城乡融合相关政策驱动。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "17", topic: "乡村和城镇", knowledgePoint: "城乡融合",
+      difficulty: "中", desc: "城乡融合中该村与城镇趋同的主要方面",
+      keywords: ["城乡融合", "城乡差距", "生活质量", "乡村振兴"],
       sharedMaterial: "改革开放以来，我国东部发达地区某村创办了百余家企业，吸引大量外来人口集聚。近年来，随着城乡融合发展的持续推进，工业逐步向城镇产业园区集中，该村土地利用结构进行了调整。下表为“2019—2025年该村基本情况变化表”（2019年：村内就业人口11072人、户籍人口2325人、耕地1900亩、村域面积2.2km²；2025年：村内就业人口7873人、户籍人口2307人、耕地2253亩、村域面积2.2km²）。",
-      content: "\n在城乡融合发展过程中，该村最终实现与城镇趋同的主要方面是（　）\nA.土地景观　B.人口结构　C.产业构成　D.生活质量",
-      answer: "D" },
-    { paperId: "p-2026-江苏", number: "18", topic: "水", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q18-19-groundwater.jpg",
-      questionGroup: "qg-diarshui",
-      desc: "地下水年龄变化图:统计年度起始月份",
-      keywords: "地下水,补给,季节变化,落基山,雪",
+      figures: [],
+      hasFigure: false,
+      content: "在城乡融合发展过程中，该村最终实现与城镇趋同的主要方面是（　）\nA.土地景观　B.人口结构　C.产业构成　D.生活质量",
+      answer: "D",
+      analysis: "城乡融合的最终目标是缩小城乡差距，使农村居民的生活质量与城镇趋同。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "18", topic: "水", knowledgePoint: "地下水补给",
+      difficulty: "难", desc: "地下水年龄变化图：统计年度起始月份",
+      keywords: ["地下水", "补给", "季节变化", "落基山", "雪"],
       sharedMaterial: "地下水年龄是指地表水下渗后在地下贮留的时间。美国落基山区某小流域平均海拔超过3200m，年均温约0℃，年降水量约1200mm，以降雪为主，补给河流的地下水量及年龄季节差异明显。下图为“该流域2个统计年度补给河流的地下水年龄变化图”。",
-      content: "\n图中统计年度的起始月份是（　）\nA.1月　B.4月　C.7月　D.10月",
-      answer: "D" },
-    { paperId: "p-2026-江苏", number: "19", topic: "水", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q18-19-groundwater.jpg",
-      questionGroup: "qg-diarshui",
-      desc: "气候变暖积雪减少对地下水的影响",
-      keywords: "气候变化,积雪,地下水补给,全球变暖",
+      figures: [{ url: "files/figs/q18-19-groundwater.jpg", label: "地下水年龄变化图", alt: "两统计年度补给河流的地下水年龄变化图" }],
+      hasFigure: true,
+      content: "图中统计年度的起始月份是（　）\nA.1月　B.4月　C.7月　D.10月",
+      answer: "D",
+      analysis: "该流域以降雪为主，融雪补给发生在春季后，按水文年从秋季10月开始统计更符合补给周期。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "19", topic: "水", knowledgePoint: "气候变化对水文影响",
+      difficulty: "中", desc: "气候变暖积雪减少对地下水的影响",
+      keywords: ["气候变化", "积雪", "地下水补给", "全球变暖"],
       sharedMaterial: "地下水年龄是指地表水下渗后在地下贮留的时间。美国落基山区某小流域平均海拔超过3200m，年均温约0℃，年降水量约1200mm，以降雪为主，补给河流的地下水量及年龄季节差异明显。下图为“该流域2个统计年度补给河流的地下水年龄变化图”。",
-      content: "\n若全球气候变暖导致积雪减少，多年后补给至河流的地下水（　）\nA.水量减少，年龄变老　B.水量减少，年龄变年轻\nC.水量增多，年龄变老　D.水量增多，年龄变年轻",
-      answer: "A" },
-    { paperId: "p-2026-江苏", number: "20", topic: "人口", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q20-21-zhejiang.jpg",
-      questionGroup: "qg-zhejiang",
-      desc: "浙西南人口转为正增长的原因(生态优势)",
-      keywords: "人口增长,浙江,区域差异,生态",
+      figures: [{ url: "files/figs/q18-19-groundwater.jpg", label: "地下水年龄变化图", alt: "两统计年度补给河流的地下水年龄变化图" }],
+      hasFigure: true,
+      content: "若全球气候变暖导致积雪减少，多年后补给至河流的地下水（　）\nA.水量减少，年龄变老　B.水量减少，年龄变年轻\nC.水量增多，年龄变老　D.水量增多，年龄变年轻",
+      answer: "A",
+      analysis: "积雪减少使春季融雪补给量下降，地下水滞留时间延长，表现为水量减少、年龄变老。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "20", topic: "人口", knowledgePoint: "人口增长因素",
+      difficulty: "中", desc: "浙西南人口转为正增长的原因（生态优势）",
+      keywords: ["人口增长", "浙江", "区域差异", "生态"],
       sharedMaterial: "本世纪以来，随着经济发展方式的转变，浙江省人口增长格局发生变化。下图为“2010—2020年浙江省人口增长区域差异示意图”。",
-      content: "\n2010—2020年浙西南地区人口由前十年的负增长转变为正增长，得益于（　）\nA.技术优势　B.生态优势　C.耕地优势　D.矿产优势",
-      answer: "B" },
-    { paperId: "p-2026-江苏", number: "21", topic: "人口", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q20-21-zhejiang.jpg",
-      questionGroup: "qg-zhejiang",
-      desc: "浙江人口增长空间格局体现的规律",
-      keywords: "人口,空间集聚,要素流动,空间格局",
+      figures: [{ url: "files/figs/q20-21-zhejiang.jpg", label: "浙江省人口增长区域差异示意图", alt: "2010—2020年浙江省人口增长区域差异示意图" }],
+      hasFigure: true,
+      content: "2010—2020年浙西南地区人口由前十年的负增长转变为正增长，得益于（　）\nA.技术优势　B.生态优势　C.耕地优势　D.矿产优势",
+      answer: "B",
+      analysis: "浙西南山区生态环境好，发展生态旅游、康养等产业吸引人口回流，实现正增长。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "21", topic: "人口", knowledgePoint: "人口空间分布规律",
+      difficulty: "难", desc: "浙江人口增长空间格局体现的规律",
+      keywords: ["人口", "空间集聚", "要素流动", "空间格局"],
       sharedMaterial: "本世纪以来，随着经济发展方式的转变，浙江省人口增长格局发生变化。下图为“2010—2020年浙江省人口增长区域差异示意图”。",
-      content: "\n浙江省人口增长的空间格局直观体现了（　）\nA.空间距离衰减规律　B.城镇化的发展规律　C.要素空间集聚规律　D.产业结构变迁规律",
-      answer: "C" },
-    { paperId: "p-2026-江苏", number: "22", topic: "世界地理", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q22-23-africa.jpg",
-      questionGroup: "qg-feizhou",
-      desc: "中国企业在非洲农业投资的区位考虑",
-      keywords: "农业区位,非洲,农业投资,生产潜力,世界地理",
+      figures: [{ url: "files/figs/q20-21-zhejiang.jpg", label: "浙江省人口增长区域差异示意图", alt: "2010—2020年浙江省人口增长区域差异示意图" }],
+      hasFigure: true,
+      content: "浙江省人口增长的空间格局直观体现了（　）\nA.空间距离衰减规律　B.城镇化的发展规律　C.要素空间集聚规律　D.产业结构变迁规律",
+      answer: "C",
+      analysis: "人口增长集中于沿海和都市区，体现人口等要素向优势区域空间集聚的规律。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "22", topic: "世界地理", knowledgePoint: "农业区位",
+      difficulty: "易", desc: "中国企业在非洲农业投资的区位考虑",
+      keywords: ["农业区位", "非洲", "农业投资", "生产潜力", "世界地理"],
       sharedMaterial: "近年来，我国的农业投资和技术援助成为非洲农业发展的重要力量。下图为“中国企业在非洲农业投资主要分布区示意图”。",
-      content: "\n我国企业在非洲图示地区进行农业投资，主要是考虑当地（　）\nA.生产潜力大　B.农业历史悠久　C.劳动力丰富　D.水利设施较好",
-      answer: "A" },
-    { paperId: "p-2026-江苏", number: "23", topic: "世界地理", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q22-23-africa.jpg",
-      questionGroup: "qg-feizhou",
-      desc: "需节水灌溉技术保障的投资地区",
-      keywords: "节水灌溉,农业投资,非洲,气候干旱,世界地理",
+      figures: [{ url: "files/figs/q22-23-africa.jpg", label: "非洲农业投资主要分布区示意图", alt: "中国企业在非洲农业投资主要分布区示意图" }],
+      hasFigure: true,
+      content: "我国企业在非洲图示地区进行农业投资，主要是考虑当地（　）\nA.生产潜力大　B.农业历史悠久　C.劳动力丰富　D.水利设施较好",
+      answer: "A",
+      analysis: "图示地区光热水土资源较充足，土地增产潜力大，是吸引农业投资的主要区位因素。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "23", topic: "世界地理", knowledgePoint: "农业灌溉",
+      difficulty: "中", desc: "需节水灌溉技术保障的投资地区",
+      keywords: ["节水灌溉", "农业投资", "非洲", "气候干旱", "世界地理"],
       sharedMaterial: "近年来，我国的农业投资和技术援助成为非洲农业发展的重要力量。下图为“中国企业在非洲农业投资主要分布区示意图”。",
-      content: "\n我国企业在图中四地投资大型农作物种植项目，需节水灌溉技术保障的地区是（　）\nA.①②　B.①③　C.②④　D.③④",
-      answer: "D" },
+      figures: [{ url: "files/figs/q22-23-africa.jpg", label: "非洲农业投资主要分布区示意图", alt: "中国企业在非洲农业投资主要分布区示意图" }],
+      hasFigure: true,
+      content: "我国企业在图中四地投资大型农作物种植项目，需节水灌溉技术保障的地区是（　）\nA.①②　B.①③　C.②④　D.③④",
+      answer: "D",
+      analysis: "③④位于干旱、半干旱地区，降水不足，发展种植业需节水灌溉技术保障。"
+    },
 
-    // ===== 2026年江苏卷·综合题(整题录入,不拆分小题 — 录入规则) =====
-    { paperId: "p-2026-江苏", number: "24", topic: "地表形态的塑造", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q24-caoxiu.jpg",
-      desc: "青藏高原冻胀草丘:植被形态、土壤有机质、冰川演化过程",
-      keywords: "冻胀草丘,冰川,冻融作用,地貌演化,高寒草甸土,青藏高原,地表形态",
+    // ===== 2026 江苏卷 · 综合题（整题录入，不拆小题） =====
+    {
+      paperId: "p-2026-江苏", number: "24", topic: "地表形态的塑造", knowledgePoint: "冰川地貌与冻土地貌",
+      difficulty: "难", desc: "青藏高原冻胀草丘：植被形态、土壤有机质、冰川演化过程",
+      keywords: ["冻胀草丘", "冰川", "冻融作用", "地貌演化", "高寒草甸土", "青藏高原", "地表形态"],
+      figures: [{ url: "files/figs/q24-caoxiu.jpg", label: "冻胀草丘景观及分布位置图", alt: "青藏高原东部冻胀草丘暖、冷季景观及其分布位置图" }],
+      hasFigure: true,
       content: "阅读材料，回答下列问题。\n材料一：冻胀草丘是高寒湿地地区因冻融作用形成的一种微地貌景观，常见于青藏高原冰川遗迹区。冻胀草丘地区的土壤类型通常为冰碛物上发育的高寒草甸土。\n材料二：下图为“青藏高原东部冻胀草丘暖、冷季景观及其分布位置图”。\n(1)描述冻胀草丘的植被形态特征，并说明其生态价值。\n(2)分析冻胀草丘地区生物量较低，但土壤有机质含量较高的原因。\n(3)简述从冰川演化为冻胀草丘景观的过程。",
-      answer: "(1) 低矮；密集；簇生。涵养水源；保护土壤；调节气候。\n(2) 温度低；水分多（季节积水）；微生物活动弱，生物残体难分解，有利于有机质积累。\n(3) 气候变暖，冰川消融；在冰碛物基础上生长植被，发育土壤；在冻融作用下形成冷季冻结、暖季融化的冻胀草丘景观。" },
-    { paperId: "p-2026-江苏", number: "25", topic: "地域文化", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q25-munao.png",
-      desc: "云南景颇族目瑙纵歌:歌词地域文化词汇、人文地理意义、人地关系、文化传承",
-      keywords: "目瑙纵歌,景颇族,地域文化,非遗,文旅融合,人地关系,高黎贡山",
+      answer: "(1) 低矮；密集；簇生。涵养水源；保护土壤；调节气候。\n(2) 温度低；水分多（季节积水）；微生物活动弱，生物残体难分解，有利于有机质积累。\n(3) 气候变暖，冰川消融；在冰碛物基础上生长植被，发育土壤；在冻融作用下形成冷季冻结、暖季融化的冻胀草丘景观。",
+      analysis: "综合题按要点作答：地貌特征抓“形态—生态”，成因抓“低温、水分、微生物”，演化过程抓“冰川消融→植被土壤发育→冻融塑形”的时间顺序。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "25", topic: "地域文化", knowledgePoint: "地域文化与人地关系",
+      difficulty: "中", desc: "云南景颇族目瑙纵歌：歌词地域文化词汇、人文地理意义、人地关系、文化传承",
+      keywords: ["目瑙纵歌", "景颇族", "地域文化", "非遗", "文旅融合", "人地关系", "高黎贡山"],
+      figures: [
+        { url: "files/figs/q25-munao.png", label: "目瑙纵歌集中区及场景图", alt: "目瑙纵歌集中区及场景图" },
+        { url: "files/figs/q25-lyric1.jpg", label: "歌词图1", alt: "目瑙纵歌歌词图1" },
+        { url: "files/figs/q25-lyric2.jpg", label: "歌词图2", alt: "目瑙纵歌歌词图2" }
+      ],
+      hasFigure: true,
       content: "阅读材料，回答下列问题。\n材料一：目瑙纵歌是我国云南景颇族盛大的节庆活动，舞蹈队列呈螺旋形，象征祖先沿高黎贡山南迁路径，具有庆丰收、祈平安等寓意，被列入国家级非物质文化遗产名录。近年来，当地将目瑙纵歌打造为文化旅游节。下图为“目瑙纵歌集中区及场景图”。\n材料二：目瑙纵歌的歌词节选（注：一蓬在景颇族语中指一方烟火、一座寨子；旱谷是更耐旱的水稻品种，一年一熟）。\n(1)写出歌词中表达景颇族地域文化的词汇。\n(2)将目瑙纵歌中的歌词（①天再大 走不出这一蓬；②梦往高黎贡；③茶马古道接远峰）与最相近的人文地理意义对应起来（填写序号，每个序号限填一次）。\n民族迁移记忆：____；地域文化交流：____；乡土情感依恋：____。\n(3)结合区域背景，分析歌词中“旱谷一年黄”“刀耕火种”体现的人地关系。\n自然环境对“旱谷”种植的制约条件：____。\n“刀耕火种”方式对自然环境的适应：____。\n(4)简述当前景颇族传统文化得以传承并发展的原因。",
-      answer: "(1) 山风、筒裙、竹楼、高黎贡、茶马古道、火塘。\n(2) 民族迁移记忆：②；地域文化交流：③；乡土情感依恋：①。\n(3) 自然环境对“旱谷”种植的制约条件：水源不足。“刀耕火种”方式对自然环境的适应：依赖自然恢复土壤肥力；耕地不足。\n(4) 非遗保护；文旅融合；媒体传播；交通改善。" },
-    { paperId: "p-2026-江苏", number: "26", topic: "江苏地理", hasFigure: true,
-      figureUrl: "https://sunhui918.github.io/geo-gaokao/files/figs/q26-map.jpg",
-      desc: "江苏船企厂址变迁:水域陆域空间、上海设计中心、长三角一体化",
-      keywords: "船企,工业区位,厂址变迁,长三角一体化,产业分工,江苏地理",
+      answer: "(1) 山风、筒裙、竹楼、高黎贡、茶马古道、火塘。\n(2) 民族迁移记忆：②；地域文化交流：③；乡土情感依恋：①。\n(3) 自然环境对“旱谷”种植的制约条件：水源不足。“刀耕火种”方式对自然环境的适应：依赖自然恢复土壤肥力；耕地不足。\n(4) 非遗保护；文旅融合；媒体传播；交通改善。",
+      analysis: "围绕“地域文化—人地关系—传承机制”作答：文化词汇抓特色事物，人地关系抓自然环境制约与生产方式的适应，传承抓政策、文旅、传播、交通等外部条件。"
+    },
+    {
+      paperId: "p-2026-江苏", number: "26", topic: "江苏地理", knowledgePoint: "工业区位变迁",
+      difficulty: "难", desc: "江苏船企厂址变迁：水域陆域空间、上海设计中心、长三角一体化",
+      keywords: ["船企", "工业区位", "厂址变迁", "长三角一体化", "产业分工", "江苏地理"],
+      figures: [
+        { url: "files/figs/q26-photo.jpg", label: "图1 船厂实景照片", alt: "某船企船厂实景照片" },
+        { url: "files/figs/q26-map.jpg", label: "图2 船厂和设计中心分布及厂址变迁示意图", alt: "船厂和设计中心分布现状及厂址变迁示意图" }
+      ],
+      hasFigure: true,
       content: "阅读材料，回答下列问题。\n材料一：江苏某船企成立于20世纪50年代，船厂最初位于江南某城市的运河边，70年代迁至该市的长江边，本世纪初船厂再次北迁至长江北岸。近年来，在长三角一体化的背景下船企不断做大做强。\n材料二：图1为“某船企的船厂实景照片”，图2为“某船企的船厂和设计中心分布现状及厂址变迁示意图”。\n(1)船厂建设需要两种类型的空间：陆域空间、水域空间。分析该船企厂址由河入江和跨江北迁分别改善了企业对哪一类空间的需求，并说明理由。\n(2)简述该船企将设计中心设在上海的原因。\n(3)针对该船企的船厂未集聚于特大城市这一现象，阐述长三角一体化的空间特质。",
-      answer: "(1) ①水域空间；②长江江阔水深，便于大型船舶下水、停泊。③陆域空间；④江北地区地价相对较低，降低成本。\n(2) ①船舶设计机构集聚（高校、科研院所集中）；②高端人才集中；③能及时响应市场需求（市场信息通畅）。（三选二）\n(3) ①产业基础雄厚，配套好，分布均衡；②打破行政壁垒，分工协作好；③基础设施完善，市场体系完善（人、物、信息、技术、资金流动畅通便捷）。" }
+      answer: "(1) ①水域空间；②长江江阔水深，便于大型船舶下水、停泊。③陆域空间；④江北地区地价相对较低，降低成本。\n(2) ①船舶设计机构集聚（高校、科研院所集中）；②高端人才集中；③能及时响应市场需求（市场信息通畅）。（三选二）\n(3) ①产业基础雄厚，配套好，分布均衡；②打破行政壁垒，分工协作好；③基础设施完善，市场体系完善（人、物、信息、技术、资金流动畅通便捷）。",
+      analysis: "从“空间需求—区位变化—区域一体化”作答：由河入江改善水域空间，跨江改善陆域空间；设计中心设上海抓人才、机构、市场；一体化抓分工协作与要素流动。"
+    }
   ]
 };
