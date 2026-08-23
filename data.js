@@ -1,5 +1,7 @@
 // ============================================================
-// 高三地理试题库 - 数据文件
+// 高三地理试题库 - 数据文件（由管理后台自动生成）
+// ============================================================
+// 数据结构见 data.js 顶部注释；题目配图用 figures 数组，可挂多张图。
 // ============================================================
 const QUESTION_BANK = {
   "meta": {
@@ -97,6 +99,17 @@ const QUESTION_BANK = {
       "url": "https://sunhui918.github.io/geo-gaokao/files/2025%E5%B9%B4%E6%B1%9F%E8%8B%8F%E9%AB%98%E8%80%83%E7%9C%9F%E9%A2%98.docx",
       "hasAnswer": true,
       "hasAnalysis": true,
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "p-05927819",
+      "title": "2024年江苏卷·高考地理真题",
+      "province": "江苏",
+      "year": "2024",
+      "type": "高考真题",
+      "url": "https://sunhui918.github.io/geo-gaokao/files/up-1787505923241-97t9i.docx",
+      "hasAnswer": true,
+      "hasAnalysis": false,
       "dateAdded": "2026-08-24"
     }
   ],
@@ -1504,6 +1517,657 @@ const QUESTION_BANK = {
       "answer": "（1）大兴安岭东侧夏季高温多雨（雨热同期），适合发展种植业；南阿尔卑斯山东侧全年温和，降水适中，适合畜牧业及小麦的种植；大兴安岭东侧农业生产集中在夏半年（一年一熟）；大兴安岭东侧易受旱涝和冻害影响；南阿尔卑斯山东侧全年可牧。（2）相同点:人均土地多；机械化水平高（具有规模效应）；市场需求大。不同点:大兴安岭东侧—国内市场需求；南阿尔卑斯山东侧—国际市场需求。（3）支持观点一的理由:进口粮食成本低；发挥区域比较优势（国内自然条件适宜发展畜牧业）；畜牧业是当地的传统生产方式；平衡国际贸易。支持观点二的理由:市场波动影响粮食价格；地缘矛盾影响供给稳定；自然灾害影响供给安全；种植区域仍有较大潜力。",
       "analysis": "（1）大兴安岭东侧为温带季风气候，雨热同期，利于种植业；南阿尔卑斯山东侧为温带海洋性气候，全年温和，利于畜牧业。（2）两地均地广人稀，机械化水平高，商品率高；但市场不同，我国面向国内，新西兰面向国际。（3）支持观点一可从经济全球化、比较优势角度分析；支持观点二可从粮食安全、风险防范角度分析。",
       "figureHint": "大兴安岭和南阿尔卑斯山的位置及地形示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-0",
+      "paperId": "p-05927819",
+      "number": "1",
+      "topic": "地表形态的塑造",
+      "knowledgePoint": "喀斯特地貌景观特征",
+      "difficulty": "易",
+      "desc": "识别喀斯特地貌景观特征",
+      "keywords": [
+        "喀斯特地貌",
+        "景观特征"
+      ],
+      "questionGroup": "qg-喀斯特地貌",
+      "sharedMaterial": "人工智能（AI）广泛应用于场景生成，下图为“AI棱米生成的喀斯特地貌景观图”。据此完成下面小题。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787504987033-germ8.jpg",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "1.图中最能体现喀斯特地貌景观特征的是 A\nA.山体格局\t\t\t\t\t\t\t\tB.水系结构\t\nC.农田分布\t\t\t\t\t\t\t\tD.村落布局",
+      "answer": "A",
+      "analysis": "喀斯特地貌的典型特征是山体形态，如峰林、峰丛等，因此最能体现其景观特征的是山体格局。",
+      "figureHint": "AI生成的喀斯特地貌景观图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-1",
+      "paperId": "p-05927819",
+      "number": "2",
+      "topic": "地表形态的塑造",
+      "knowledgePoint": "喀斯特地貌发育阶段",
+      "difficulty": "中",
+      "desc": "判断喀斯特地貌发育阶段",
+      "keywords": [
+        "喀斯特地貌",
+        "发育阶段",
+        "峰林"
+      ],
+      "questionGroup": "qg-喀斯特地貌",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "2.该景观处于 C\nA.石芽为主的时期\t\t\t\t\t\t\tB.石林为主的时期\t\nC.峰林为主的时期\t\t\t\t\t\t\tD.残丘为主的时期",
+      "answer": "C",
+      "analysis": "图中显示的是峰林景观，峰林是喀斯特地貌发育中期阶段的典型形态，因此选择峰林为主的时期。",
+      "figureHint": "AI生成的喀斯特地貌景观图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-2",
+      "paperId": "p-05927819",
+      "number": "3",
+      "topic": "地球运动和天文",
+      "knowledgePoint": "昼夜状况与日期判断",
+      "difficulty": "中",
+      "desc": "根据昼夜状况推断日期",
+      "keywords": [
+        "昼夜状况",
+        "日期判断"
+      ],
+      "questionGroup": "qg-昼夜状况",
+      "sharedMaterial": "下图为“2024年某月1日地球昼夜状况图”。据此完成下面小题。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505069829-es73r.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "3.据图推断，该日是  D\nA.2月1日\t\t\t\t\t\t\t\tB.3月1日\t\nC.4月1日\t\t\t\t\t\t\t\tD.5月1日",
+      "answer": "D",
+      "analysis": "根据图中昼夜状况，北极附近出现极昼，说明太阳直射点在北半球，且接近夏至，因此最可能是5月1日。",
+      "figureHint": "2024年某月1日地球昼夜状况图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-3",
+      "paperId": "p-05927819",
+      "number": "4",
+      "topic": "地球运动和天文",
+      "knowledgePoint": "地方时与北京时间计算",
+      "difficulty": "中",
+      "desc": "根据图示时刻计算北京时间",
+      "keywords": [
+        "地方时",
+        "北京时间"
+      ],
+      "questionGroup": "qg-昼夜状况",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "4.图示时刻，北京时间大约是  C\nA.6:00\t\t\t\tB.12:00\t\t\t\tC.18:00\t\t\t\tD.24:00",
+      "answer": "C",
+      "analysis": "图示时刻，晨昏线与经线重合，且某条经线为12时或0时，根据图中信息推断，北京时间约为18时。",
+      "figureHint": "2024年某月1日地球昼夜状况图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-4",
+      "paperId": "p-05927819",
+      "number": "5",
+      "topic": "地球运动和天文",
+      "knowledgePoint": "昼夜变化",
+      "difficulty": "中",
+      "desc": "判断6小时后的昼夜状况",
+      "keywords": [
+        "昼夜变化",
+        "时间推移"
+      ],
+      "questionGroup": "qg-昼夜状况",
+      "sharedMaterial": "",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505085559-fk5lr.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "5.经过6小时，昼夜状况是 A\nA.\t\tB.\t\tC.\t\tD.",
+      "answer": "A",
+      "analysis": "经过6小时后，地球自转约90°，昼夜状况会相应变化，根据图示和选项，A符合6小时后的昼夜分布。",
+      "figureHint": "四个选项的昼夜状况图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-5",
+      "paperId": "p-05927819",
+      "number": "6",
+      "topic": "大气",
+      "knowledgePoint": "干线天气系统",
+      "difficulty": "中",
+      "desc": "分析干线位置移动原因",
+      "keywords": [
+        "干线",
+        "天气系统",
+        "位置移动"
+      ],
+      "questionGroup": "qg-干线",
+      "sharedMaterial": "干线是干气团与温度相近的湿气团交汇而形成的天气系统，其形成与特定下垫面有关，常引发强对流天气。下图为“河套地区某干线位置移动图”。据此完成下面小题。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505106762-zaj7q.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "6.此次天气过程中，20时干线位置向西移动，主要是由于   B\nA.气压降低\t\t\tB.气温降低\t\t\tC.风向转变\t\t\tD.风速减小",
+      "answer": "B",
+      "analysis": "干线位置移动与气团性质变化有关，气温降低导致干气团势力增强，推动干线向西移动。",
+      "figureHint": "河套地区某干线位置移动图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-6",
+      "paperId": "p-05927819",
+      "number": "7",
+      "topic": "大气",
+      "knowledgePoint": "对流活动变化",
+      "difficulty": "中",
+      "desc": "推测夜晚对流变化",
+      "keywords": [
+        "对流",
+        "夜晚变化"
+      ],
+      "questionGroup": "qg-干线",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "7.推测此次天气过程引发的对流，在夜晚将   C\nA.稳定不变\t\t\tB.不断增强\t\t\tC.逐渐减弱\t\t\tD.波动变化",
+      "answer": "C",
+      "analysis": "夜晚地面辐射冷却，大气稳定度增加，对流活动逐渐减弱。",
+      "figureHint": "河套地区某干线位置移动图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-7",
+      "paperId": "p-05927819",
+      "number": "8",
+      "topic": "地表形态的塑造",
+      "knowledgePoint": "天坑堆积体特征",
+      "difficulty": "中",
+      "desc": "分析天坑底部堆积体特征",
+      "keywords": [
+        "天坑",
+        "堆积体",
+        "喀斯特"
+      ],
+      "questionGroup": "qg-小寨天坑",
+      "sharedMaterial": "重庆奉节的小寨天坑是世界最大的喀斯特天坑，底部有堆积体和暗河。下图为“小寨天坑剖面图”。据此完成下面小题。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505168766-tb25v.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "8.天坑底部的堆积体总体上  B\nA.沉积层理清晰\t\t\t\t\t\t\tB.砾石大小混杂\t\nC.颗粒形状规整\t\t\t\t\t\t\tD.物质分选良好",
+      "answer": "B",
+      "analysis": "天坑底部堆积体由崩塌和流水搬运物质堆积而成，砾石大小混杂，分选性差。",
+      "figureHint": "小寨天坑剖面图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-8",
+      "paperId": "p-05927819",
+      "number": "9",
+      "topic": "地表形态的塑造",
+      "knowledgePoint": "天坑生境独特性",
+      "difficulty": "中",
+      "desc": "分析天坑底部生境独特的原因",
+      "keywords": [
+        "天坑",
+        "生境",
+        "生态价值"
+      ],
+      "questionGroup": "qg-小寨天坑",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "9.天坑底部生境独特，生态价值高，得益于  B\nA.暗河交织\t\t\tB.地形封闭\t\t\tC.面积狭小\t\t\tD.土壤肥沃",
+      "answer": "B",
+      "analysis": "天坑底部地形封闭，形成独特的局地小气候和环境，有利于特有物种生存，生态价值高。",
+      "figureHint": "小寨天坑剖面图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-9",
+      "paperId": "p-05927819",
+      "number": "10",
+      "topic": "产业",
+      "knowledgePoint": "巴尔喀什湖城市分布",
+      "difficulty": "中",
+      "desc": "分析沿湖城市分布原因",
+      "keywords": [
+        "巴尔喀什湖",
+        "城市分布",
+        "水体性质"
+      ],
+      "questionGroup": "qg-巴尔喀什湖",
+      "sharedMaterial": "巴尔喀什湖为中亚大型湖泊、风景宜人，湖泊以乌泽那拉尔水道为界，分为特征差异显著的东西两部分，沿湖中小城市发展各具特色。下图为“巴尔喀什湖周边城市分布示意图”。据此完成下面小题。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505207171-kxz41.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "10.巴尔喀什湖沿湖城市大多分布于西部，主要取决于湖泊的  D\nA.面积大小\t\t\t\tB.形态特征\t\t\t\tC.容量多少\t\t\t\tD.水体性质",
+      "answer": "D",
+      "analysis": "巴尔喀什湖西部为淡水，东部为咸水，西部淡水资源丰富，适合人类居住和城市发展，因此城市多分布于西部。",
+      "figureHint": "巴尔喀什湖周边城市分布示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-10",
+      "paperId": "p-05927819",
+      "number": "11",
+      "topic": "产业",
+      "knowledgePoint": "农业地域类型",
+      "difficulty": "中",
+      "desc": "判断奎甘市农业特色",
+      "keywords": [
+        "奎甘市",
+        "农业特色",
+        "灌溉农业"
+      ],
+      "questionGroup": "qg-巴尔喀什湖",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "11.奎甘市位于伊犁河入湖口，该地区农业发展特色是 D\nA.畜牧业\t\t\t\t\tB.园艺业\t\t\t\t\tC.都市农业\t\t\t\tD.灌溉农业",
+      "answer": "D",
+      "analysis": "奎甘市位于伊犁河入湖口，水源充足，但气候干旱，发展灌溉农业。",
+      "figureHint": "巴尔喀什湖周边城市分布示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-11",
+      "paperId": "p-05927819",
+      "number": "12",
+      "topic": "产业",
+      "knowledgePoint": "产业可持续发展",
+      "difficulty": "中",
+      "desc": "分析沿湖城市宜发展的产业",
+      "keywords": [
+        "巴尔喀什湖",
+        "产业",
+        "生态旅游"
+      ],
+      "questionGroup": "qg-巴尔喀什湖",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "12.当前沿湖城市宜鼓励发展的产业是 B\nA.金属冶炼\t\t\t\tB.生态旅游\t\t\t\tC.船舶制造\t\t\t\tD.盐湖化工",
+      "answer": "B",
+      "analysis": "巴尔喀什湖风景宜人，生态旅游符合可持续发展理念，且对环境影响小。",
+      "figureHint": "巴尔喀什湖周边城市分布示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-12",
+      "paperId": "p-05927819",
+      "number": "13",
+      "topic": "交通",
+      "knowledgePoint": "交通建设区位因素",
+      "difficulty": "中",
+      "desc": "分析达连隘口段公路未修建的自然原因",
+      "keywords": [
+        "泛美公路",
+        "达连隘口",
+        "自然原因"
+      ],
+      "questionGroup": "qg-泛美公路",
+      "sharedMaterial": "始建于上世纪20年代的泛美公路干线总长26000km，但在巴拿马与哥伦比亚两国交界处的达连隘口段至今尚未连通。下图为“泛美公路达连隘口段示意图”。据此完成下面小题。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505271842-kzs5u.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "13.泛美公路建设初期，达连隘口段公路未修建的主要自然原因是 D\nA.地震频繁，地质灾害多\t\nB.隘口狭窄，可用土地少\nC.两侧临海，风暴影响大\t\nD.雨林密布，地势起伏大",
+      "answer": "D",
+      "analysis": "达连隘口段位于热带雨林气候区，雨林密布，地势起伏大，修建难度极大，是未修建的主要自然原因。",
+      "figureHint": "泛美公路达连隘口段示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-13",
+      "paperId": "p-05927819",
+      "number": "14",
+      "topic": "交通",
+      "knowledgePoint": "交通建设影响因素",
+      "difficulty": "中",
+      "desc": "分析达连隘口段至今未连通的原因",
+      "keywords": [
+        "泛美公路",
+        "达连隘口",
+        "地缘政治"
+      ],
+      "questionGroup": "qg-泛美公路",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "14.达连隘口段公路至今尚未连通，除生态环境因素外，还受到的主要影响因素是 C\nA.建设资金\t\nB.工程技术\t\nC.地缘政治\t\nD.人口数量",
+      "answer": "C",
+      "analysis": "达连隘口段涉及巴拿马和哥伦比亚两国，地缘政治因素复杂，影响公路建设。",
+      "figureHint": "泛美公路达连隘口段示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-14",
+      "paperId": "p-05927819",
+      "number": "15",
+      "topic": "地域文化",
+      "knowledgePoint": "农业可持续发展模式",
+      "difficulty": "中",
+      "desc": "判断景迈山经济发展模式",
+      "keywords": [
+        "景迈山",
+        "古茶林",
+        "生态经济"
+      ],
+      "questionGroup": "qg-景迈山",
+      "sharedMaterial": "上世纪90年代以前.普洱景迈山古茶林广泛分布于海拔1000m以上的山地。2023年9月，“普洱景迈山古茶林文化景观”被列入世界遗产名录。下图为“景迈山土地利用结构示意图”。据此完成下面小题。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505312449-e8vak.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "15.农业社会时期，景迈山的经济发展模式属于  A\nA.生态经济\t\t\t\tB.规模经济\t\nC.集聚经济\t\t\t\tD.轮作经济",
+      "answer": "A",
+      "analysis": "农业社会时期，景迈山古茶林与森林共生，形成生态经济模式。",
+      "figureHint": "景迈山土地利用结构示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-15",
+      "paperId": "p-05927819",
+      "number": "16",
+      "topic": "地域文化",
+      "knowledgePoint": "农业区位变化",
+      "difficulty": "中",
+      "desc": "分析古茶林改现代茶园的原因",
+      "keywords": [
+        "景迈山",
+        "古树茶",
+        "市场需求"
+      ],
+      "questionGroup": "qg-景迈山",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "16.上世纪90年代，景迈山部分古茶林被改为现代茶园的主要原因是古树茶 D\nA.种植成本高\t\t\t\tB.生产加工难\t\nC.运输难度大\t\t\t\tD.市场需求小",
+      "answer": "D",
+      "analysis": "古树茶产量低，市场需求小，而现代茶园产量高，经济效益好，因此部分古茶林被改为现代茶园。",
+      "figureHint": "景迈山土地利用结构示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-16",
+      "paperId": "p-05927819",
+      "number": "17",
+      "topic": "地域文化",
+      "knowledgePoint": "文化遗产保护",
+      "difficulty": "中",
+      "desc": "分析景迈山文化遗产保护困难",
+      "keywords": [
+        "景迈山",
+        "文化遗产",
+        "生活方式传承"
+      ],
+      "questionGroup": "qg-景迈山",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "17.景迈山文化遗产保护面临的最大困难在于 A\nA.生活方式传承\t\t\tB.珍稀茶树保护\t\nC.基础设施建设\t\t\tD.人居环境改善",
+      "answer": "A",
+      "analysis": "景迈山古茶林文化景观是活态遗产，需要当地居民延续传统生活方式，但现代生活方式的冲击使传承面临困难。",
+      "figureHint": "景迈山土地利用结构示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-17",
+      "paperId": "p-05927819",
+      "number": "18",
+      "topic": "乡村和城镇",
+      "knowledgePoint": "农业土地利用",
+      "difficulty": "中",
+      "desc": "分析条块状地块布局原因",
+      "keywords": [
+        "条田",
+        "河道",
+        "农业布局"
+      ],
+      "questionGroup": "qg-条田",
+      "sharedMaterial": "“条田”是法国古代平均分配土地的结果，其目的是为了使每户得到质量大致相当的土地，并能够均衡使用公共资源。美国南部地区早期的法国移民也沿袭这一做法。下图为“美国南部密西西比河流域农业区遥感影像图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505429696-are0w.jpg",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "18.图示区域大部分地块呈条块状垂直于河道，这种布局主要考虑  C\nA.耕作便利\t\t\t\t\t\t\t\nB.节水灌溉\t\nC.河道共享\t\t\t\t\t\t\t\nD.农田管理",
+      "answer": "C",
+      "analysis": "条块状垂直于河道，使每户都能共享河道水源，便于灌溉。",
+      "figureHint": "美国南部密西西比河流域农业区遥感影像图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-18",
+      "paperId": "p-05927819",
+      "number": "19",
+      "topic": "乡村和城镇",
+      "knowledgePoint": "河道变迁",
+      "difficulty": "中",
+      "desc": "分析甲处地块平行于主河道的原因",
+      "keywords": [
+        "河道变迁",
+        "地块布局"
+      ],
+      "questionGroup": "qg-条田",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "19.图中甲处地块平行于主河道，主要由于 B\nA.河岸侵蚀\t\t\t\tB.河道变迁\t\nC.河床抬升\t\t\t\tD.河谷加深",
+      "answer": "B",
+      "analysis": "甲处地块平行于主河道，说明该处曾是古河道，后来河道变迁，形成现在的地块布局。",
+      "figureHint": "美国南部密西西比河流域农业区遥感影像图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-19",
+      "paperId": "p-05927819",
+      "number": "20",
+      "topic": "乡村和城镇",
+      "knowledgePoint": "城镇化阶段",
+      "difficulty": "中",
+      "desc": "判断郊区化阶段特征",
+      "keywords": [
+        "城镇化",
+        "郊区化"
+      ],
+      "questionGroup": "qg-城镇化",
+      "sharedMaterial": "城镇化主要表现为人口在城乡间的迁移，一般分为集中城市化、郊区化、逆城市化和再城市化4个阶段。下图为“城镇化阶段模式图”。据此完成下面小题。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505463715-i00dd.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "20.城镇化进入郊区化阶段时，郊区的人口 A\nA.增长数量高于城市核心区\t\nB.迁出规模大于城市核心区\nC.主要来自于乡村人口迁入\t\nD.大量向周边乡村地区迁移",
+      "answer": "A",
+      "analysis": "郊区化阶段，人口从城市核心区向郊区迁移，郊区人口增长数量高于城市核心区。",
+      "figureHint": "城镇化阶段模式图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-20",
+      "paperId": "p-05927819",
+      "number": "21",
+      "topic": "乡村和城镇",
+      "knowledgePoint": "再城市化",
+      "difficulty": "中",
+      "desc": "判断再城市化特征",
+      "keywords": [
+        "再城市化",
+        "城市核心区"
+      ],
+      "questionGroup": "qg-城镇化",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "21.通过再城市化，可判断出 C\nA.城市与乡村的人口数量基本相等\t\nB.乡村人口的数量再次大规模减少\nC.城市核心区的人口数量恢复增加\t\nD.城市的郊区人口规模进一步扩大",
+      "answer": "C",
+      "analysis": "再城市化阶段，城市核心区通过更新改造，吸引人口回流，人口数量恢复增加。",
+      "figureHint": "城镇化阶段模式图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-21",
+      "paperId": "p-05927819",
+      "number": "22",
+      "topic": "乡村和城镇",
+      "knowledgePoint": "城镇化影响",
+      "difficulty": "中",
+      "desc": "分析城镇化4个阶段后的影响",
+      "keywords": [
+        "城镇化",
+        "社会流动性"
+      ],
+      "questionGroup": "qg-城镇化",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "22.经历4个阶段后，城镇化带来了 A\nA.社会流动性不断增加\t\tB.乡村生产生活单一化\t\tC.地域景观多样性增加\t\tD.区域文化逐渐差异化",
+      "answer": "A",
+      "analysis": "城镇化过程中，人口迁移频繁，社会流动性不断增加。",
+      "figureHint": "城镇化阶段模式图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-22",
+      "paperId": "p-05927819",
+      "number": "23",
+      "topic": "水",
+      "knowledgePoint": "海水盐度、地质条件、制盐业",
+      "difficulty": "难",
+      "desc": "分析莱斯岛海水盐度、地下卤水形成及海草房演变",
+      "keywords": [
+        "莱斯岛",
+        "海水盐度",
+        "地下卤水",
+        "海草房"
+      ],
+      "questionGroup": "",
+      "sharedMaterial": "",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505526918-0m3sy.png",
+          "label": "配图",
+          "alt": "配图"
+        },
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505534575-o4ccd.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "23.阅读材料，回答下列问题。\n材料一  莱斯岛位于卡特加特海峡，面积仅118km2。中世纪以来，该岛开采地下卤水煮盐。随着制盐业的发展，人们逐渐利用漂浮来的大量海草替代易朽易燃的木材，传统木屋慢慢演变为独具特色的海草房。\n材料二  图1为“莱斯岛周围海域表层盐度分布及海草房景观图”，图2为“莱斯岛地下卤水形成与储存地质剖面示意图”。\n(1)分析莱斯岛所在海域海水盐度较北海低的主要原因。\n(2)描述莱斯岛地下卤水储存的地质条件。\n(3)解释莱斯岛地下卤水的形成过程。\n(4)结合莱斯岛制盐方式和海草特点.说明岛内民居由本屋演变为海草房的原因。",
+      "answer": "(1)受波罗的海低盐度海水影响大:周边淡水注入多:受北大西洋暖流影响小(任答2点得4分)\n(2)上部砂砾岩，空隙多:底部起伏，低洼处利于储存；底部黏土层，透水性差。(任答2点得4分)\n(3)海水渗入砂砾层;植物蒸腾(地表蒸发)，地下盐水浓度升高:高浓度盐水下沉富集。(任答2点得4分)\n(4)卤水煮盐，木材消耗大; 海草数量大，成本低; 保暖性好; 耐腐蚀，不易燃。(任答3点得6分)",
+      "analysis": "(1)莱斯岛位于卡特加特海峡，受波罗的海低盐度海水影响，且周边有淡水注入，北大西洋暖流影响小，因此盐度较低。\n(2)地下卤水储存需要上部透水、下部隔水的地质条件，砂砾岩空隙多利于海水渗入，底部黏土层透水性差，低洼处利于储存。\n(3)海水渗入砂砾层后，经蒸发浓缩，盐度升高，高浓度盐水下沉富集形成卤水。\n(4)制盐消耗大量木材，海草资源丰富且成本低，海草房保暖、耐腐蚀、不易燃，因此民居由木屋演变为海草房。",
+      "figureHint": "图1为莱斯岛周围海域表层盐度分布及海草房景观图，图2为莱斯岛地下卤水形成与储存地质剖面示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-23",
+      "paperId": "p-05927819",
+      "number": "24",
+      "topic": "江苏地理",
+      "knowledgePoint": "区域划分、引江济淮、都市圈",
+      "difficulty": "难",
+      "desc": "分析安徽区域划分、江苏区域差异、引江济淮功能及都市圈作用",
+      "keywords": [
+        "安徽",
+        "江苏",
+        "引江济淮",
+        "都市圈"
+      ],
+      "questionGroup": "",
+      "sharedMaterial": "",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505562239-nahh7.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "24.阅读材料，回答下列问题。\n材料一  江苏、安徽两省因区域内部差异，通常分为北、中、南三区域。下图为“江苏、安徽两省略图”。\n材料二  为加强南北联系，安徽修建引江济淮工程，于2023年建成通水通航。\n材料三  都市圈是以特大或大城市为中心，以一定距离为基本范围的城镇化空间形态。2019年，国家印发《长江三角洲区域一体化发展规划纲要》，提出加快都市圈建设。\n(1)写出将安徽划分为北、中、南三区域参考的自然界线。\n(2)与安徽相比，从图示信息归纳江苏区域内部差异较小的主要条件。\n(3)从引江济淮三段工程的命名，分别解读“济巢”、“沟通”、“北送”所指的功能。\n(4)概述建设跨省的都市圈对江苏和安徽协同发展的作用。",
+      "answer": "(1)长江、淮河\n(2)江苏位置临海:地形整体较为平坦:京杭运河贯通南北。(任答2点得4分)\n(3)济巢:生态功能(补充水量，改善水质):沟通:航运功能(船舶运输):北送:供水功能(城乡用水、灌溉)。(6分)\n(4)基础设施互通; 公共服务共享; 产业分工协作; 生态环境协同治理(任答3点6分)",
+      "analysis": "(1)安徽北部为淮河流域，中部为长江流域，南部为钱塘江流域，因此以长江、淮河为界。\n(2)江苏临海，地形平坦，京杭运河贯通南北，区域内部联系紧密，差异较小。\n(3)济巢是补充巢湖水量，改善水质，体现生态功能；沟通是连接长江和淮河，发展航运；北送是向北方供水，满足城乡用水和灌溉需求。\n(4)跨省都市圈建设有利于基础设施互通、公共服务共享、产业分工协作和生态环境协同治理，促进区域协同发展。",
+      "figureHint": "江苏、安徽两省略图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-05927819-24",
+      "paperId": "p-05927819",
+      "number": "25",
+      "topic": "环境与发展",
+      "knowledgePoint": "气候变化与民族交融、生态环境",
+      "difficulty": "难",
+      "desc": "分析气候变化对民族交融的影响及生态环境问题",
+      "keywords": [
+        "气候变化",
+        "民族交融",
+        "生态环境"
+      ],
+      "questionGroup": "",
+      "sharedMaterial": "",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787505603874-baobb.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "25.阅读材料，回答下列问题。\n材料一  人类活动形成的民族交往交流交融对铸牢中华民族共同体意识具有重要作用。近3000年以来，气候变化对我国北方地区的人类活动产生了深刻影响。第一个1000年时期，气候总体温暖湿润，人类活动促进了以东西向为主的民族交融。第二个1000年时期；气候多次发生暖湿、冷干交替，人类活动推动了以南北向为主的民族交融。第三个1000年时期，人类活动范围扩大，巩固壮大了中华民族。\n材料二  下图为“我国北方地区民族交融的空间示意图”。\n(1)分析第一个1000年时期我国北方地区人类活动以东西向为主的地理条件。\n(2)结合主要农业生产方式，简述第二个1000年时期气候变化对人类活动空间变化的影响。\n(3)归纳南北交融带长期存在的主要生态环境问题。\n(4)遵从生态安全思想，列举南北交融带生态环境不受或少受破坏与威胁的措施。",
+      "answer": "(1)气候条件相似; 东西向的河流; 土地资源丰富; 地形阻碍小。(任答2点得4分)\n(2)气候变暖湿，农耕活动向北扩展; 气候变冷干，畜牧活动向南推移。(4分)\n(3)水土流失; 沙漠化; 盐碱化; 草场退化。(任答2点得4分)\n(4)建设自然区; 建设防护林; 退耕还林还草; 实施生态修复。(任答3点得6分)",
+      "analysis": "(1)第一个1000年时期，气候温暖湿润，北方地区气候条件相似，东西向河流众多，土地资源丰富，地形阻碍小，有利于东西向的人类活动。\n(2)第二个1000年时期，气候暖湿时，农耕活动向北扩展；冷干时，畜牧活动向南推移，导致人类活动空间南北变化。\n(3)南北交融带位于农牧交错带，生态环境脆弱，存在水土流失、沙漠化、盐碱化、草场退化等问题。\n(4)为保护生态环境，应建设自然保护区、防护林，退耕还林还草，实施生态修复。",
+      "figureHint": "我国北方地区民族交融的空间示意图",
       "dateAdded": "2026-08-24"
     }
   ]
