@@ -15,6 +15,7 @@
         <nav class="topbar-nav">
           <button class="nav-btn active" data-tab="papers">📄 按试卷检索</button>
           <button class="nav-btn" data-tab="topics">🔖 按专题检索</button>
+          <button class="nav-btn" data-tab="compose">🧩 组卷</button>
         </nav>
         <div class="topbar-org">常州市武进区横山桥高中地理教研组·地理试题库</div>
       </div>
@@ -65,6 +66,41 @@
           <span id="topic-current" class="topic-current"></span>
         </div>
         <div id="question-list" class="resource-list"></div>
+      </div>
+    </section>
+
+    <!-- 组卷 -->
+    <section id="tab-compose" class="tab-panel">
+      <div class="panel-header">
+        <h2>🧩 按专题组卷</h2>
+        <p class="panel-desc">选择专题、难度和题量，自动抽题组成一份练习卷，可导出 Word</p>
+      </div>
+
+      <div class="compose-controls">
+        <div class="compose-field">
+          <label>专题（按住 Ctrl 多选）</label>
+          <select id="compose-topics" class="compose-topics" multiple size="6"></select>
+        </div>
+        <div class="compose-field">
+          <label>难度</label>
+          <select id="compose-diff" class="filter-select">
+            <option value="">全部</option>
+            <option>易</option>
+            <option>中</option>
+            <option>难</option>
+          </select>
+        </div>
+        <div class="compose-field">
+          <label>题量</label>
+          <input type="number" id="compose-count" class="search-input" value="10" min="1" max="60" style="width:110px;">
+        </div>
+        <button class="btn-primary" id="compose-btn" style="align-self:flex-end;">🎲 随机组题</button>
+      </div>
+
+      <div id="compose-result" class="resource-list"></div>
+      <div id="compose-actions" class="form-actions" style="display:none;">
+        <button class="btn-primary" id="export-student">📄 导出 Word（学生版）</button>
+        <button class="btn-primary" id="export-teacher">📄 导出 Word（教师版·含答案解析）</button>
       </div>
     </section>
 
