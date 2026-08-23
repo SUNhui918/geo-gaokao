@@ -639,18 +639,6 @@ async function smartPublish() {
 
     const paper = smartResult.paper || {};
     const paperId = "p-" + String(Date.now()).slice(-8);
-    const paperObj = {
-      id: paperId,
-      title: paper.title || "未命名试卷",
-      province: paper.province || "",
-      year: paper.year || String(new Date().getFullYear()),
-      type: paper.type || "高考真题",
-      url,
-      hasAnswer: !!paper.hasAnswer,
-      hasAnalysis: !!paper.hasAnalysis,
-      dateAdded: today()
-    };
-    DATA.papers.push(paperObj);
 
     const qs = (smartResult.questions || []).map((q, i) => ({
       id: "q-" + String(Date.now()).slice(-8) + "-" + i,
@@ -671,6 +659,22 @@ async function smartPublish() {
       figureHint: q.figureHint || "",
       dateAdded: today()
     }));
+
+    const hasAnswer = qs.some((q) => !!q.answer);
+    const hasAnalysis = qs.some((q) => !!q.analysis);
+
+    const paperObj = {
+      id: paperId,
+      title: paper.title || "未命名试卷",
+      province: paper.province || "",
+      year: paper.year || String(new Date().getFullYear()),
+      type: paper.type || "高考真题",
+      url,
+      hasAnswer,
+      hasAnalysis,
+      dateAdded: today()
+    };
+    DATA.papers.push(paperObj);
     DATA.questions.push(...qs);
 
     await publishData("智能录入：" + paperObj.title);
