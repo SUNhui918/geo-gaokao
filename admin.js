@@ -8,7 +8,6 @@ const TOKEN_KEY = "geo_admin_token";
 const DEEPSEEK_KEY = "geo_deepseek_key";
 let DATA = QUESTION_BANK;
 let editingPaperId = null;
-let editingQuestionId = null;
 let smartResult = null;
 
 document.addEventListener("DOMContentLoaded", initAdmin);
@@ -27,11 +26,9 @@ function initAdmin() {
   }
 
   fillAdminProvince();
-  fillAdminTopic();
   fillSmartProvince();
   document.getElementById("p-year").value = String(new Date().getFullYear());
   document.getElementById("smart-year").value = String(new Date().getFullYear());
-  refreshPaperSelect();
   renderManageList();
   bindUpload();
   bindSmartUpload();
@@ -53,20 +50,6 @@ function fillAdminProvince() {
     const opt = document.createElement("option");
     opt.textContent = p;
     sel.appendChild(opt);
-  });
-}
-
-function fillAdminTopic() {
-  const sel = document.getElementById("q-topic");
-  (DATA.topicGroups || []).forEach((g) => {
-    const og = document.createElement("optgroup");
-    og.label = g.group;
-    g.topics.forEach((t) => {
-      const opt = document.createElement("option");
-      opt.textContent = t;
-      og.appendChild(opt);
-    });
-    sel.appendChild(og);
   });
 }
 
@@ -124,7 +107,6 @@ async function pullLatestData() {
     if (text.includes("QUESTION_BANK")) {
       const latest = new Function(text + "\n; return QUESTION_BANK;")();
       if (latest && latest.questions) DATA = latest;
-      refreshPaperSelect();
       renderManageList();
       document.getElementById("p-province").innerHTML = "";
       fillAdminProvince();
@@ -158,19 +140,6 @@ function base64Utf8(str) {
 }
 
 // ==================== 试卷 ====================
-function refreshPaperSelect() {
-  const sel = document.getElementById("q-paperid");
-  const cur = sel.value;
-  sel.innerHTML = "";
-  (DATA.papers || []).forEach((p) => {
-    const opt = document.createElement("option");
-    opt.value = p.id;
-    opt.textContent = `${p.province} ${p.year} · ${p.title.slice(0, 24)}${p.title.length > 24 ? "…" : ""}`;
-    sel.appendChild(opt);
-  });
-  if (cur) sel.value = cur;
-}
-
 async function savePaper() {
   const title = document.getElementById("p-title").value.trim();
   const province = document.getElementById("p-province").value;
@@ -201,7 +170,6 @@ async function savePaper() {
 
     await publishData(`${editingPaperId ? "更新" : "添加"}试卷：${title}`);
     resetPaperForm();
-    refreshPaperSelect();
     renderManageList();
     showStatus("✅ 试卷已发布，前台稍后生效", "ok");
   } catch (e) {
@@ -244,7 +212,6 @@ async function deletePaper(id) {
     DATA.papers = DATA.papers.filter((x) => x.id !== id);
     DATA.questions = DATA.questions.filter((q) => q.paperId !== id);
     await publishData(`删除试卷：${p.title}`);
-    refreshPaperSelect();
     renderManageList();
     showStatus("✅ 已删除并发布", "ok");
   } catch (e) {
@@ -252,94 +219,7 @@ async function deletePaper(id) {
   }
 }
 
-// ==================== 题目 ====================
-async function saveQuestion() {
-  const paperId = document.getElementById("q-paperid").value;
-  const number = document.getElementById("q-number").value.trim();
-  const topic = document.getElementById("q-topic").value;
-  const desc = document.getElementById("q-desc").value.trim();
-  if (!paperId || !number || !topic || !desc) return showStatus("请填写所属试卷、题号、专题、简述", "err");
-  if (!getToken()) return showStatus("请先填写并保存 GitHub Token", "err");
-
-  const figures = parseFigures(document.getElementById("q-figures").value);
-  const sharedMaterial = document.getElementById("q-material").value.trim();
-  const questionGroup = document.getElementById("q-group").value.trim() || (sharedMaterial ? "qg-" + String(Date.now()).slice(-6) : "");
-
-  const q = {
-    id: editingQuestionId || "q-" + String(Date.now()).slice(-8),
-    paperId,
-    number,
-    topic,
-    knowledgePoint: document.getElementById("q-knowledgepoint").value.trim(),
-    difficulty: document.getElementById("q-difficulty").value,
-    desc,
-    keywords: document.getElementById("q-keywords").value.split(/[,，]/).map((s) => s.trim()).filter(Boolean),
-    questionGroup,
-    sharedMaterial,
-    figures,
-    hasFigure: figures.length > 0,
-    content: document.getElementById("q-content").value.trim(),
-    answer: document.getElementById("q-answer").value.trim(),
-    analysis: document.getElementById("q-analysis").value.trim(),
-    dateAdded: today()
-  };
-
-  try {
-    showStatus("正在保存...", "");
-    const idx = DATA.questions.findIndex((x) => x.id === q.id);
-    if (idx >= 0) DATA.questions[idx] = q;
-    else DATA.questions.push(q);
-    await publishData(`${editingQuestionId ? "更新" : "添加"}题目：${topic} 第${number}题`);
-    resetQuestionForm();
-    renderManageList();
-    showStatus("✅ 题目已发布，前台稍后生效", "ok");
-  } catch (e) {
-    showStatus("保存失败：" + e.message, "err");
-  }
-}
-
-function parseFigures(text) {
-  return text
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => {
-      const idx = line.indexOf("|");
-      const url = (idx >= 0 ? line.slice(0, idx) : line).trim();
-      const label = (idx >= 0 ? line.slice(idx + 1) : "").trim();
-      return { url, label, alt: label || "题目配图" };
-    });
-}
-
-function resetQuestionForm() {
-  editingQuestionId = null;
-  document.getElementById("question-form-title").textContent = "🔖 添加题目";
-  ["q-number", "q-knowledgepoint", "q-desc", "q-keywords", "q-group", "q-material", "q-figures", "q-content", "q-answer", "q-analysis"].forEach(
-    (id) => (document.getElementById(id).value = "")
-  );
-}
-
-function editQuestion(id) {
-  const q = DATA.questions.find((x) => x.id === id);
-  if (!q) return;
-  editingQuestionId = id;
-  document.getElementById("question-form-title").textContent = "🔖 编辑题目";
-  document.getElementById("q-paperid").value = q.paperId;
-  document.getElementById("q-number").value = q.number;
-  document.getElementById("q-topic").value = q.topic;
-  document.getElementById("q-knowledgepoint").value = q.knowledgePoint || "";
-  document.getElementById("q-difficulty").value = q.difficulty || "中";
-  document.getElementById("q-desc").value = q.desc || "";
-  document.getElementById("q-keywords").value = (q.keywords || []).join(",");
-  document.getElementById("q-group").value = q.questionGroup || "";
-  document.getElementById("q-material").value = q.sharedMaterial || "";
-  document.getElementById("q-figures").value = (q.figures || []).map((f) => f.url + (f.label ? "|" + f.label : "")).join("\n");
-  document.getElementById("q-content").value = q.content || "";
-  document.getElementById("q-answer").value = q.answer || "";
-  document.getElementById("q-analysis").value = q.analysis || "";
-  document.getElementById("question-form").scrollIntoView({ behavior: "smooth" });
-}
-
+// ==================== 题目删除 ====================
 async function deleteQuestion(id) {
   const q = DATA.questions.find((x) => x.id === id);
   if (!q) return;
@@ -389,7 +269,6 @@ function renderManageList() {
           <div class="mi-title">第 ${esc(q.number)} 题 · ${esc(q.topic)}</div>
           <div class="mi-info">${esc(paperName)} · ${esc((q.desc || "").slice(0, 30))}</div>
         </div>
-        <button class="mi-btn edit" onclick="editQuestion('${esc(q.id)}')">编辑</button>
         <button class="mi-btn del" onclick="deleteQuestion('${esc(q.id)}')">删除</button>
       </div>`;
       })
@@ -808,7 +687,6 @@ async function smartPublish() {
 
     await publishData("智能录入：" + paperObj.title);
     smartResetPreview();
-    refreshPaperSelect();
     renderManageList();
     status.textContent = "";
     showStatus("✅ 已发布：" + qs.length + " 道题", "ok");
