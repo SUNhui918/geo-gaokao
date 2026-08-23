@@ -686,9 +686,9 @@ function renderCompare() {
   const papers = (DATA.papers || []).filter((p) => p.year).sort((a, b) => Number(a.year) - Number(b.year));
   const years = papers.map((p) => p.year);
   if (!years.length) {
-    document.getElementById("compare-structure").innerHTML = '<div class="empty-state">暂无试卷数据</div>';
-    document.getElementById("compare-topics").innerHTML = "";
-    document.getElementById("compare-top").innerHTML = "";
+    document.getElementById("compare-topics").innerHTML = '<div class="empty-state">暂无试卷数据</div>';
+    document.getElementById("compare-top-choice").innerHTML = "";
+    document.getElementById("compare-top-comprehensive").innerHTML = "";
     return;
   }
 
@@ -696,17 +696,6 @@ function renderCompare() {
     const paper = papers.find((p) => p.year === year);
     return paper ? DATA.questions.filter((q) => q.paperId === paper.id) : [];
   };
-
-  // 题型结构
-  const header = `<tr><th>题型</th>${years.map((y) => `<th>${esc(y)}</th>`).join("")}</tr>`;
-  const structRows = [];
-  for (const type of ["选择题", "综合题"]) {
-    const cells = years.map((y) => `<td>${paperQs(y).filter((q) => questionType(q) === type).length}</td>`).join("");
-    structRows.push(`<tr><td>${type}</td>${cells}</tr>`);
-  }
-  const totalCells = years.map((y) => `<td><b>${paperQs(y).length}</b></td>`).join("");
-  structRows.push(`<tr><td><b>合计</b></td>${totalCells}</tr>`);
-  document.getElementById("compare-structure").innerHTML = `<table class="compare-table">${header}${structRows.join("")}</table>`;
 
   // 专题分布
   const topicHeader = `<tr><th>专题</th>${years.map((y) => `<th>${esc(y)}</th>`).join("")}<th>合计</th></tr>`;
@@ -725,12 +714,22 @@ function renderCompare() {
   }
   document.getElementById("compare-topics").innerHTML = `<table class="compare-table">${topicHeader}${topicRows.join("")}</table>`;
 
-  // 高频考点
+  // 高频考点（选择题 / 综合题 分开）
+  const choiceQs = (DATA.questions || []).filter((q) => questionType(q) === "选择题");
+  const compQs = (DATA.questions || []).filter((q) => questionType(q) === "综合题");
+  document.getElementById("compare-top-choice").innerHTML = topTopicsHtml(choiceQs);
+  document.getElementById("compare-top-comprehensive").innerHTML = topTopicsHtml(compQs);
+}
+
+function topTopicsHtml(questions, limit = 10) {
   const counts = new Map();
-  (DATA.questions || []).forEach((q) => counts.set(q.topic, (counts.get(q.topic) || 0) + 1));
-  const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10);
-  const max = sorted.length ? sorted[0][1] : 1;
-  document.getElementById("compare-top").innerHTML = sorted
+  questions.forEach((q) => {
+    if (q.topic) counts.set(q.topic, (counts.get(q.topic) || 0) + 1);
+  });
+  const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, limit);
+  if (!sorted.length) return '<div class="empty-state">暂无数据</div>';
+  const max = sorted[0][1];
+  return sorted
     .map(
       ([topic, count]) => `
       <div class="top-row">
