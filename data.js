@@ -122,6 +122,17 @@ const QUESTION_BANK = {
       "hasAnswer": true,
       "hasAnalysis": true,
       "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "p-33739946",
+      "title": "2022年新高考江苏卷地理真题",
+      "province": "江苏",
+      "year": "2022",
+      "type": "高考真题",
+      "url": "https://sunhui918.github.io/geo-gaokao/files/up-1787533729996-9nqrc.docx",
+      "hasAnswer": true,
+      "hasAnalysis": true,
+      "dateAdded": "2026-08-24"
     }
   ],
   "questions": [
@@ -2842,6 +2853,682 @@ const QUESTION_BANK = {
       "answer": "(1) 古镇多位于内部山区，沿河谷分布；新镇多位于沿海。\n(2) 建筑坐北朝南，利于采光；依山而建，利用山地地形；建筑排列紧密，节省土地；坡面屋顶，利于排水；石木建筑，就地取材。\n(3) 新镇与古镇并存，增加旅游资源多样性，吸引更多游客；新镇的生活设施相对完善，提高旅游舒适度；新镇基础设施相对完善，提高旅游环境质量；古镇保留传统建筑风貌，有利于保护旅游资源独特性；古镇人口流失，不利于传统建筑的保护；不利于传统文化传承。",
       "analysis": "古镇位于山区沿河，新镇沿海；传统建筑适应地形、气候和材料；双子镇模式有利有弊。",
       "figureHint": "萨索斯岛古镇与新镇分布示意图及古镇传统建筑景观图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739946-0",
+      "paperId": "p-33739946",
+      "number": "1",
+      "topic": "地域文化",
+      "knowledgePoint": "地域文化对城乡景观的影响",
+      "difficulty": "中",
+      "desc": "罗弗敦群岛房屋底部以木柱支撑、屋顶用厚重石板铺设的建造目的",
+      "keywords": [
+        "木柱支撑",
+        "厚重石板",
+        "抵御强风",
+        "扩展用地"
+      ],
+      "questionGroup": "qg-罗弗敦群岛",
+      "sharedMaterial": "罗弗敦群岛位于挪威北部（68°N附近），捕鱼为岛上居民主要经济活动。下图为“罗弗敦群岛聚落景观图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787532899537-00c3d.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "许多居民房屋底部以木柱支撑，屋顶用厚重石板铺设，这样建造主要是为了（   ）\nA．防御海浪，便于出行\tB．扩展用地，抵御强风\nC．稳固地基，承受积雪\tD．减少潮湿，保暖防寒",
+      "answer": "B",
+      "analysis": "该地地势起伏大，平地狭小，木柱支撑可扩展用地；岛屿风力强劲，厚重石板可抵御强风。",
+      "figureHint": "罗弗敦群岛聚落景观图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739946-1",
+      "paperId": "p-33739946",
+      "number": "2",
+      "topic": "地域文化",
+      "knowledgePoint": "自然环境对人类活动的影响",
+      "difficulty": "易",
+      "desc": "岛上搭建木架的主要功能",
+      "keywords": [
+        "木架",
+        "风干海鱼",
+        "捕鱼"
+      ],
+      "questionGroup": "qg-罗弗敦群岛",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "岛上搭建了许多木架，其主要功能是（   ）\nA．风干海鱼\tB．晾晒衣物\tC．堆放薪柴\tD．圈养牲畜",
+      "answer": "A",
+      "analysis": "岛上居民主要经济活动为捕鱼，搭建木架主要用于晾晒鱼干。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739946-2",
+      "paperId": "p-33739946",
+      "number": "3",
+      "topic": "地域文化",
+      "knowledgePoint": "旅游资源的独特性",
+      "difficulty": "易",
+      "desc": "罗弗敦群岛最能吸引世界游客的景观",
+      "keywords": [
+        "极光",
+        "旅游资源",
+        "北极圈"
+      ],
+      "questionGroup": "qg-罗弗敦群岛",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "该岛最能吸引世界游客的景观是（   ）\nA．林海\tB．冰川\tC．雪原\tD．极光",
+      "answer": "D",
+      "analysis": "该地位于北极圈以内，极光为独特旅游资源，其他景观在较低纬度也有。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739946-3",
+      "paperId": "p-33739946",
+      "number": "4",
+      "topic": "地球运动和天文",
+      "knowledgePoint": "地球自转周期与经度差",
+      "difficulty": "中",
+      "desc": "国际空间站到达北京上空所需时间",
+      "keywords": [
+        "国际空间站",
+        "经度差",
+        "自转周期"
+      ],
+      "questionGroup": "qg-国际空间站",
+      "sharedMaterial": "国际空间站距地面约420km，每90分钟环绕地球一周。空间站反射阳光，在一定条件下，人们肉眼可以看到明亮的光点划过天空。下图为“国际空间站某时段轨迹和某时刻位置示意图”，图中阴影表示黑夜。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787532926540-hbjz7.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "空间站到达北京上空约需（   ）\nA．15分钟\tB．30分钟\tC．45分钟\tD．60分钟",
+      "answer": "C",
+      "analysis": "北京与国际空间站经度大致相差180°，空间站绕地球半圈需45分钟。",
+      "figureHint": "国际空间站某时段轨迹和某时刻位置示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739946-4",
+      "paperId": "p-33739946",
+      "number": "5",
+      "topic": "地球运动和天文",
+      "knowledgePoint": "地方时计算",
+      "difficulty": "难",
+      "desc": "空间站到达北京上空时的北京时间",
+      "keywords": [
+        "地方时",
+        "北京时间",
+        "晨线"
+      ],
+      "questionGroup": "qg-国际空间站",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "空间站到达北京上空时，北京时间大致是（   ）\nA．9：40\tB．10：10\tC．10：40\tD．11：10",
+      "answer": "C",
+      "analysis": "根据晨线与赤道交点地方时6时，推算北京时间约10时，加上45分钟飞行时间，约为10:45。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739946-5",
+      "paperId": "p-33739946",
+      "number": "6",
+      "topic": "地球运动和天文",
+      "knowledgePoint": "昼夜现象与观测条件",
+      "difficulty": "难",
+      "desc": "空间站飞行1小时内肉眼可见的地点",
+      "keywords": [
+        "空间站",
+        "可见性",
+        "昼夜"
+      ],
+      "questionGroup": "qg-国际空间站",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "空间站从图示位置飞行1小时，在这期间能看到空间站的地点是（   ）\nA．圣地亚哥\tB．卡马匡\tC．马维尔拉\tD．上海",
+      "answer": "C",
+      "analysis": "空间站1小时绕行2/3圈，马维尔拉处于黎明，可见；卡马匡黑夜、上海白昼均不易见。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739946-6",
+      "paperId": "p-33739946",
+      "number": "7",
+      "topic": "大气",
+      "knowledgePoint": "地形对气温的影响",
+      "difficulty": "中",
+      "desc": "北美降温区分布特点的影响因素",
+      "keywords": [
+        "降温区",
+        "地形格局",
+        "冷空气"
+      ],
+      "questionGroup": "qg-北美降温",
+      "sharedMaterial": "2022年3月25—30日，北美部分地区受到冷空气影响，出现降温。下图为“冷空气影响期间降温范围及31日地面天气形势图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787532954040-1vmk8.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "影响图中降温区分布特点的因素是（   ）\nA．海陆位置\tB．地形格局\tC．植被覆盖\tD．洋流性质",
+      "answer": "B",
+      "analysis": "降温区主要位于中央大平原，受东西两侧山地阻挡，冷空气影响范围受地形格局制约。",
+      "figureHint": "冷空气影响期间降温范围及31日地面天气形势图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739946-7",
+      "paperId": "p-33739946",
+      "number": "8",
+      "topic": "大气",
+      "knowledgePoint": "锋面气旋与降水",
+      "difficulty": "中",
+      "desc": "31日受暖锋影响最可能的降水区域",
+      "keywords": [
+        "暖锋",
+        "降水",
+        "锋面气旋"
+      ],
+      "questionGroup": "qg-北美降温",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "因受暖锋影响，31日最可能的降水区域是（   ）\nA．甲\tB．乙\tC．丙\tD．丁",
+      "answer": "D",
+      "analysis": "丁位于低压中心东侧槽线附近，为暖锋锋前，最可能降水。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739946-8",
+      "paperId": "p-33739946",
+      "number": "9",
+      "topic": "大气",
+      "knowledgePoint": "天气系统移动",
+      "difficulty": "易",
+      "desc": "造成降温的天气系统31日移向",
+      "keywords": [
+        "天气系统",
+        "移动方向",
+        "大西洋"
+      ],
+      "questionGroup": "qg-北美降温",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "造成此次降温的天气系统，31日已移向（   ）\nA．太平洋\tB．大西洋\tC．北冰洋\tD．墨西哥湾",
+      "answer": "B",
+      "analysis": "天气系统受大气环流影响向东移动，31日位于大西洋。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739946-9",
+      "paperId": "p-33739946",
+      "number": "10",
+      "topic": "地表形态的塑造",
+      "knowledgePoint": "岩石成因",
+      "difficulty": "易",
+      "desc": "布兰德山花岗岩岩体的成因",
+      "keywords": [
+        "花岗岩",
+        "岩浆侵入",
+        "岩石成因"
+      ],
+      "questionGroup": "qg-布兰德山",
+      "sharedMaterial": "布兰德山位于非洲纳米比亚北部，是典型的花岗岩山体。下图为“布兰德山及周边区域地质地貌遥感影像图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787532974190-8f2nb.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "布兰德山花岗岩岩体的成因是（   ）\nA．火山喷发\tB．沉积作用\tC．变质作用\tD．岩浆侵入",
+      "answer": "D",
+      "analysis": "花岗岩属于深层岩浆侵入冷却凝固形成的岩石。",
+      "figureHint": "布兰德山及周边区域地质地貌遥感影像图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739946-10",
+      "paperId": "p-33739946",
+      "number": "11",
+      "topic": "地表形态的塑造",
+      "knowledgePoint": "外力侵蚀差异",
+      "difficulty": "中",
+      "desc": "布兰德山山体高耸的主要原因",
+      "keywords": [
+        "差异侵蚀",
+        "花岗岩",
+        "山体高耸"
+      ],
+      "questionGroup": "qg-布兰德山",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "布兰德山山体高耸的主要原因是（   ）\nA．差异侵蚀\tB．化学溶蚀\tC．河流侵蚀\tD．风力侵蚀",
+      "answer": "A",
+      "analysis": "花岗岩坚硬不易侵蚀，周围岩石较软易被侵蚀，差异侵蚀导致山体高耸。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-11",
+      "paperId": "p-33739946",
+      "number": "12",
+      "topic": "地表形态的塑造",
+      "knowledgePoint": "岩石年龄比较",
+      "difficulty": "中",
+      "desc": "与布兰德山花岗岩岩体年龄最接近的区域",
+      "keywords": [
+        "接触变质岩",
+        "岩浆侵入",
+        "岩石年龄"
+      ],
+      "questionGroup": "qg-布兰德山",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "与布兰德山花岗岩岩体年龄最接近的是（   ）\nA．花岗岩区\tB．变质岩区\tC．沉积岩区\tD．接触变质岩区",
+      "answer": "D",
+      "analysis": "接触变质岩是岩浆侵入时高温变质形成，与花岗岩形成时间最接近。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-12",
+      "paperId": "p-33739946",
+      "number": "13",
+      "topic": "水",
+      "knowledgePoint": "河流水位变化与侵蚀",
+      "difficulty": "中",
+      "desc": "河流对岸裸露带形成的原因",
+      "keywords": [
+        "水位涨落",
+        "裸露带",
+        "水没地"
+      ],
+      "questionGroup": "qg-水丰水库",
+      "sharedMaterial": "水丰水库位于鸭绿江上，发电为其主要功能。绿江村位于库尾的一个半岛上，该村形成了季节性淹没的“水没地”景观。下图为“绿江村‘水没地’照片”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787533042356-pfxwq.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "照片中河流对岸裸露带形成的原因是（   ）\nA．岸坡崩塌\tB．开山采石\tC．水位涨落\tD．崖壁贫瘠",
+      "answer": "C",
+      "analysis": "河流水位季节性涨落导致沿岸岩壁季节性出露，形成裸露带。",
+      "figureHint": "绿江村‘水没地’照片",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-13",
+      "paperId": "p-33739946",
+      "number": "14",
+      "topic": "水",
+      "knowledgePoint": "水位线与地形",
+      "difficulty": "难",
+      "desc": "与L线高程接近的地点",
+      "keywords": [
+        "水位线",
+        "高程",
+        "水没地"
+      ],
+      "questionGroup": "qg-水丰水库",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "与图中L线高程接近的地点是（   ）\nA．甲\tB．乙\tC．丙\tD．丁",
+      "answer": "C",
+      "analysis": "L线为丰水期最高水位线，丙位于住宅与耕地之间，接近该高程。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-14",
+      "paperId": "p-33739946",
+      "number": "15",
+      "topic": "水",
+      "knowledgePoint": "河流补给与汛期",
+      "difficulty": "中",
+      "desc": "水没地淹没面积最大的月份",
+      "keywords": [
+        "汛期",
+        "水没地",
+        "水库蓄水"
+      ],
+      "questionGroup": "qg-水丰水库",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "下列月份中，该村“水没地”淹没在水下面积最大的一般是（   ）\nA．2月\tB．5月\tC．7月\tD．10月",
+      "answer": "D",
+      "analysis": "东北地区夏汛为主，10月汛期结束，水库蓄水量最大，水没地淹没面积最大。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-15",
+      "paperId": "p-33739946",
+      "number": "16",
+      "topic": "人口",
+      "knowledgePoint": "人口增长率比较",
+      "difficulty": "中",
+      "desc": "七普与六普人口增长率相等的省级行政区",
+      "keywords": [
+        "人口增长率",
+        "七普",
+        "六普"
+      ],
+      "questionGroup": "qg-人口普查",
+      "sharedMaterial": "我国于2010年和2020年分别进行了第六次全国人口普查（“六普”）第七次全国人口普查（“七普”）。下图为“我国大陆31个省、自治区、直辖市‘六普’‘七普’，人口增长差异图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787533075221-w769s.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "“七普”与“六普”人口增长率相等的省级行政区是（   ）\nA．京、沪\tB．黑、吉\tC．粤、鄂\tD．渝、黔",
+      "answer": "C",
+      "analysis": "根据图示，粤、鄂位于虚线上，两普增长率相等。",
+      "figureHint": "我国大陆31个省、自治区、直辖市‘六普’‘七普’人口增长差异图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-16",
+      "paperId": "p-33739946",
+      "number": "17",
+      "topic": "人口",
+      "knowledgePoint": "人口增长特点",
+      "difficulty": "中",
+      "desc": "四个直辖市人口增长的共同特点",
+      "keywords": [
+        "直辖市",
+        "人口增长",
+        "全国平均"
+      ],
+      "questionGroup": "qg-人口普查",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "我国四个直辖市人口增长的共同特点是（   ）\nA．“六普”到“七普”期间，人口加速增长\nB．“六普”到“七普”期间，人口减速增长\nC．“六普”人口增长率高于全国平均增长率\nD．“七普”人口增长率高于全国平均增长率",
+      "answer": "D",
+      "analysis": "四个直辖市七普增长率均高于全国平均，但六普时渝低于全国平均。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-17",
+      "paperId": "p-33739946",
+      "number": "18",
+      "topic": "人口",
+      "knowledgePoint": "人口迁移与集聚",
+      "difficulty": "易",
+      "desc": "我国人口分布变化趋势",
+      "keywords": [
+        "人口集聚",
+        "城市群",
+        "迁移"
+      ],
+      "questionGroup": "qg-人口普查",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "随着经济社会的发展，我国人口（   ）\nA．向城市群集聚\tB．向中西部迁移\tC．沿长江带集聚\tD．分布更加均衡",
+      "answer": "A",
+      "analysis": "主要城市群七普增长率高于全国平均，人口向经济发达的城市群集聚。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-18",
+      "paperId": "p-33739946",
+      "number": "19",
+      "topic": "环境与发展",
+      "knowledgePoint": "流域开发与水资源利用",
+      "difficulty": "中",
+      "desc": "埃布罗河支流大坝调节流量的主要目的",
+      "keywords": [
+        "大坝",
+        "调节流量",
+        "灌溉"
+      ],
+      "questionGroup": "qg-埃布罗河",
+      "sharedMaterial": "埃布罗河是西班牙第一大河，流域内修建了多座大坝，用以调节流量的季节分配。下图为“埃布罗河流域位置及其某支流上水文站月平均流量变化图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787533106918-uhuer.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "该支流大坝调节流量季节分配的主要目的是（   ）\nA．灌溉\tB．航运\tC．防洪\tD．发电",
+      "answer": "A",
+      "analysis": "建坝后径流总量减少，说明部分水源用于农业灌溉，调节季节分配主要为了灌溉。",
+      "figureHint": "埃布罗河流域位置及其某支流上水文站月平均流量变化图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-19",
+      "paperId": "p-33739946",
+      "number": "20",
+      "topic": "环境与发展",
+      "knowledgePoint": "农业区位因素",
+      "difficulty": "中",
+      "desc": "大坝调节下游流量有利于种植的作物",
+      "keywords": [
+        "水稻",
+        "灌溉",
+        "地中海气候"
+      ],
+      "questionGroup": "qg-埃布罗河",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "多座大坝调节了埃布罗河下游的流量，这有利于下游地区种植（   ）\nA．茶叶\tB．水稻\tC．咖啡\tD．甜菜",
+      "answer": "B",
+      "analysis": "下游属地中海气候，夏季干燥，调节径流为水稻种植提供稳定水源。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-20",
+      "paperId": "p-33739946",
+      "number": "21",
+      "topic": "乡村和城镇",
+      "knowledgePoint": "乡村社会关系网络演变",
+      "difficulty": "中",
+      "desc": "村落社会关系网络演变趋势",
+      "keywords": [
+        "社会关系网络",
+        "多元化",
+        "网商集聚"
+      ],
+      "questionGroup": "qg-网商村落",
+      "sharedMaterial": "近四十年来，我国乡村地区经济形态、土地利用、社会结构和生态环境等方面发生着深刻变化。下图为“网商集聚的某村落社会关系网络演变示意图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787533229145-sktmn.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "从阶段I演变到阶段III，该村落社会关系网络逐步（   ）\nA．多元化\tB．内向化\tC．等级化\tD．中心化",
+      "answer": "A",
+      "analysis": "从内部联系到与外来人口、工厂、网商联系，社会关系网络多元化。",
+      "figureHint": "网商集聚的某村落社会关系网络演变示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-21",
+      "paperId": "p-33739946",
+      "number": "22",
+      "topic": "乡村和城镇",
+      "knowledgePoint": "乡村发展类型",
+      "difficulty": "中",
+      "desc": "该村落所属类型",
+      "keywords": [
+        "城市近郊型",
+        "工业化",
+        "城市化"
+      ],
+      "questionGroup": "qg-网商村落",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "根据发展过程推断，该村落属于（   ）\nA．城市近郊型\tB．边远山区型\tC．搬迁撤并型\tD．特色保护型",
+      "answer": "A",
+      "analysis": "工厂出现和外来人口迁入，受工业化与城市化推动，符合城市近郊型特征。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-22",
+      "paperId": "p-33739946",
+      "number": "23",
+      "topic": "乡村和城镇",
+      "knowledgePoint": "乡村发展驱动力",
+      "difficulty": "中",
+      "desc": "村落社会关系网络演变的主要驱动力",
+      "keywords": [
+        "工业",
+        "信息化",
+        "驱动力"
+      ],
+      "questionGroup": "qg-网商村落",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "该村落社会关系网络演变的主要驱动力是（   ）\nA．历史文化传承\tB．工业与信息化\tC．自然环境变迁\tD．交通区位变化",
+      "answer": "B",
+      "analysis": "阶段II服装工厂、阶段III网上商铺，体现工业与信息化的带动作用。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-23",
+      "paperId": "p-33739946",
+      "number": "24",
+      "topic": "整体性和差异性",
+      "knowledgePoint": "自然带分布、地势特征、冰川成因",
+      "difficulty": "难",
+      "desc": "亚欧大陆某区域自然带、地势及冰川分布分析",
+      "keywords": [
+        "自然带",
+        "苔原带",
+        "分水岭",
+        "冰川"
+      ],
+      "questionGroup": "",
+      "sharedMaterial": "下图为“亚欧大陆某区域自然带及该区域局部冰川、河流分布图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787533253397-8akv1.png",
+          "label": "配图",
+          "alt": "配图"
+        },
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787533260524-fs015.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "阅读图文材料，回答下列问题。\n材料：下图为“亚欧大陆某区域自然带及该区域局部冰川、河流分布图”。\n(1)写出图中自然带II的类型，并简析其向南凸出的原因。\n(2)根据右图中冰川、河流的分布，简述该局部区域的地势特征；结合地势特征，用曲线绘出虚线框内M河流域与N河流域的分水岭。\n(3)分析右图中R处附近冰川较多的原因。",
+      "answer": "(1)类型:苔原带。原因:受地形影响，地处山地，气温低。\n(2)地势特征：山地呈东北——西南走向；中间高，东、西低。分水岭：见下图。\n(3)靠近海洋，水汽在极地东风吹送下，受地形抬升，降雪多;纬度高，气温低，积雪消融少，积累多，冰川多;山谷发育，积雪易留存，冰川数量多。",
+      "analysis": "自然带II位于北冰洋沿岸，为苔原带，向南凸出因乌拉尔山海拔高气温低；河流流向指示地势中间高东西低；R处纬度高、受极地东风影响降雪多，且山谷利于积雪。",
+      "figureHint": "亚欧大陆某区域自然带及该区域局部冰川、河流分布图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-24",
+      "paperId": "p-33739946",
+      "number": "25",
+      "topic": "江苏地理",
+      "knowledgePoint": "外力作用与地形、区域经济差异、区域协调发展",
+      "difficulty": "中",
+      "desc": "江苏地形成因、与广东经济比较及区域协调发展建议",
+      "keywords": [
+        "平原成因",
+        "区域差异",
+        "产业协作"
+      ],
+      "questionGroup": "",
+      "sharedMaterial": "材料一：江苏地势低平，河湖密布，以平原为主，可以概括为“一山二水七分田”。广东除珠江三角洲外，其余地区以山地和丘陵为主，可以概括为“七山一水二分田”。下图为“江苏地形图”。材料二：2020年，广东和江苏国内生产总值（GDP）居全国第一、第二位。下图为“2020年江苏和广东各地级市GDP统计图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787533274927-7h776.png",
+          "label": "配图",
+          "alt": "配图"
+        },
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787533282882-7rmqn.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "阅读图文材料，回答下列问题。\n材料一：江苏地势低平，河湖密布，以平原为主，可以概括为“一山二水七分田”。广东除珠江三角洲外，其余地区以山地和丘陵为主，可以概括为“七山一水二分田”。下图为“江苏地形图”。\n材料二：2020年，广东和江苏国内生产总值（GDP）居全国第一、第二位。下图为“2020年江苏和广东各地级市GDP统计图”。\n(1)江苏地形以平原为主，从外力作用分析其形成的主要原因。\n(2)在与广东比较的基础上，概括江苏区域经济发展水平的整体特征。\n(3)为进一步推进江苏区域协调发展，从产业发展的角度提出合理建议。",
+      "answer": "(1)江苏南有长江流经，现有淮河流经，历史上黄河由此入海;多条河流挟带大量泥沙，进入江苏时，流速减慢，泥沙沉积，从而形成广阔的平原。\n(2)江苏发展水平整体低于广东;与广东比江苏区域内部发展水平差异较小;苏南(长江以南地区)整体发展水平高于苏北。与广东比，江苏GDP最高的城市不及深圳广州，但其它城市GDP水平高于广东。\n(3)优化资源配置，促进产业分工协作；优化产业结构，发展高新技术产业；引导产业集聚/产业转移，调整产业布局。",
+      "analysis": "江苏平原由河流泥沙沉积形成；与广东相比，江苏整体水平略低但内部差异小；区域协调发展需优化产业分工与布局。",
+      "figureHint": "江苏地形图、2020年江苏和广东各地级市GDP统计图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-33739947-25",
+      "paperId": "p-33739946",
+      "number": "26",
+      "topic": "产业",
+      "knowledgePoint": "工业区位因素、产业转移、区域一体化",
+      "difficulty": "难",
+      "desc": "东数西算工程中数字产业分离条件、长三角枢纽布局原因及示范区意义",
+      "keywords": [
+        "东数西算",
+        "数据中心",
+        "区域一体化"
+      ],
+      "questionGroup": "",
+      "sharedMaterial": "材料一：随着数字经济蓬勃发展，我国数据处理能力及应用需求大幅提升。目前我国数据中心用电量已约占全社会总用电量的2％。2022年我国启动“东数西算”工程，规划建设8个算力国家枢纽，形成全国一体化算力网络，将东部的数据存储、数据离线分析等非实时性算力需求有序引导到西部，实现“数”“算”分离。材料二：在长三角枢纽规划建设2个数据中心集群，其中之一布局在“长三角生态绿色一体化发展示范区”。材料三：下图为“全国算力国家枢纽及长三角生态绿色一体化发展示范区分布图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787533297246-4u8jl.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "阅读图文材料，回答下列问题。\n材料一：随着数字经济蓬勃发展，我国数据处理能力及应用需求大幅提升。目前我国数据中心用电量已约占全社会总用电量的2％。2022年我国启动“东数西算”工程，规划建设8个算力国家枢纽，形成全国一体化算力网络，将东部的数据存储、数据离线分析等非实时性算力需求有序引导到西部，实现“数”“算”分离。\n材料二：在长三角枢纽规划建设2个数据中心集群，其中之一布局在“长三角生态绿色一体化发展示范区”。\n材料三：下图为“全国算力国家枢纽及长三角生态绿色一体化发展示范区分布图”。\n(1)与传统产业相比，简述数字产业能够实现“数”“算”分离的条件。\n(2)从资源、环境两个方面，分析在长三角枢纽周边地区没有布局算力国家枢纽的主要原因。\n(3)说明在长三角生态绿色一体化发展示范区建设数据中心集群的地理意义。",
+      "answer": "(1)数据传输速度快；数据传输成本低；非实时性算力需求对算力枢纽布局区域限制小；网络等基础设施逐步完善；政策支持。\n(2)资源：长三角枢纽周边地区经济发达，能源、电力相对短缺；人口稠密，城市众多，土地价格高；气温较高，算力枢纽运营能耗较大；环境：负荷大，碳排放压力大。\n(3)方便数据存储与处理，满足长三角区域“非实时性”算力需求（缓解实时性算力需求、压力）；加强区域产业分工和合作，推进区域（江苏）一体化发展。",
+      "analysis": "数字产业依赖高速低成本的传输技术和网络设施，非实时性需求布局灵活；长三角能源土地紧张、环境压力大，不宜布局；示范区建设数据中心可促进区域一体化与产业协作。",
+      "figureHint": "全国算力国家枢纽及长三角生态绿色一体化发展示范区分布图",
       "dateAdded": "2026-08-24"
     }
   ]
