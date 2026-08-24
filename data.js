@@ -3794,6 +3794,74 @@ const QUESTION_BANK = {
         }
       ],
       "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "ep-35387064",
+      "year": "2025",
+      "province": "江苏",
+      "items": [
+        {
+          "number": "1-3",
+          "difficulty": "0.4",
+          "knowledge": "日影方向与长度变化；太阳视运动；地方时的定义、计算；影响植被的因素"
+        },
+        {
+          "number": "4-6",
+          "difficulty": "0.65",
+          "knowledge": "方向；图例和注记"
+        },
+        {
+          "number": "7-9",
+          "difficulty": "0.85",
+          "knowledge": "植被演替与结构；影响植被的因素；影响土壤形成的因素"
+        },
+        {
+          "number": "10-11",
+          "difficulty": "0.4",
+          "knowledge": "岩层新老关系的判读；背斜、向斜的应用"
+        },
+        {
+          "number": "12-14",
+          "difficulty": "0.4",
+          "knowledge": "实现粮食安全的途径；我国耕地资源开发利用现状"
+        },
+        {
+          "number": "15-16",
+          "difficulty": "0.65",
+          "knowledge": "城市和乡村区位因素"
+        },
+        {
+          "number": "17-18",
+          "difficulty": "0.4",
+          "knowledge": "影响人口迁移的因素；区域发展差异的表现；人口问题及其应对措施"
+        },
+        {
+          "number": "19-21",
+          "difficulty": "0.4",
+          "knowledge": "农业发展方向与措施；农业区位因素的变化"
+        },
+        {
+          "number": "22-23",
+          "difficulty": "0.4",
+          "knowledge": "乡村的土地利用及空间结构"
+        },
+        {
+          "number": "24",
+          "difficulty": "0.4",
+          "knowledge": "气温的影响因素；降水的分布；洋流对地理环境的影响；降水的影响因素"
+        },
+        {
+          "number": "25",
+          "difficulty": "0.65",
+          "knowledge": "区域发展差异与因地制宜；城乡空间结构；城市和乡村区位因素；大城市对周边城市的辐射作用"
+        },
+        {
+          "number": "26",
+          "difficulty": "0.65",
+          "knowledge": "实现粮食安全的途径；农业区位因素的概念及其分类"
+        }
+      ],
+      "dateAdded": "2026-08-24"
     }
   ]
 };
