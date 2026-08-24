@@ -74,6 +74,7 @@ body {
 .compare-table th, .compare-table td { border: 1px solid var(--border); padding: 6px 10px; text-align: center; }
 .compare-table th { background: #f8fafc; font-weight: 600; }
 .compare-table td:first-child, .compare-table th:first-child { text-align: left; }
+.exam-knowledge { text-align: left; line-height: 1.7; }
 .compare-group-row td { background: #eff6ff; font-weight: 600; color: #1e3a8a; text-align: left; }
 .top-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .top-name { width: 110px; flex-shrink: 0; font-size: 13px; }
