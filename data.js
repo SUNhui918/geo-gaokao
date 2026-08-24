@@ -1,5 +1,7 @@
 // ============================================================
-// 高三地理试题库 - 数据文件
+// 高三地理试题库 - 数据文件（由管理后台自动生成）
+// ============================================================
+// 数据结构见 data.js 顶部注释；题目配图用 figures 数组，可挂多张图。
 // ============================================================
 const QUESTION_BANK = {
   "meta": {
@@ -106,6 +108,17 @@ const QUESTION_BANK = {
       "year": "2024",
       "type": "高考真题",
       "url": "https://sunhui918.github.io/geo-gaokao/files/up-1787505923241-97t9i.docx",
+      "hasAnswer": true,
+      "hasAnalysis": true,
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "p-31629550",
+      "title": "2023年新高考江苏卷地理真题",
+      "province": "江苏",
+      "year": "2023",
+      "type": "高考真题",
+      "url": "https://sunhui918.github.io/geo-gaokao/files/up-1787531623953-bir8c.docx",
       "hasAnswer": true,
       "hasAnalysis": true,
       "dateAdded": "2026-08-24"
@@ -2171,6 +2184,664 @@ const QUESTION_BANK = {
       "answer": "(1)气候条件相似; 东西向的河流; 土地资源丰富; 地形阻碍小。(任答2点得4分)\n(2)气候变暖湿，农耕活动向北扩展; 气候变冷干，畜牧活动向南推移。(4分)\n(3)水土流失; 沙漠化; 盐碱化; 草场退化。(任答2点得4分)\n(4)建设自然区; 建设防护林; 退耕还林还草; 实施生态修复。(任答3点得6分)",
       "analysis": "(1)第一个1000年时期，气候温暖湿润，北方地区气候条件相似，东西向河流众多，土地资源丰富，地形阻碍小，有利于东西向的人类活动。\n(2)第二个1000年时期，气候暖湿时，农耕活动向北扩展；冷干时，畜牧活动向南推移，导致人类活动空间南北变化。\n(3)南北交融带位于农牧交错带，生态环境脆弱，存在水土流失、沙漠化、盐碱化、草场退化等问题。\n(4)为保护生态环境，应建设自然保护区、防护林，退耕还林还草，实施生态修复。",
       "figureHint": "我国北方地区民族交融的空间示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-0",
+      "paperId": "p-31629550",
+      "number": "1",
+      "topic": "水",
+      "knowledgePoint": "海水的温度",
+      "difficulty": "易",
+      "desc": "游客全年能与野生海豚互动的原因",
+      "keywords": [
+        "海豚",
+        "海水温度",
+        "互动"
+      ],
+      "questionGroup": "qg-蒙基米亚",
+      "sharedMaterial": "澳大利亚西海岸的蒙基米亚拥有典型的砂质海岸，该地是游客全年与野生海豚互动的最佳地点。下图为“游客与野生海豚互动照片”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531029661-cedir.png",
+          "label": "配图",
+          "alt": "配图"
+        },
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531064452-fy4bd.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "游客在蒙基米亚全年都能与野生海豚互动，主要取决于（   ）\nA．海水密度\tB．海水盐度\tC．海水温度\tD．海水水质",
+      "answer": "C",
+      "analysis": "蒙基米亚纬度低，海水温度高，适宜海豚生存，因此全年可互动。",
+      "figureHint": "游客与野生海豚互动照片",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-1",
+      "paperId": "p-31629550",
+      "number": "2",
+      "topic": "水",
+      "knowledgePoint": "海岸地貌",
+      "difficulty": "易",
+      "desc": "最有利于游客与海豚互动的海底剖面形态",
+      "keywords": [
+        "海岸地貌",
+        "海底剖面",
+        "互动"
+      ],
+      "questionGroup": "qg-蒙基米亚",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": true,
+      "content": "最有利于游客与野生海豚互动的蒙基米亚海底剖面形态是（   ）\nA．  \tB．  \nC．  \tD．",
+      "answer": "A",
+      "analysis": "砂质海岸说明沿海水浅、地势平坦，利于海豚靠近和互动。",
+      "figureHint": "四个海底剖面示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-2",
+      "paperId": "p-31629550",
+      "number": "3",
+      "topic": "地球运动和天文",
+      "knowledgePoint": "经纬网定位",
+      "difficulty": "中",
+      "desc": "判断中国空间站在轨位置",
+      "keywords": [
+        "空间站",
+        "经纬网",
+        "俯视图"
+      ],
+      "questionGroup": "qg-四星伴月",
+      "sharedMaterial": "2022年4月27日黎明时分,某地出现金星、火星、木星与土星“四星伴月”的天文现象。此时中国空间站过境该地上空，与“四星伴月”同框，形成壮美景观。下图为“某时刻中国空间站在轨位置上方俯视示意图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531085601-ih0k4.png",
+          "label": "配图",
+          "alt": "配图"
+        },
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531093593-66h29.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "与图示时刻中国空间站在轨位置相符的是（   ）\nA．  \tB．  \nC．  \tD．",
+      "answer": "C",
+      "analysis": "根据南极点俯视图，空间站位于120°E以东附近，C图符合。",
+      "figureHint": "某时刻中国空间站在轨位置上方俯视示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-3",
+      "paperId": "p-31629550",
+      "number": "4",
+      "topic": "地球运动和天文",
+      "knowledgePoint": "太阳系行星运动特征",
+      "difficulty": "易",
+      "desc": "四星伴月难得一见的原因",
+      "keywords": [
+        "四星伴月",
+        "公转周期",
+        "天文现象"
+      ],
+      "questionGroup": "qg-四星伴月",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "“四星伴月”这一天文现象难得一见，主要是因为各天体（   ）\nA．自转周期不同\tB．体积大小不同\tC．自转方向不同\tD．公转周期不同",
+      "answer": "D",
+      "analysis": "各天体公转周期不同，导致它们难以同时出现在相近位置。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-4",
+      "paperId": "p-31629550",
+      "number": "5",
+      "topic": "整体性和差异性",
+      "knowledgePoint": "山地垂直地域分异规律",
+      "difficulty": "中",
+      "desc": "不同坡向草原带分布高度差异的推断依据",
+      "keywords": [
+        "垂直带谱",
+        "水分",
+        "林带"
+      ],
+      "questionGroup": "qg-山地垂直带",
+      "sharedMaterial": "下图为“我国某山地垂直带谱及云杉林亚带的植被垂直分层示意图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531130724-ypy2v.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "图中不同坡向山地草原带分布高度存在差异，主要是由水分决定的，其推断依据是（   ）\nA．山地坡度\tB．上部林带\tC．山体海拔\tD．基带类型",
+      "answer": "B",
+      "analysis": "草原带分布上限受水分影响，其上部林带分布下限可作为推断依据。",
+      "figureHint": "我国某山地垂直带谱及云杉林亚带的植被垂直分层示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-5",
+      "paperId": "p-31629550",
+      "number": "6",
+      "topic": "整体性和差异性",
+      "knowledgePoint": "影响山地垂直带谱的因素",
+      "difficulty": "中",
+      "desc": "高山灌丛草甸带坡向差异不明显的原因",
+      "keywords": [
+        "高山灌丛草甸",
+        "坡向",
+        "山顶面积"
+      ],
+      "questionGroup": "qg-山地垂直带",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "该山地高山灌丛草甸带坡向差异不明显，原因是山体顶部（   ）\nA．面积小\tB．降水多\tC．风力大\tD．气温低",
+      "answer": "A",
+      "analysis": "山顶面积小，不同坡向相互干扰，导致差异不明显。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-6",
+      "paperId": "p-31629550",
+      "number": "7",
+      "topic": "整体性和差异性",
+      "knowledgePoint": "影响山地垂直带谱的因素",
+      "difficulty": "中",
+      "desc": "云杉林亚带植被垂直分层结构不同的主要因子",
+      "keywords": [
+        "云杉林",
+        "垂直分层",
+        "光照"
+      ],
+      "questionGroup": "qg-山地垂直带",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "该山地Ⅲ2、Ⅲ3、Ⅲ4中的植被垂直分层结构不同，其主要影响因子是（   ）\nA．水分\tB．土壤\tC．温度\tD．光照",
+      "answer": "D",
+      "analysis": "乔木层密度不同导致林下光照条件差异，影响垂直分层结构。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-7",
+      "paperId": "p-31629550",
+      "number": "8",
+      "topic": "水",
+      "knowledgePoint": "世界洋流分布规律及其成因",
+      "difficulty": "中",
+      "desc": "西南大西洋海区洋流强弱变化趋势",
+      "keywords": [
+        "洋流",
+        "北上寒流",
+        "巴西暖流"
+      ],
+      "questionGroup": "qg-西南大西洋",
+      "sharedMaterial": "西风漂流绕过南美大陆南端后部分向北形成北上寒流，与巴西暖流交汇后东流。下图为“1993-2016年西南大西洋海区36°S和41°S附近两个截面逐月洋流流量及变化趋势图”（数值表示流量大小；正负表示流向，北向为正，南向为负）。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531153917-hzrq1.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "从总体上看，1993—2016年西南大西洋海区（   ）\nA．北上寒流和巴西暖流都增强\tB．北上寒流和巴西暖流都减弱\nC．北上寒流增强，巴西暖流减弱\tD．北上寒流减弱，巴西暖流增强",
+      "answer": "D",
+      "analysis": "41°S处北上寒流流量趋势变小，36°S处巴西暖流流量趋势变大。",
+      "figureHint": "1993-2016年西南大西洋海区两个截面逐月洋流流量及变化趋势图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-8",
+      "paperId": "p-31629550",
+      "number": "9",
+      "topic": "水",
+      "knowledgePoint": "气压带、风带的分布及移动规律",
+      "difficulty": "中",
+      "desc": "洋流强弱变化趋势的直接原因",
+      "keywords": [
+        "盛行西风带",
+        "移动",
+        "洋流"
+      ],
+      "questionGroup": "qg-西南大西洋",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "与该海区洋流强弱变化趋势直接相关的是（   ）\nA．极地东风带向南极方向收缩\tB．盛行西风带向南极方向移动\nC．极地东风带向低纬方向扩张\tD．盛行西风带向低纬方向移动",
+      "answer": "B",
+      "analysis": "盛行西风带向南极移动，导致西风漂流增强，北上寒流减弱、巴西暖流增强。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-9",
+      "paperId": "p-31629550",
+      "number": "10",
+      "topic": "水",
+      "knowledgePoint": "气压带、风带的分布及移动规律",
+      "difficulty": "中",
+      "desc": "交汇处纬度位置年内变化曲线",
+      "keywords": [
+        "交汇处",
+        "纬度",
+        "季节变化"
+      ],
+      "questionGroup": "qg-西南大西洋",
+      "sharedMaterial": "",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531176109-iolh8.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "下图中反映北上寒流和巴西暖流交汇处纬度位置年内变化的曲线是（   ）\nA．①\tB．②\tC．③\tD．④",
+      "answer": "C",
+      "analysis": "夏半年气压带风带北移，交汇处偏北；冬半年偏南，③曲线符合。",
+      "figureHint": "四条纬度位置年内变化曲线图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-10",
+      "paperId": "p-31629550",
+      "number": "11",
+      "topic": "大气",
+      "knowledgePoint": "锋面气旋",
+      "difficulty": "中",
+      "desc": "蒙古气旋的气压梯度和锋面活动",
+      "keywords": [
+        "蒙古气旋",
+        "气压梯度",
+        "冷锋"
+      ],
+      "questionGroup": "qg-蒙古气旋",
+      "sharedMaterial": "蒙古气旋是发源于蒙古国的温带气旋。下图为“某年4月9日某时刻亚洲局部地区海平面天气图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531246691-6rx8l.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "图中蒙古气旋总体上（   ）\nA．气压梯度小，冷锋活动弱\tB．气压梯度大，冷锋活动强\nC．气压梯度小，暖锋活动弱\tD．气压梯度大，暖锋活动强",
+      "answer": "B",
+      "analysis": "气旋区域等压线密集，气压梯度大；冷锋前后温差大，活动强。",
+      "figureHint": "某年4月9日某时刻亚洲局部地区海平面天气图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-11",
+      "paperId": "p-31629550",
+      "number": "12",
+      "topic": "大气",
+      "knowledgePoint": "等压面与等压线的判读",
+      "difficulty": "中",
+      "desc": "西乌尔特地区的气团性质",
+      "keywords": [
+        "气团",
+        "暖干",
+        "露点"
+      ],
+      "questionGroup": "qg-蒙古气旋",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "此刻影响西乌尔特地区的气团性质是（   ）\nA．冷干\tB．冷湿\tC．暖干\tD．暖湿",
+      "answer": "C",
+      "analysis": "西乌尔特位于冷锋前、暖锋后，受暖气团控制，且露点低，湿度小。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-12",
+      "paperId": "p-31629550",
+      "number": "13",
+      "topic": "大气",
+      "knowledgePoint": "锋面气旋",
+      "difficulty": "中",
+      "desc": "气旋过境影响最大的地区",
+      "keywords": [
+        "气旋",
+        "移动方向",
+        "东北地区"
+      ],
+      "questionGroup": "qg-蒙古气旋",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "未来我国受该气旋过境影响最大的地区是（   ）\nA．华中地区\tB．华北地区\tC．东北地区\tD．西北地区",
+      "answer": "C",
+      "analysis": "气旋向东北方向移动，东北地区受影响最大。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-13",
+      "paperId": "p-31629550",
+      "number": "14",
+      "topic": "乡村和城镇",
+      "knowledgePoint": "城市和乡村区位因素",
+      "difficulty": "中",
+      "desc": "铁索桥选址上游的原因",
+      "keywords": [
+        "铁索桥",
+        "洪水",
+        "选址"
+      ],
+      "questionGroup": "qg-传统村寨",
+      "sharedMaterial": "古村落的研究与保护既有利于传统文化的传承,又有利于我国乡村振兴战略的实施。下图为“我国中部山区某传统村寨土地利用结构示意图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531267244-3s5ij.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "早期铁索桥位置选择在两河交汇处的上游，主要考虑的是（   ）\nA．村寨布局\tB．洪水威胁\tC．地形坡度\tD．方便劳作",
+      "answer": "B",
+      "analysis": "上游水量较小，受洪水威胁小，利于桥梁安全。",
+      "figureHint": "我国中部山区某传统村寨土地利用结构示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-14",
+      "paperId": "p-31629550",
+      "number": "15",
+      "topic": "乡村和城镇",
+      "knowledgePoint": "城市和乡村区位因素",
+      "difficulty": "中",
+      "desc": "风雨桥成为重要公共建筑空间的原因",
+      "keywords": [
+        "风雨桥",
+        "公共空间",
+        "使用频率"
+      ],
+      "questionGroup": "qg-传统村寨",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "早期风雨桥成为村寨重要公共建筑空间的原因是（   ）\nA．日常使用频率高\tB．远离村民的住宅\tC．便于接待外村人\tD．建筑成本比较低",
+      "answer": "A",
+      "analysis": "风雨桥连接农耕小路，日常使用频繁，成为重要公共空间。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-15",
+      "paperId": "p-31629550",
+      "number": "16",
+      "topic": "乡村和城镇",
+      "knowledgePoint": "城市和乡村区位因素",
+      "difficulty": "中",
+      "desc": "恢复村寨传统特色的最大挑战",
+      "keywords": [
+        "乡村振兴",
+        "精神家园",
+        "传统特色"
+      ],
+      "questionGroup": "qg-传统村寨",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "该村寨在落实乡村振兴战略的过程中，恢复村寨传统特色的最大挑战是（   ）\nA．街巷景观还原\tB．传统住宅修缮\tC．精神家园重塑\tD．基础设施完善",
+      "answer": "C",
+      "analysis": "精神家园重塑属于意识层面，难度大、时间长。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-16",
+      "paperId": "p-31629550",
+      "number": "17",
+      "topic": "环境与发展",
+      "knowledgePoint": "区域发展差异与因地制宜",
+      "difficulty": "中",
+      "desc": "草原之路成为主要通道的原因",
+      "keywords": [
+        "草原之路",
+        "农牧业扩散",
+        "环境阻碍"
+      ],
+      "questionGroup": "qg-农牧业扩散",
+      "sharedMaterial": "考古研究发现，从距今6000年到距今2200多年,欧亚大陆东西方交流和农牧业扩散先后形成了“草原之路”和“绿洲之路”两个主要通道。下图为“欧亚大陆农牧业扩散路径示意图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531283723-npjnb.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "距今4000多年以前，“草原之路”成为东西方农牧业扩散主要通道的原因是其（   ）\nA．地广人稀有利于东西方农牧业扩散\tB．距离东亚和西亚农牧业中心位置近\nC．与东西方农牧业中心生产条件相似\tD．环境对东西方农牧业扩散的阻碍小",
+      "answer": "D",
+      "analysis": "草原之路沿线地势平坦，环境阻碍小，利于农牧业扩散。",
+      "figureHint": "欧亚大陆农牧业扩散路径示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-17",
+      "paperId": "p-31629550",
+      "number": "18",
+      "topic": "环境与发展",
+      "knowledgePoint": "农业区位因素的变化",
+      "difficulty": "中",
+      "desc": "绿洲之路贯通后的推断",
+      "keywords": [
+        "绿洲之路",
+        "农牧业交融",
+        "河西走廊"
+      ],
+      "questionGroup": "qg-农牧业扩散",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "距今2200年以前，随着“绿洲之路”贯通，东西方农牧业进一步交融。据此可推断出（   ）\nA．“草原之路”农业生产规模达到极限\tB．河西走廊以东农业生产模式更加多样\nC．中亚地区的适农生产区域整体向东移\tD．西亚种植业规模超过畜牧业生产规模",
+      "answer": "B",
+      "analysis": "绿洲之路贯通促进交融，河西走廊以东农业模式更加多样。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-18",
+      "paperId": "p-31629550",
+      "number": "19",
+      "topic": "环境与发展",
+      "knowledgePoint": "自然环境的整体性",
+      "difficulty": "中",
+      "desc": "人地关系演变的主要驱动力",
+      "keywords": [
+        "人地关系",
+        "人口迁移",
+        "驱动力"
+      ],
+      "questionGroup": "qg-农牧业扩散",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "早期农牧文明交融过程中，“草原之路”和“绿洲之路”沿线人地关系演变的主要驱动力是（   ）\nA．人口扩散迁移\tB．交通工具变化\tC．文化语言交流\tD．聚落规模扩大",
+      "answer": "A",
+      "analysis": "人口扩散迁移是文化语言交流、聚落扩大的根本驱动力。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-19",
+      "paperId": "p-31629550",
+      "number": "20",
+      "topic": "江苏地理",
+      "knowledgePoint": "交通运输线（网）布局的区位因素及其变化",
+      "difficulty": "中",
+      "desc": "江苏高铁选线多种方案的原因",
+      "keywords": [
+        "高铁选线",
+        "城市均衡",
+        "方案"
+      ],
+      "questionGroup": "qg-江苏高铁",
+      "sharedMaterial": "目前，江苏省13个设区市实现了高铁（各类型动车组）市市相通。下图为“江苏省高铁线路分布示意图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531313040-sck2i.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "江苏省高铁选线途经哪些城市，常有多种优选方案，其原因最可能是（   ）\nA．替代交通方式多样\tB．城市等级体系完善\nC．人口流动方向多变\tD．城市发展比较均衡",
+      "answer": "D",
+      "analysis": "江苏城市发展均衡，不同选线差异小，故有多种方案。",
+      "figureHint": "江苏省高铁线路分布示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-20",
+      "paperId": "p-31629550",
+      "number": "21",
+      "topic": "江苏地理",
+      "knowledgePoint": "交通运输线（网）布局的区位因素及其变化",
+      "difficulty": "中",
+      "desc": "徐州至苏州高铁线与京杭运河走向一致的原因",
+      "keywords": [
+        "京杭运河",
+        "城市分布",
+        "高铁"
+      ],
+      "questionGroup": "qg-江苏高铁",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "徐州至苏州的高铁线基本与京杭运河走向一致，主要考虑的是（   ）\nA．已有城市分布格局的影响\tB．能够避开大型湖泊的影响\nC．京杭运河对铁路工程影响\tD．利于铁路与京杭运河联运",
+      "answer": "A",
+      "analysis": "京杭运河沿岸城市多，高铁走向与运河一致可覆盖更多城市。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-21",
+      "paperId": "p-31629550",
+      "number": "22",
+      "topic": "江苏地理",
+      "knowledgePoint": "交通运输布局对区域经济发展的影响",
+      "difficulty": "中",
+      "desc": "构建江苏全域高铁网的主要目的",
+      "keywords": [
+        "高铁网",
+        "区域一体化",
+        "发展"
+      ],
+      "questionGroup": "qg-江苏高铁",
+      "sharedMaterial": "",
+      "figures": [],
+      "hasFigure": false,
+      "content": "未来构建覆盖更广的江苏全域高铁网，其主要目的是（   ）\nA．降低物流运输成本\tB．优化城市空间结构\nC．加快乡村城镇化进程\tD．促进区域发展一体化",
+      "answer": "D",
+      "analysis": "全域高铁网提高通达度，促进生产要素流通，推动区域一体化。",
+      "figureHint": "",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-22",
+      "paperId": "p-31629550",
+      "number": "23",
+      "topic": "经纬网和地图",
+      "knowledgePoint": "河流堆积地貌",
+      "difficulty": "难",
+      "desc": "冲积扇区域铁路建设条件分析",
+      "keywords": [
+        "冲积扇",
+        "陡崖",
+        "铁路建设"
+      ],
+      "questionGroup": "",
+      "sharedMaterial": "某地规划的铁路穿过一冲积扇。下图为“某地地形及规划铁路位置示意图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531552488-v7l1k.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "(1)在图中用给定图例符号标出陡崖位置________，并写出判断理由________。\n(2)描述图中冲积扇的主要地貌特征________，并从物质来源、动力机制等角度简析冲积扇的形成条件________。\n(3)从地貌角度，分析图中冲积扇区域建设铁路面临的不利条件。",
+      "answer": "(1) 陡崖位于图中中间山峰北侧等高线重叠处；理由：等高线重叠（重合）。\n(2) 地貌特征：呈扇状；扇顶高，扇缘低（中间高，两侧低）；扇面发育沟谷，地形起伏大；沉积物由扇顶到扇缘逐渐变细。形成条件：上游有丰富的碎屑物质，提供物质来源；河流出山口后，流速变缓，泥沙大量堆积；扇面受流水侵蚀，形成沟谷；存在较宽的地形平台，利于沉积物堆积。\n(3) 地形起伏大，不利于施工；存在山洪风险，威胁铁路安全；地基物质松散，不利于建设。",
+      "analysis": "陡崖处等高线重叠；冲积扇由河流出山口堆积形成，扇面沟谷发育；铁路建设需考虑地形、洪水和地基条件。",
+      "figureHint": "某地地形及规划铁路位置示意图",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-23",
+      "paperId": "p-31629550",
+      "number": "24",
+      "topic": "产业",
+      "knowledgePoint": "工业的主要区位因素",
+      "difficulty": "中",
+      "desc": "县级市优势产业形成条件及对城市发展的作用",
+      "keywords": [
+        "优势产业",
+        "产业集聚",
+        "大城市"
+      ],
+      "questionGroup": "",
+      "sharedMaterial": "材料一第七次全国人口普查资料显示：江苏昆山、福建晋江、浙江慈溪和义乌4个县级市的城市人口规模均超100万,跃居我国大城市之列。\n材料二下表为“2021年4个县级市人口与经济指标统计表”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531564430-t6fot.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "(1)从产业发展的角度，简述4个县级市优势产业形成的相似条件。\n(2)依据晋江、慈溪和义乌的优势产业类型，分析其人均GDP较昆山存在的差异及其主要原因。\n(3)说明优势产业对4个县级市发展成为大城市的促进作用。",
+      "answer": "(1) 对外开放早，产业起步早（产业区位好）；产业基础好，产业发展快；专业化生产协作好，生产效率高；产业集聚强，产业创新环境好。\n(2) 相对较低。三市均以劳动密集型产业为主，技术含量低；产品附加值较小；企业规模相对较小，规模以上工业企业平均产值较低。\n(3) 产业规模大，产业集聚；对第三产业以及基础设施建设带动强，容纳劳动力多，城镇化进程快。",
+      "analysis": "四地产业起步早、集聚强；晋江等以劳动密集型为主，附加值低；优势产业带动就业和城镇化。",
+      "figureHint": "2021年4个县级市人口与经济指标统计表",
+      "dateAdded": "2026-08-24"
+    },
+    {
+      "id": "q-31629551-24",
+      "paperId": "p-31629550",
+      "number": "25",
+      "topic": "地域文化",
+      "knowledgePoint": "地域文化对城乡景观的影响",
+      "difficulty": "中",
+      "desc": "萨索斯岛古镇与新镇空间分布及传统建筑特点",
+      "keywords": [
+        "古镇",
+        "新镇",
+        "传统建筑",
+        "旅游业"
+      ],
+      "questionGroup": "",
+      "sharedMaterial": "材料一希腊萨索斯岛位于爱琴海北部，地形以山地为主。萨索斯岛历史悠久，早期居民多从事农矿业；20世纪60年代后旅游业发展，居民逐渐移居新镇，形成古镇—新镇的“双子镇”模式。古镇的传统建筑大多坐北朝南，依山而建，排列紧密，建筑材料为天然石材和木材；新镇多为现代建筑。\n材料二左图为“萨索斯岛古镇与新镇分布示意图”，右图为“萨索斯岛古镇传统建筑景观图”。",
+      "figures": [
+        {
+          "url": "https://sunhui918.github.io/geo-gaokao/files/figs/up-1787531576306-yqmlp.png",
+          "label": "配图",
+          "alt": "配图"
+        }
+      ],
+      "hasFigure": true,
+      "content": "(1)简述萨索斯岛古镇和新镇的空间分布特征。\n(2)分析萨索斯岛古镇传统建筑特点与当地自然环境的关系。\n(3)评价“双子镇”模式对萨索斯岛旅游业发展的影响。",
+      "answer": "(1) 古镇多位于内部山区，沿河谷分布；新镇多位于沿海。\n(2) 建筑坐北朝南，利于采光；依山而建，利用山地地形；建筑排列紧密，节省土地；坡面屋顶，利于排水；石木建筑，就地取材。\n(3) 新镇与古镇并存，增加旅游资源多样性，吸引更多游客；新镇的生活设施相对完善，提高旅游舒适度；新镇基础设施相对完善，提高旅游环境质量；古镇保留传统建筑风貌，有利于保护旅游资源独特性；古镇人口流失，不利于传统建筑的保护；不利于传统文化传承。",
+      "analysis": "古镇位于山区沿河，新镇沿海；传统建筑适应地形、气候和材料；双子镇模式有利有弊。",
+      "figureHint": "萨索斯岛古镇与新镇分布示意图及古镇传统建筑景观图",
       "dateAdded": "2026-08-24"
     }
   ]
