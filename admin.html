@@ -95,6 +95,28 @@
       <div id="smart-preview" class="smart-preview" style="display:none;"></div>
     </div>
 
+    <!-- 高考考点智能录入 -->
+    <div class="admin-form">
+      <h3>🏷 高考考点智能录入（上传考点细目表 Word，自动解析）</h3>
+      <div class="form-grid">
+        <div class="form-field full"><label>上传考点细目表（.txt / .md / .pdf / .docx）</label>
+          <div class="upload-box" id="ep-upload-box">
+            <button type="button" class="btn-primary" style="padding:8px 14px;font-size:13px;" onclick="document.getElementById('ep-file').click()">📁 选择文件</button>
+            <span class="upload-info" id="ep-file-info">支持文本、PDF、Word；也可在下方直接粘贴</span>
+            <input type="file" id="ep-file" accept=".txt,.md,.pdf,.docx" style="display:none;">
+          </div>
+        </div>
+        <div class="form-field"><label>省份</label><input type="text" id="ep-province" value="江苏"></div>
+        <div class="form-field"><label>年份（不填则 AI 识别）</label><input type="text" id="ep-year" placeholder="如 2026"></div>
+        <div class="form-field full"><label>或直接粘贴考点细目表文字</label><textarea id="ep-text" placeholder="把考点细目表（题号、难度系数、详细知识点）粘贴到这里"></textarea></div>
+        <div class="form-field full form-actions">
+          <button class="btn-primary" onclick="epParse()">🔍 解析并预览</button>
+          <span id="ep-status" style="font-size:13px;color:var(--text-sub);"></span>
+        </div>
+      </div>
+      <div id="ep-preview" class="smart-preview" style="display:none;"></div>
+    </div>
+
     <!-- GitHub Token -->
     <div class="settings-panel">
       <label>🔑 GitHub Token:</label>
@@ -118,6 +140,7 @@
         <select id="manage-type" onchange="renderManageList()">
           <option value="papers">📄 试卷（<span id="paper-count">0</span> 套）</option>
           <option value="questions">🔖 题目（<span id="question-count">0</span> 道）</option>
+          <option value="exampoints">🏷 考点细目（<span id="ep-count">0</span> 份）</option>
         </select>
       </div>
       <div id="manage-list"></div>
