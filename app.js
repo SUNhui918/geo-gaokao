@@ -754,8 +754,13 @@ function renderExamPoints() {
     el.innerHTML = '<div class="empty-state">📭 暂无考点细目表，请在管理后台录入</div>';
     return;
   }
-  el.innerHTML = eps
-    .map((ep) => {
+
+  const modules = eps
+    .map((ep, i) => `<button class="ep-module${i === 0 ? " active" : ""}" data-index="${i}">${esc(ep.province || "江苏")}卷·${esc(ep.year)}</button>`)
+    .join("");
+
+  const tables = eps
+    .map((ep, i) => {
       const rows = (ep.items || [])
         .map(
           (it) => `
@@ -767,7 +772,7 @@ function renderExamPoints() {
         )
         .join("");
       return `
-      <div class="compare-section">
+      <div class="ep-table-wrap" id="ep-table-${i}" style="display:${i === 0 ? "block" : "none"};">
         <h3>${esc(ep.year)}年${esc(ep.province || "江苏")}卷 · 考点细目表</h3>
         <table class="compare-table">
           <thead><tr><th style="width:80px;">题号</th><th style="width:110px;">难度系数</th><th>详细知识点</th></tr></thead>
@@ -776,6 +781,17 @@ function renderExamPoints() {
       </div>`;
     })
     .join("");
+
+  el.innerHTML = `<div class="ep-modules">${modules}</div>${tables}`;
+
+  el.querySelectorAll(".ep-module").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      el.querySelectorAll(".ep-module").forEach((b) => b.classList.remove("active"));
+      el.querySelectorAll(".ep-table-wrap").forEach((t) => (t.style.display = "none"));
+      btn.classList.add("active");
+      document.getElementById("ep-table-" + btn.dataset.index).style.display = "block";
+    });
+  });
 }
 
 // ==================== 工具函数 ====================
