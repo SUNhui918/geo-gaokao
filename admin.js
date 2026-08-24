@@ -20,16 +20,16 @@ function ensureQuestionIds() {
 }
 
 function initAdmin() {
-  const saved = sessionStorage.getItem(TOKEN_KEY);
+  const saved = localStorage.getItem(TOKEN_KEY);
   if (saved) {
     document.getElementById("github-token").value = saved;
-    document.getElementById("token-status").textContent = "已保存（当前会话）";
+    document.getElementById("token-status").textContent = "已保存（本机持久保存）";
   }
 
-  const dsSaved = sessionStorage.getItem(DEEPSEEK_KEY);
+  const dsSaved = localStorage.getItem(DEEPSEEK_KEY);
   if (dsSaved) {
     document.getElementById("deepseek-key").value = dsSaved;
-    document.getElementById("deepseek-status").textContent = "已保存（当前会话）";
+    document.getElementById("deepseek-status").textContent = "已保存（本机持久保存）";
   }
 
   fillSmartProvince();
@@ -45,7 +45,8 @@ function initAdmin() {
 
 function bindExit() {
   document.getElementById("admin-lock").addEventListener("click", () => {
-    sessionStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(DEEPSEEK_KEY);
     location.reload();
   });
 }
@@ -54,18 +55,18 @@ function bindExit() {
 function saveToken() {
   const v = document.getElementById("github-token").value.trim();
   if (!v) {
-    sessionStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY);
     document.getElementById("token-status").textContent = "已清除";
     return;
   }
-  sessionStorage.setItem(TOKEN_KEY, v);
-  document.getElementById("token-status").textContent = "已保存（当前会话）";
+  localStorage.setItem(TOKEN_KEY, v);
+  document.getElementById("token-status").textContent = "已保存（本机持久保存）";
   showStatus("Token 已保存，正在同步线上最新数据", "ok");
   pullLatestData();
 }
 
 function getToken() {
-  return sessionStorage.getItem(TOKEN_KEY) || "";
+  return localStorage.getItem(TOKEN_KEY) || "";
 }
 
 // ==================== GitHub API ====================
@@ -296,17 +297,17 @@ function bindSmartUpload() {
 function saveDeepSeekKey() {
   const v = document.getElementById("deepseek-key").value.trim();
   if (!v) {
-    sessionStorage.removeItem(DEEPSEEK_KEY);
+    localStorage.removeItem(DEEPSEEK_KEY);
     document.getElementById("deepseek-status").textContent = "已清除";
     return;
   }
-  sessionStorage.setItem(DEEPSEEK_KEY, v);
-  document.getElementById("deepseek-status").textContent = "已保存（当前会话）";
+  localStorage.setItem(DEEPSEEK_KEY, v);
+  document.getElementById("deepseek-status").textContent = "已保存（本机持久保存）";
   showStatus("DeepSeek Key 已保存", "ok");
 }
 
 function getDeepSeekKey() {
-  return sessionStorage.getItem(DEEPSEEK_KEY) || "";
+  return localStorage.getItem(DEEPSEEK_KEY) || "";
 }
 
 async function smartParse() {
