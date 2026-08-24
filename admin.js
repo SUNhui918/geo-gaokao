@@ -9,6 +9,7 @@ const DEEPSEEK_KEY = "geo_deepseek_key";
 let DATA = QUESTION_BANK;
 let smartResult = null;
 let editingQuestion = null;
+let epResult = null;
 
 document.addEventListener("DOMContentLoaded", initAdmin);
 
@@ -36,6 +37,7 @@ function initAdmin() {
   ensureQuestionIds();
   renderManageList();
   bindSmartUpload();
+  bindEpUpload();
   bindExit();
 
   if (saved) pullLatestData();
@@ -174,6 +176,7 @@ function renderManageList() {
   const list = document.getElementById("manage-list");
   document.getElementById("paper-count").textContent = (DATA.papers || []).length;
   document.getElementById("question-count").textContent = (DATA.questions || []).length;
+  document.getElementById("ep-count").textContent = (DATA.examPoints || []).length;
 
   if (type === "papers") {
     if (!(DATA.papers || []).length) return (list.innerHTML = '<div class="empty-state">暂无试卷</div>');
@@ -186,6 +189,20 @@ function renderManageList() {
           <div class="mi-info">${esc(p.province)} · ${esc(p.year)} · ${esc(p.type)} · ${p.url ? "已上传文件" : "未上传文件"}</div>
         </div>
         <button class="mi-btn del" onclick="deletePaper('${esc(p.id)}')">删除</button>
+      </div>`
+      )
+      .join("");
+  } else if (type === "exampoints") {
+    if (!(DATA.examPoints || []).length) return (list.innerHTML = '<div class="empty-state">暂无考点细目表</div>');
+    list.innerHTML = DATA.examPoints
+      .map(
+        (ep) => `
+      <div class="manage-item">
+        <div style="flex:1;min-width:0;">
+          <div class="mi-title">${esc(ep.year)}年${esc(ep.province || "江苏")}卷 · 考点细目表</div>
+          <div class="mi-info">${(ep.items || []).length} 条记录</div>
+        </div>
+        <button class="mi-btn del" onclick="deleteExamPoint('${esc(ep.id)}')">删除</button>
       </div>`
       )
       .join("");
@@ -317,7 +334,7 @@ async function smartParse() {
     }
 
     status.textContent = "正在调用 DeepSeek 自动拆题归类...";
-    const raw = await callDeepSeek(text);
+    const raw = await callDeepSeek(buildAiPrompt(text));
     const result = parseAiJson(raw);
     if (!result || !result.questions || !result.questions.length) {
       status.textContent = "解析结果为空，请检查试卷内容或稍后重试";
@@ -380,7 +397,7 @@ async function extractDocxText(file) {
   return result.value;
 }
 
-async function callDeepSeek(text) {
+async function callDeepSeek(userPrompt) {
   const res = await fetch("https://api.deepseek.com/chat/completions", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + getDeepSeekKey() },
@@ -388,8 +405,8 @@ async function callDeepSeek(text) {
       model: "deepseek-chat",
       temperature: 0.2,
       messages: [
-        { role: "system", content: "你是高三地理试卷结构化整理助手。你只输出 JSON，不输出任何解释、Markdown 代码块或多余文字。" },
-        { role: "user", content: buildAiPrompt(text) }
+        { role: "system", content: "你是高三地理试卷与考点的结构化整理助手。你只输出 JSON，不输出任何解释、Markdown 代码块或多余文字。" },
+        { role: "user", content: userPrompt }
       ]
     })
   });
@@ -786,6 +803,182 @@ async function saveQuestionEdit() {
     showStatus("✅ 题目已更新并发布", "ok");
   } catch (e) {
     showStatus("保存失败：" + e.message, "err");
+  }
+}
+
+// ==================== 考点细目录入 ====================
+function bindEpUpload() {
+  const fileInput = document.getElementById("ep-file");
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+      document.getElementById("ep-file-info").textContent =
+        "已选择：" + fileInput.files[0].name + "（" + formatSize(fileInput.files[0].size) + "）";
+    }
+  });
+  const box = document.getElementById("ep-upload-box");
+  box.addEventListener("dragover", (e) => { e.preventDefault(); box.classList.add("dragover"); });
+  box.addEventListener("dragleave", () => box.classList.remove("dragover"));
+  box.addEventListener("drop", (e) => {
+    e.preventDefault();
+    box.classList.remove("dragover");
+    if (e.dataTransfer.files.length > 0) {
+      fileInput.files = e.dataTransfer.files;
+      fileInput.dispatchEvent(new Event("change"));
+    }
+  });
+}
+
+function buildEpPrompt(text) {
+  return [
+    "请把下面的“高考地理考点细目表”整理成 JSON（必须是合法 JSON，不要用 ``` 包裹，直接输出 JSON 对象）：",
+    "",
+    "JSON 结构：",
+    "{",
+    '  "year": "2026",',
+    '  "province": "江苏",',
+    '  "items": [',
+    '    { "number": "1", "difficulty": "0.65", "knowledge": "详细知识点（多个知识点用分号分隔）" }',
+    "  ]",
+    "}",
+    "",
+    "规则：",
+    "1. number 是题号；difficulty 是难度系数（0~1 的小数，如 0.65；文档里没有就给空字符串）；knowledge 是详细知识点。",
+    "2. 逐条提取，保持题号顺序，不要遗漏。",
+    "3. 只输出 JSON，不要任何多余文字。",
+    "",
+    "文档内容如下：",
+    text
+  ].join("\n");
+}
+
+async function epParse() {
+  const status = document.getElementById("ep-status");
+  document.getElementById("ep-preview").style.display = "none";
+  epResult = null;
+
+  if (!getDeepSeekKey()) {
+    status.textContent = "缺少 DeepSeek Key";
+    showStatus("请先填写并保存 DeepSeek Key", "err");
+    return;
+  }
+
+  const fileInput = document.getElementById("ep-file");
+  const pasted = document.getElementById("ep-text").value.trim();
+  let text = pasted;
+  const file = fileInput.files.length > 0 ? fileInput.files[0] : null;
+
+  try {
+    status.textContent = "正在提取文字...";
+    if (file) text = await extractText(file);
+    if (!text || text.trim().length < 20) {
+      status.textContent = "没有读到有效文字，请换文件或直接粘贴";
+      return;
+    }
+
+    status.textContent = "正在调用 DeepSeek 解析考点细目表...";
+    const raw = await callDeepSeek(buildEpPrompt(text));
+    const result = parseAiJson(raw);
+    if (!result || !result.items || !result.items.length) {
+      status.textContent = "解析结果为空，请检查文档内容";
+      return;
+    }
+
+    const year = document.getElementById("ep-year").value.trim() || result.year || "";
+    const province = document.getElementById("ep-province").value.trim() || result.province || "江苏";
+    epResult = { year, province, items: result.items };
+    renderEpPreview(epResult);
+    status.textContent = "已解析出 " + result.items.length + " 条考点";
+  } catch (e) {
+    status.textContent = "解析失败：" + e.message;
+    showStatus("解析失败：" + e.message, "err");
+  }
+}
+
+function renderEpPreview(result) {
+  const el = document.getElementById("ep-preview");
+  const rows = (result.items || [])
+    .map(
+      (it, i) => `
+    <div class="se-fig-row" style="align-items:flex-start;">
+      <input style="width:70px;" value="${esc(it.number || "")}" oninput="epSetItem(${i}, 'number', this.value)">
+      <input style="width:90px;" value="${esc(it.difficulty || "")}" oninput="epSetItem(${i}, 'difficulty', this.value)">
+      <textarea style="flex:1;min-height:32px;" oninput="epSetItem(${i}, 'knowledge', this.value)">${esc(it.knowledge || "")}</textarea>
+      <button type="button" class="btn-ghost" onclick="epRemoveItem(${i})">移除</button>
+    </div>`
+    )
+    .join("");
+
+  el.innerHTML = `
+    <div class="smart-paper-head">
+      <b>${esc(result.year || "")}年${esc(result.province || "江苏")}卷 · 考点细目表</b>
+      <span style="color:var(--text-sub);"> · 共 ${result.items.length} 条</span>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:8px;color:var(--text-sub);font-size:12px;">
+      <span style="width:70px;">题号</span><span style="width:90px;">难度系数</span><span>详细知识点</span>
+    </div>
+    ${rows}
+    <div class="form-actions">
+      <button class="btn-primary" onclick="epPublish()">✅ 确认并发布</button>
+      <button class="btn-ghost" onclick="epReset()">↺ 重新解析</button>
+    </div>`;
+  el.style.display = "block";
+}
+
+function epSetItem(i, field, value) {
+  if (epResult && epResult.items && epResult.items[i]) epResult.items[i][field] = value;
+}
+
+function epRemoveItem(i) {
+  if (epResult && epResult.items) epResult.items.splice(i, 1);
+  renderEpPreview(epResult);
+}
+
+function epReset() {
+  epResult = null;
+  document.getElementById("ep-preview").style.display = "none";
+  document.getElementById("ep-status").textContent = "";
+}
+
+async function epPublish() {
+  if (!epResult) return;
+  if (!getToken()) {
+    showStatus("请先填写并保存 GitHub Token", "err");
+    return;
+  }
+  try {
+    showStatus("正在发布...", "");
+    if (!DATA.examPoints) DATA.examPoints = [];
+    DATA.examPoints.push({
+      id: "ep-" + String(Date.now()).slice(-8),
+      year: epResult.year || "",
+      province: epResult.province || "江苏",
+      items: epResult.items || [],
+      dateAdded: today()
+    });
+    await publishData("添加考点细目表：" + epResult.year);
+    epReset();
+    renderManageList();
+    showStatus("✅ 考点细目表已发布", "ok");
+  } catch (e) {
+    showStatus("发布失败：" + e.message, "err");
+  }
+}
+
+async function deleteExamPoint(id) {
+  const ep = (DATA.examPoints || []).find((x) => x.id === id);
+  if (!ep) return;
+  if (!confirm(`确定删除「${ep.year}年${ep.province}卷 考点细目表」？`)) return;
+  if (!getToken()) {
+    showStatus("请先填写并保存 GitHub Token", "err");
+    return;
+  }
+  try {
+    DATA.examPoints = DATA.examPoints.filter((x) => x.id !== id);
+    await publishData("删除考点细目表：" + ep.year);
+    renderManageList();
+    showStatus("✅ 已删除并发布", "ok");
+  } catch (e) {
+    showStatus("删除失败：" + e.message, "err");
   }
 }
 
