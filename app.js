@@ -34,6 +34,7 @@ function init() {
   bindViewer();
   initCompose();
   initCompare();
+  initExamPoints();
 }
 
 function bindTabs() {
@@ -738,6 +739,42 @@ function topTopicsHtml(questions, limit = 10) {
         <span class="top-count">${count} 题</span>
       </div>`
     )
+    .join("");
+}
+
+// ==================== 考点细目表 ====================
+function initExamPoints() {
+  renderExamPoints();
+}
+
+function renderExamPoints() {
+  const eps = (DATA.examPoints || []).slice().sort((a, b) => Number(a.year) - Number(b.year));
+  const el = document.getElementById("exampoints-list");
+  if (!eps.length) {
+    el.innerHTML = '<div class="empty-state">📭 暂无考点细目表，请在管理后台录入</div>';
+    return;
+  }
+  el.innerHTML = eps
+    .map((ep) => {
+      const rows = (ep.items || [])
+        .map(
+          (it) => `
+      <tr>
+        <td>${esc(it.number)}</td>
+        <td>${esc(it.difficulty)}</td>
+        <td class="exam-knowledge">${esc(it.knowledge)}</td>
+      </tr>`
+        )
+        .join("");
+      return `
+      <div class="compare-section">
+        <h3>${esc(ep.year)}年${esc(ep.province || "江苏")}卷 · 考点细目表</h3>
+        <table class="compare-table">
+          <thead><tr><th style="width:80px;">题号</th><th style="width:110px;">难度系数</th><th>详细知识点</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+    })
     .join("");
 }
 
